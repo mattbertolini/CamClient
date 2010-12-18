@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CamClient" default="main" xmlns:ivy="antlib:org.apache.ivy.ant">
+	
+	<property file="build.properties"/>
+	<property name="src" location="src"/>
+	<property name="test" location="test"/>
+	<property name="build" location="build"/>
+	<property name="dist" location="dist"/>
+	
+	<target name="clean">
+		<delete dir="${build}"/>
+		<delete dir="${dist}"/>
+	</target>
+	
+	<target name="init" depends="clean">
+		<mkdir dir="${build}"/>
+		<mkdir dir="${build}/classes"/>
+		<mkdir dir="${build}/testclasses"/>
+		<mkdir dir="${build}/javadoc"/>
+		<mkdir dir="${dist}"/>
+	</target>
+	
+	<target name="resolve" depends="init">
+		<ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact]-[revision].[ext]"/>
+		
+		<path id="classpath-test">
+			<fileset dir="${ivy.lib.dir}/test"/>
+			<pathelement location="${build}/classes"/>
+			<pathelement location="${build}/testclasses"/>
+		</path>
+	</target>
+	
+	<target name="compile" depends="resolve">
+		<javac srcdir="${src}" destdir="${build}/classes/" source="1.6" fork="false" failonerror="true" includeantruntime="false"/>
+		<copy todir="${build}/classes/META-INF/">
+			<fileset dir="${src}/META-INF/" defaultexcludes="true"/>
+		</copy>
+	</target>
+	
+	<target name="compile-tests" depends="compile">
+		<javac srcdir="${test}" destdir="${build}/testclasses/" source="1.6" fork="false" failonerror="true" includeantruntime="false">
+			<classpath refid="classpath-test"/>
+		</javac>
+	</target>
+	
+	<target name="test" depends="compile-tests">
+		<junit haltonerror="true" printsummary="true" outputtoformatters="false">
+			<classpath refid="classpath-test"/>
+			<batchtest fork="true">
+				<fileset dir="${test}">
+					<include name="**/*Test.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="javadoc">
+		<javadoc destdir="${build}/javadoc" sourcepath="${src}" failonerror="true" windowtitle="CamClient API Documentation">
+			<link href="http://download.oracle.com/javase/6/docs/api/"/>
+		</javadoc>
+	</target>
+	
+	<target name="jar" depends="test">
+		<tstamp>
+			<format property="build-date" pattern="yyyyMMdd"/>
+		</tstamp>
+		<manifest file="${build}/classes/META-INF/MANIFEST.MF">
+			<attribute name="Specification-Title" value="${project.name}"/>
+			<attribute name="Specification-Version" value="${project.version}"/>
+			<attribute name="Specification-Vendor" value="${project.vendor}"/>
+			<attribute name="Implementation-Title" value="${project.name}"/>
+			<attribute name="Implementation-Version" value="${project.version}"/> 
+			<attribute name="Implementation-Vendor" value="${project.vendor}"/>
+			<attribute name="Build-Date" value="${build-date}"/>
+			<attribute name="Sealed" value="false"/>
+		</manifest>
+		<jar destfile="${dist}/${project.filename}.jar" basedir="${build}/classes" manifest="${build}/classes/META-INF/MANIFEST.MF"/>
+	</target>
+	
+	<target name="jar-javadoc" depends="init,javadoc">
+		<jar destfile="${dist}/${project.filename}-javadoc.jar" basedir="${build}/javadoc"/>
+	</target>
+	
+	<target name="jar-sources" depends="init">
+		<jar destfile="${dist}/${project.filename}-sources.jar" basedir="${src}"/>
+	</target>
+	
+	<target name="archive-bin" depends="jar,jar-javadoc,jar-sources">
+		<fileset id="bin-fileset" dir="${dist}">
+			<include name="${project.filename}.jar"/>
+			<include name="${project.filename}-javadoc.jar"/>
+			<include name="${project.filename}-sources.jar"/>
+		</fileset>
+		<zipfileset id="bin-javadoc-fileset" dir="${build}/javadoc" prefix="apidocs"/>
+		<zip destfile="${dist}/${project.filename}-bin.zip">
+			<fileset refid="bin-fileset"/>
+			<zipfileset refid="bin-javadoc-fileset"/>
+		</zip>
+		<tar destfile="${dist}/${project.filename}-bin.tar">
+			<fileset refid="bin-fileset"/>
+			<zipfileset refid="bin-javadoc-fileset"/>
+		</tar>
+		<gzip src="${dist}/${project.filename}-bin.tar" destfile="${dist}/${project.filename}-bin.tar.gz"/>
+		<delete file="${dist}/${project.filename}-bin.tar"/>
+	</target>
+	
+	<target name="archive-project" depends="init">
+		<fileset id="project-fileset" dir="." defaultexcludes="true">
+			<exclude name="**/*.project"/>
+			<exclude name="**/*.classpath"/>
+			<exclude name="**/.settings/"/>
+			<exclude name="**/lib/"/>
+			<exclude name="**/bin/"/>
+			<exclude name="**/build/"/>
+			<exclude name="**/dist/"/>
+		</fileset>
+		<zip destfile="${dist}/${project.filename}-src.zip">
+			<fileset refid="project-fileset"/>
+		</zip>
+		<tar destfile="${dist}/${project.filename}-src.tar">
+			<fileset refid="project-fileset"/>
+		</tar>
+		<gzip src="${dist}/${project.filename}-src.tar" destfile="${dist}/${project.filename}-src.tar.gz"/>
+		<delete file="${dist}/${project.filename}-src.tar"/>
+	</target>
+	
+	<target name="main" depends="archive-bin,archive-project" description="Compiles all files."/>
+	
+</project>
