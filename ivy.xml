@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-	<info organisation="com.mattbertolini" module="camclient"/>
-	<configurations>
-		<conf name="default" extends="master,runtime"/>
-		<conf name="master"/>
-		<conf name="compile"/>
-		<conf name="runtime" extends="compile"/>
-		<conf name="test" extends="runtime" visibility="private"/>
-	</configurations>
-	<dependencies>
-		<dependency org="junit" name="junit" rev="4.8.2" conf="test->default"/>
-	</dependencies>
+    <info organisation="com.mattbertolini" module="camclient" />
+    <configurations>
+        <conf name="default" extends="master,runtime" />
+        <conf name="master" />
+        <conf name="compile" />
+        <conf name="runtime" extends="compile" />
+        <conf name="test" extends="runtime" visibility="private" />
+    </configurations>
+    <dependencies>
+        <dependency org="junit" name="junit" rev="4.8.2" conf="test->default" />
+    </dependencies>
 </ivy-module>
