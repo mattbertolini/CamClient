@@ -8,23 +8,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MockHttpConnectionService implements HttpConnectionService {
-	private Map<TestParameter, String> testParameters = new HashMap<TestParameter, String>();
-	
-	@Override
-	public HttpURLConnection getConnection(URL url) throws IOException {
-		return getConnection(url, null);
-	}
+    private Map<TestParameter, String> testParameters = new HashMap<TestParameter, String>();
 
-	@Override
-	public HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException {
-		return new MockHttpURLConnection(url, proxy, this.testParameters);
-	}
+    @Override
+    public HttpURLConnection getConnection(URL url) throws IOException {
+        return getConnection(url, null);
+    }
 
-	public void addTestParameter(TestParameter name, String value) {
-		this.testParameters.put(name, value);
-	}
-	
-	public void resetTestParameters() {
-		this.testParameters.clear();
-	}
+    @Override
+    public HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException {
+        return new MockHttpURLConnection(url, proxy, this.testParameters);
+    }
+
+    public void addTestParameter(TestParameter name, String value) {
+        this.testParameters.put(name, value);
+    }
+
+    public void resetTestParameters() {
+        this.testParameters.clear();
+    }
 }
