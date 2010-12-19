@@ -6,6 +6,6 @@ import java.net.Proxy;
 import java.net.URL;
 
 public interface HttpConnectionService {
-	HttpURLConnection getConnection(URL url) throws IOException;
-	HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException;
+    HttpURLConnection getConnection(URL url) throws IOException;
+    HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException;
 }
