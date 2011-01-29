@@ -12,26 +12,58 @@ import com.mattbertolini.camclient.net.Parameter;
 public class CamRequest {
     private final Operation operation;
     private final Map<Parameter, String> parameters = new HashMap<Parameter, String>();
-
+    
+    /**
+     * Constructs a new CamRequest object with the given Operation.
+     * 
+     * @param operation The Operation to create the request for.
+     */
     public CamRequest(final Operation operation) {
         this.operation = operation;
     }
-
+    
+    /**
+     * Adds the given Parameter name and value to the request. If the request 
+     * already contains the given Parameter name, the old value will be 
+     * replaced by the new value.
+     * 
+     * @param name The Parameter name to add to the request.
+     * @param value The value to be associated with the Parameter.
+     * @throws NullPointerException If the given Parameter name is null.
+     */
     public void addParameter(final Parameter name, final String value) {
         if(name == null) {
             throw new NullPointerException("Parameter name cannot be null.");
         }
         this.parameters.put(name, value);
     }
-
+    
+    /**
+     * Determines wither the given Parameter is currently set in the request 
+     * object.
+     * 
+     * @param name The Parameter to check.
+     * @return True if the given Parameter is currently set and false otherwise.
+     */
     public boolean containsParameter(final Parameter name) {
         return this.parameters.containsKey(name);
     }
-
+    
+    /**
+     * Gets the request operation set on the object when it was constructed.
+     * 
+     * @return An Operation value.
+     */
     public Operation getOperation() {
         return this.operation;
     }
-
+    
+    /**
+     * Retrieves the request parameters currently set on the CamRequest.
+     * 
+     * @return A {@link Collections#unmodifiableMap(Map)} keyed on the request 
+     * parameter with String values.
+     */
     public Map<Parameter, String> getParameters() {
         return Collections.unmodifiableMap(this.parameters);
     }

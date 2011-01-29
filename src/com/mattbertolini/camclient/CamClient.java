@@ -60,6 +60,17 @@ public class CamClient {
         }
     }
 
+    /**
+     * Adds a new local user account to the Clean Access Manager.
+     * 
+     * @param username The user name of the new account.
+     * @param password The password of the new account.
+     * @param role The user role of the new account.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the user name, password, or role 
+     * arguments are null.
+     */
     public void addLocaluser(String username, String password, String role) throws CamException {
         if(username == null) {
             throw new NullPointerException("Username cannot be null.");
@@ -164,6 +175,14 @@ public class CamClient {
         }
     }
 
+    /**
+     * Bounces an Out-of-Band port of the switch where the given MAC address is 
+     * currently associated.
+     * 
+     * @param macAddress The MAC address of the connected device to bounce.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
     public void bouncePortByMacAddress(String macAddress) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -219,7 +238,21 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Checks the Device Filters list to see if the given MAC address exists. 
+     * If the MAC address is found, collects device information from the 
+     * filters list and places it in a CamDevice object.
+     * 
+     * @param macAddress The MAC address to search for. Must match the display 
+     * format <code>01:23:45:67:89:AB</code>.
+     * @param ssip The Clean Access Server IP address.
+     * @return If the MAC is found, the method returns a CamDevice object. If 
+     * no device is found, null is returned. 
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the given MAC address is null.
+     */
     public CamDevice checkMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -246,6 +279,12 @@ public class CamClient {
         return retVal;
     }
 
+    /**
+     * Deletes all entries in the Certified Devices list.
+     * 
+     * @throws CamException If an error occurs when making the request to the 
+     * server.
+     */
     public void clearCertifiedList() throws CamException {
         CamRequest req = new CamRequest(Operation.CLEAR_CERTIFIED_LIST);
         try {
@@ -260,6 +299,15 @@ public class CamClient {
 
     // public List<CamUser> getLocalUserList()
 
+    /**
+     * Retrieves the entire Device Filters list.
+     * 
+     * @return An ArrayList containing CamDevice objects representing each 
+     * record in the Device Filters list. If no devices are found, an empty 
+     * list is returned.
+     * @throws CamException If an error occurs when making the request to the 
+     * server.
+     */
     public List<CamDevice> getMacAddressList() throws CamException {
         CamRequest req = new CamRequest(Operation.GET_MAC_ADDRESS_LIST);
         List<CamDevice> retList = new ArrayList<CamDevice>();
@@ -380,6 +428,12 @@ public class CamClient {
         }
     }
 
+    /**
+     * Deletes the entries from the Device Filters list.
+     * 
+     * @throws CamException If an error occurs when making the request to the 
+     * server.
+     */
     public void removeMacAddressList() throws CamException {
         CamRequest req = new CamRequest(Operation.REMOVE_MAC_ADDRESS_LIST);
         try {
