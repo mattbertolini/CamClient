@@ -41,6 +41,18 @@ public class CamClient {
         return new CamClient(CamConnectionFactory.getConnection(url, proxy, username, password));
     }
 
+    /**
+     * Adds a MAC address to the Certified Devices list as an exempted device.
+     * 
+     * @param macAddress The MAC address to add. Must be in the following 
+     * format: <code>01:23:45:67:89:AB</code>
+     * @throws CamException If an error occurs making a request to the server.
+     * @throws NullPointerException If the MAC address is null.
+     */
+    public void addCleanMacAddress(String macAddress) throws CamException {
+        this.addCleanMacAddress(macAddress, null);
+    }
+    
     public void addCleanMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -356,6 +368,7 @@ public class CamClient {
             if(resp.isError()) {
                 throw new CamException("Error retieving local user list: " + resp.getErrorText());
             }
+            // TODO: Break this code out to separate method/class.
             List<Map<String, String>> respData = resp.getResponseData();
             for(Map<String, String> row : respData) {
                 String name = row.get("name");
@@ -460,6 +473,18 @@ public class CamClient {
         }
     }
 
+    /**
+     * Removes the given MAC address from the Certified Devices list.
+     * 
+     * @param macAddress The MAC address to remove. Must be in the following 
+     * format: <code>01:23:45:67:89:AB</code>.
+     * @throws CamException If an error occurs making the request to the server.
+     * @throws NullPointerException If the MAC address is null.
+     */
+    public void removeCleanMacAddress(String macAddress) throws CamException {
+        this.removeCleanMacAddress(macAddress, null);
+    }
+    
     public void removeCleanMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
