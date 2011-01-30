@@ -48,6 +48,16 @@ public class RequestBuilderTest {
         String actual = this.requestBuilder.buildRequest(req);
         Assert.assertEquals(expected, actual);
     }
+    
+    @Test
+    public void testRequestWithEmptyString() {
+        String expected = "op=deletelocaluser&qtype=all&qval=";
+        CamRequest req = new CamRequest(Operation.DELETE_LOCAL_USER);
+        req.addParameter(RequestParameter.QUERY_TYPE, "all");
+        req.addParameter(RequestParameter.QUERY_VALUE, "");
+        String actual = this.requestBuilder.buildRequest(req);
+        Assert.assertEquals(expected, actual);
+    }
 
     @Test
     public void testRequestWithSpecialEncoding() {

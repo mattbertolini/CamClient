@@ -1,7 +1,7 @@
 package com.mattbertolini.camclient.request;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.mattbertolini.camclient.net.Parameter;
@@ -11,7 +11,7 @@ import com.mattbertolini.camclient.net.Parameter;
  */
 public class CamRequest {
     private final Operation operation;
-    private final Map<Parameter, String> parameters = new HashMap<Parameter, String>();
+    private final Map<Parameter, String> parameters = new LinkedHashMap<Parameter, String>();
     
     /**
      * Constructs a new CamRequest object with the given Operation.
