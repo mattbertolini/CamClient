@@ -162,6 +162,9 @@ public class CamClient {
         if(switchId == null) {
             throw new NullPointerException("Switch ID cannot be null.");
         }
+        if(port < 0) {
+            throw new IllegalArgumentException("Switch port cannot be less than zero.");
+        }
         CamRequest req = new CamRequest(Operation.BOUNCE_PORT);
         req.addParameter(RequestParameter.SWITCH_ID, switchId);
         req.addParameter(RequestParameter.SWITCH_PORT, Integer.toString(port));
@@ -192,7 +195,7 @@ public class CamClient {
         try {
             CamResponse resp = this.conn.submitRequest(req);
             if(resp.isError()) {
-                throw new CamException("Error bouncing port: " + resp.getErrorText());
+                throw new CamException("Error bouncing port by mac address: " + resp.getErrorText());
             }
         } catch(CamConnectionException e) {
             throw new CamException(e);
