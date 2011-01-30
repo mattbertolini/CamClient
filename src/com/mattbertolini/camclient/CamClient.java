@@ -296,6 +296,37 @@ public class CamClient {
             throw new CamException(e);
         }
     }
+    
+    public void deleteAllLocalUsers() throws CamException {
+        CamRequest req = new CamRequest(Operation.DELETE_LOCAL_USER);
+        req.addParameter(RequestParameter.QUERY_TYPE, "all");
+        req.addParameter(RequestParameter.QUERY_VALUE, "");
+        try {
+            CamResponse resp = this.conn.submitRequest(req);
+            if(resp.isError()) {
+                throw new CamException("Error deleting all local users: " + resp.getErrorText());
+            }
+        } catch(CamConnectionException e) {
+            throw new CamException(e);
+        }
+    }
+    
+    public void deleteLocalUser(String username) throws CamException {
+        if(username == null) {
+            throw new NullPointerException("Username cannot be null.");
+        }
+        CamRequest req = new CamRequest(Operation.DELETE_LOCAL_USER);
+        req.addParameter(RequestParameter.QUERY_TYPE, "name");
+        req.addParameter(RequestParameter.QUERY_VALUE, username);
+        try {
+            CamResponse resp = this.conn.submitRequest(req);
+            if(resp.isError()) {
+                throw new CamException("Error deleting local user: " + resp.getErrorText());
+            }
+        } catch(CamConnectionException e) {
+            throw new CamException(e);
+        }
+    }
 
     // public List<CamUser> getLocalUserList()
 
