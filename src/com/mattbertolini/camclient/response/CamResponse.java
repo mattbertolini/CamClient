@@ -16,18 +16,46 @@ public class CamResponse {
         this.errorText = errorText;
     }
 
+    /**
+     * Gets the error message returned by the CAM when an error occurs 
+     * processing the request. This will return null if the request was 
+     * successful.
+     * 
+     * @return A String containing the error text or null if the request was 
+     * successful.
+     */
     public String getErrorText() {
         return this.errorText;
     }
 
+    /**
+     * Returns the response data string parsed into a List of key value pairs. 
+     * This method will only return data if the request's operation is supposed 
+     * to return data. If an error is returned, no data will be returned.
+     * 
+     * @return An ArrayList of HashMaps. Each HashMap represents one record in 
+     * the response.
+     */
     public List<Map<String, String>> getResponseData() {
         return this.responseData;
     }
-
+    
+    /**
+     * Returns the raw response text returned by the CAM.
+     * 
+     * @return A string containing the raw response text from the CAM.
+     */
     public String getResponseText() {
         return this.responseText;
     }
 
+    /**
+     * Returns whether or not the request was successful. This flag relates to 
+     * the CAM's ability to process the request and return a valid response, 
+     * not whether a communications channel could be created.
+     * 
+     * @return True if the request was successful, false otherwise.
+     */
     public boolean isError() {
         return this.error;
     }
