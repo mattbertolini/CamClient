@@ -39,6 +39,18 @@ public class CamClientTest {
     @After
     public void tearDown() throws Exception {
     }
+    
+    @Test
+    public void testGetLocalUserList() throws CamException {
+        this.hcs.resetTestParameters();
+        this.hcs.addTestParameter(TestParameter.COUNT, "5");
+        CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
+        CamClient client = new CamClient(conn);
+        int expectedCount = 5;
+        List<CamLocalUser> actualList = client.getLocalUserList();
+        Assert.assertNotNull(actualList);
+        Assert.assertEquals(expectedCount, actualList.size());
+    }
 
     @Test
     public void testGetMacAddressList() throws CamException {

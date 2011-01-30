@@ -157,7 +157,17 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Bounces and out-of-band port in a switch given a switch ID and a port 
+     * number.
+     * 
+     * @param switchId The ID of the switch as inserted in the switches table.
+     * @param port The port in the switch to bounce.
+     * @throws CamException If an error occurs making the request to the server.
+     * @throws NullPointerException If the switch ID is null.
+     * @throws IllegalArgumentException If the port number is less than zero.
+     */
     public void bouncePort(String switchId, int port) throws CamException {
         if(switchId == null) {
             throw new NullPointerException("Switch ID cannot be null.");
@@ -331,7 +341,33 @@ public class CamClient {
         }
     }
 
-    // public List<CamUser> getLocalUserList()
+    /**
+     * Gets the list of local user accounts currently in the CAM.
+     * 
+     * @return A list of CamLocalUser objects containing user name and role 
+     * name.
+     * @throws CamException If an error occurs making a request to the server.
+     */
+    public List<CamLocalUser> getLocalUserList() throws CamException {
+        CamRequest req = new CamRequest(Operation.GET_LOCAL_USER_LIST);
+        List<CamLocalUser> retList = new ArrayList<CamLocalUser>();
+        try {
+            CamResponse resp = this.conn.submitRequest(req);
+            if(resp.isError()) {
+                throw new CamException("Error retieving local user list: " + resp.getErrorText());
+            }
+            List<Map<String, String>> respData = resp.getResponseData();
+            for(Map<String, String> row : respData) {
+                String name = row.get("name");
+                String role = row.get("role");
+                CamLocalUser user = new CamLocalUser(name, role);
+                retList.add(user);
+            }
+        } catch(CamConnectionException e) {
+            throw new CamException(e);
+        }
+        return retList;
+    }
 
     /**
      * Retrieves the entire Device Filters list.
