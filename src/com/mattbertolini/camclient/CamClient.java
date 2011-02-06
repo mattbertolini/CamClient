@@ -524,7 +524,7 @@ public class CamClient {
     }
 
     /**
-     * Deletes the entries from the Device Filters list.
+     * Deletes all entries from the Device Filters list.
      * 
      * @throws CamException If an error occurs when making the request to the 
      * server.
