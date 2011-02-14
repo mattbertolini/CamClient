@@ -83,30 +83,30 @@ public class CamClientTest {
     }
 
     @Test
-    public void testGetVersion() throws CamException {
+    public void testGetCamVersion() throws CamException {
         this.hcs.resetTestParameters();
         CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
         String expected = "4.7(3)";
-        String actual = client.getVersion();
+        String actual = client.getCamVersion();
         Assert.assertEquals(expected, actual);
     }
 
     @Test(expected = CamException.class)
-    public void testGetVersionException() throws CamException {
+    public void testGetCamVersionException() throws CamException {
         this.hcs.resetTestParameters();
         this.hcs.addTestParameter(TestParameter.RETURN_ERROR, Boolean.toString(true));
         CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
-        client.getVersion();
+        client.getCamVersion();
     }
 
     @Test(expected = CamException.class)
-    public void testGetVersionConnectionException() throws CamException {
+    public void testGetCamVersionConnectionException() throws CamException {
         this.hcs.resetTestParameters();
         this.hcs.addTestParameter(TestParameter.THROW_IO_EXCEPTION_ON_CONNECT, Boolean.toString(true));
         CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
-        client.getVersion();
+        client.getCamVersion();
     }
 }

@@ -106,6 +106,18 @@ public class CamClient {
             throw new CamException(e);
         }
     }
+    
+    /**
+     * Adds the given MAC address to the Device Filters list.
+     * 
+     * @param macAddress The MAC address to add. Must be in the following 
+     * format: <code>01:23:45:67:89:AB</code>
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
+    public void addMacAddress(String macAddress) throws CamException {
+        this.addMacAddress(macAddress, null, null, null, null, null);
+    }
 
     public void addMacAddress(String macAddress, String ipAddress, String type, String role, String description, String ssip) throws CamException {
         if(macAddress == null) {
@@ -138,7 +150,7 @@ public class CamClient {
         }
     }
 
-    public void addSubnet(String subnet, String mask, String type, String role, String description, String ssip) throws CamException {
+    public void addSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamException {
         if(subnet == null) {
             throw new NullPointerException("Subnet cannot be null.");
         }
@@ -148,10 +160,10 @@ public class CamClient {
         CamRequest req = new CamRequest(Operation.ADD_SUBNET);
         req.addParameter(RequestParameter.SUBNET, subnet);
         req.addParameter(RequestParameter.SUBNET_MASK, mask);
-        if(type != null && !type.isEmpty()) {
-            req.addParameter(RequestParameter.TYPE, type);
+        if(type != null) {
+            req.addParameter(RequestParameter.TYPE, type.getName());
         }
-        if(role != null && !type.isEmpty()) {
+        if(role != null && type != null && type == Type.USE_ROLE) {
             req.addParameter(RequestParameter.ROLE_NAME, role);
         }
         if(description != null && !description.isEmpty()) {
@@ -271,6 +283,23 @@ public class CamClient {
      * 
      * @param macAddress The MAC address to search for. Must match the display 
      * format <code>01:23:45:67:89:AB</code>.
+     * @return If the MAC is found, the method returns a CamDevice object. If 
+     * no device is found, null is returned. 
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the given MAC address is null.
+     */
+    public CamDevice checkMacAddress(String macAddress) throws CamException {
+        return this.checkMacAddress(macAddress, null);
+    }
+    
+    /**
+     * Checks the Device Filters list to see if the given MAC address exists. 
+     * If the MAC address is found, collects device information from the 
+     * filters list and places it in a CamDevice object.
+     * 
+     * @param macAddress The MAC address to search for. Must match the display 
+     * format <code>01:23:45:67:89:AB</code>.
      * @param ssip The Clean Access Server IP address.
      * @return If the MAC is found, the method returns a CamDevice object. If 
      * no device is found, null is returned. 
@@ -352,6 +381,28 @@ public class CamClient {
             throw new CamException(e);
         }
     }
+    
+    /**
+     * Gets the version number of the CAM.
+     * 
+     * @return A String containing the version number.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
+    public String getCamVersion() throws CamException {
+        String retVal = null;
+        CamRequest req = new CamRequest(Operation.GET_VERSION);
+        try {
+            CamResponse resp = this.conn.submitRequest(req);
+            if(resp.isError()) {
+                throw new CamException("Error getting version: " + resp.getErrorText());
+            }
+            retVal = resp.getResponseData().get(0).get(VERSION_KEY);
+        } catch(CamConnectionException e) {
+            throw new CamException(e);
+        }
+        return retVal;
+    }
 
     /**
      * Gets the list of local user accounts currently in the CAM.
@@ -410,21 +461,15 @@ public class CamClient {
         return this.conn.getUserAgent();
     }
 
-    public String getVersion() throws CamException {
-        String retVal = null;
-        CamRequest req = new CamRequest(Operation.GET_VERSION);
-        try {
-            CamResponse resp = this.conn.submitRequest(req);
-            if(resp.isError()) {
-                throw new CamException("Error getting version: " + resp.getErrorText());
-            }
-            retVal = resp.getResponseData().get(0).get(VERSION_KEY);
-        } catch(CamConnectionException e) {
-            throw new CamException(e);
-        }
-        return retVal;
-    }
-
+    /**
+     * Ends the active session of the out-of-band user with the given MAC 
+     * address and removes the user from the Out-of-Band Online Users list.
+     * 
+     * @param macAddress The MAC address of the out-of-band user to kick. Must 
+     * be in the following format: <code>01:23:45:67:89:AB</code>
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
     public void kickOutOfBandUser(String macAddress) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -503,6 +548,18 @@ public class CamClient {
             throw new CamException(e);
         }
     }
+    
+    /**
+     * Removes the given MAC address from the Device Filters list.
+     * 
+     * @param macAddress The MAC address to remove. Must be in the following 
+     * format: <code>01:23:45:67:89:AB</code>
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
+    public void removeMacAddress(String macAddress) throws CamException {
+        this.removeMacAddress(macAddress, null);
+    }
 
     public void removeMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
@@ -563,7 +620,14 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Set the user agent string that will be sent to the CAM with every 
+     * request.
+     * 
+     * @param userAgent The string to set for the user agent.
+     * @throws NullPointerException If the string is null.
+     */
     public void setUserAgent(final String userAgent) {
         this.conn.setUserAgent(userAgent);
     }
