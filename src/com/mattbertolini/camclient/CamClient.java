@@ -119,7 +119,7 @@ public class CamClient {
         this.addMacAddress(macAddress, null, null, null, null, null);
     }
 
-    public void addMacAddress(String macAddress, String ipAddress, String type, String role, String description, String ssip) throws CamException {
+    public void addMacAddress(String macAddress, String ipAddress, Type type, String role, String description, String ssip) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
         }
@@ -128,10 +128,10 @@ public class CamClient {
         if(ipAddress != null && !ipAddress.isEmpty()) {
             req.addParameter(RequestParameter.IP_ADDRESS, ipAddress);
         }
-        if(type != null && !type.isEmpty()) {
-            req.addParameter(RequestParameter.TYPE, type);
+        if(type != null) {
+            req.addParameter(RequestParameter.TYPE, type.getName());
         }
-        if(role != null && !type.isEmpty()) {
+        if(role != null && type != null && (type == Type.USE_ROLE || type == Type.CHECK)) {
             req.addParameter(RequestParameter.ROLE_NAME, role);
         }
         if(description != null && !description.isEmpty()) {
@@ -622,6 +622,30 @@ public class CamClient {
     }
     
     /**
+     * Renews the session timeout of the user with the given IP address by one 
+     * session.
+     * 
+     * @param ipAddress The IP address of the user to renew the session.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
+    public void renewUserSessionTime(String ipAddress) throws CamException {
+        if(ipAddress == null) {
+            throw new NullPointerException("IP address cannot be null.");
+        }
+        CamRequest req = new CamRequest(Operation.RENEW_USER_SESSION_TIME);
+        req.addParameter(RequestParameter.LIST, ipAddress);
+        try {
+            CamResponse resp = this.conn.submitRequest(req);
+            if(resp.isError()) {
+                throw new CamException("Error renewing user session time: " + resp.getErrorText());
+            }
+        } catch(CamConnectionException e) {
+            throw new CamException(e);
+        }
+    }
+    
+    /**
      * Set the user agent string that will be sent to the CAM with every 
      * request.
      * 
@@ -632,7 +656,7 @@ public class CamClient {
         this.conn.setUserAgent(userAgent);
     }
 
-    public void updateSubnet(String subnet, String mask, String type, String role, String description, String ssip) throws CamException {
+    public void updateSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamException {
         if(subnet == null) {
             throw new NullPointerException("Subnet cannot be null.");
         }
@@ -642,10 +666,10 @@ public class CamClient {
         CamRequest req = new CamRequest(Operation.UPDATE_SUBNET);
         req.addParameter(RequestParameter.SUBNET, subnet);
         req.addParameter(RequestParameter.SUBNET_MASK, mask);
-        if(type != null && !type.isEmpty()) {
-            req.addParameter(RequestParameter.TYPE, type);
+        if(type != null) {
+            req.addParameter(RequestParameter.TYPE, type.getName());
         }
-        if(role != null && !type.isEmpty()) {
+        if(role != null && type != null && type == Type.USE_ROLE) {
             req.addParameter(RequestParameter.ROLE_NAME, role);
         }
         if(description != null && !description.isEmpty()) {

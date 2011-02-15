@@ -1,8 +1,10 @@
 package com.mattbertolini.camclient;
 
 public enum Type {
-    ALLOW("allow"), 
-    DENY("deny"), 
+    ALLOW("allow"),
+    CHECK("check"),
+    DENY("deny"),
+    IGNORE("ignore"),
     USE_ROLE("userole");
 
     private String name;

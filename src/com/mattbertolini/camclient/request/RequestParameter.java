@@ -7,6 +7,7 @@ public enum RequestParameter implements Parameter {
     ADMIN_PASSWORD("passwd"),
     DESCRIPTION("desc"),
     IP_ADDRESS("ip"),
+    LIST("list"),
     MAC_ADDRESS("mac"),
     OPERATION("op"),
     QUERY_TYPE("qtype"),
