@@ -53,6 +53,16 @@ public class CamClient {
         this.addCleanMacAddress(macAddress, null);
     }
     
+    /**
+     * Adds a MAC address to the Certified Devices list as an exempted device.
+     * 
+     * @param macAddress The MAC address to add. Must be in the following 
+     * format: <code>01:23:45:67:89:AB</code>
+     * @param ssip The Clean Access Server IP address.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the MAC address is null.
+     */
     public void addCleanMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -164,7 +174,36 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Adds the given subnet to the Devices list.
+     * 
+     * @param subnet The subnet address to add.
+     * @param mask The subnet mask in CIDR format (e.g. 16).
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the subnet address or subnet mask are 
+     * null.
+     */
+    public void addSubnet(String subnet, String mask) throws CamException {
+        this.addSubnet(subnet, mask, null, null, null, null);
+    }
+    
+    /**
+     * Adds the given subnet to the Devices list.
+     * 
+     * @param subnet The subnet address to add.
+     * @param mask The subnet mask in CIDR format (e.g. 16).
+     * @param type The filter type. Possible values are DENY, ALLOW, and 
+     * USE_ROLE. The default value is DENY.
+     * @param role The role to place the subnet in if type is USE_ROLE.
+     * @param description A text description of the subnet.
+     * @param ssip The Clean Access Server IP address.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the subnet address or subnet mask are 
+     * null.
+     */
     public void addSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamException {
         if(subnet == null) {
             throw new NullPointerException("Subnet cannot be null.");
