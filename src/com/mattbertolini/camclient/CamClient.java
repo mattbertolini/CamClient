@@ -118,7 +118,22 @@ public class CamClient {
     public void addMacAddress(String macAddress) throws CamException {
         this.addMacAddress(macAddress, null, null, null, null, null);
     }
-
+    
+    /**
+     * Adds the given MAC address to the Device Filters list.
+     * 
+     * @param macAddress The MAC address to add. Must be in the following 
+     * format: <code>01:23:45:67:89:AB</code>
+     * @param ipAddress The IP address to use for the MAC address.
+     * @param type The type of filter to associate with this MAC address. 
+     * Supported values are DENY, ALLOW, USE_ROLE, CHECK, and IGNORE.
+     * @param role The role name to place this MAC address in. Only needed if 
+     * type USE_ROLE or CHECK is given.
+     * @param description A text description to give the MAC address.
+     * @param ssip The Clean Access Server IP address.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
     public void addMacAddress(String macAddress, String ipAddress, Type type, String role, String description, String ssip) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -351,6 +366,12 @@ public class CamClient {
         }
     }
     
+    /**
+     * Deletes all local user accounts from the Clean Access Manager.
+     * 
+     * @throws CamException If an error occurs when making the request to the 
+     * server.
+     */
     public void deleteAllLocalUsers() throws CamException {
         CamRequest req = new CamRequest(Operation.DELETE_LOCAL_USER);
         req.addParameter(RequestParameter.QUERY_TYPE, "all");
@@ -365,6 +386,13 @@ public class CamClient {
         }
     }
     
+    /**
+     * Deletes a local user account from the Clean Access Manager.
+     * 
+     * @param username The username of the user to delete.
+     * @throws CamException If an error occurs when making the request to the 
+     * server.
+     */
     public void deleteLocalUser(String username) throws CamException {
         if(username == null) {
             throw new NullPointerException("Username cannot be null.");
@@ -561,6 +589,15 @@ public class CamClient {
         this.removeMacAddress(macAddress, null);
     }
 
+    /**
+     * Removes the given MAC address from the Device Filters list.
+     * 
+     * @param macAddress The MAC address to remove. Must be in the following 
+     * format: <code>01:23:45:67:89:AB</code>
+     * @param ssip The Clean Access Server IP address.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
     public void removeMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -597,7 +634,16 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Removes a subnet from the Devices list.
+     * 
+     * @param subnet The subnet address to remove.
+     * @param mask The subnet mask in CIDR format (e.g. 16)
+     * @param ssip The Clean Access Server IP address.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     */
     public void removeSubnet(String subnet, String mask, String ssip) throws CamException {
         if(subnet == null) {
             throw new NullPointerException("Subnet cannot be null.");
