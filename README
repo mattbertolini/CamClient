@@ -1,0 +1,56 @@
+Cam Client
+Written by Matthew Bertolini
+
+About Cam Client
+===============
+
+Cam Client is a pure Java implementation of the Cisco Clean Access Manager API. 
+This library is meant to shield developers from having to deal with the HTTP 
+interface of the Cisco API and provide a clean interface that integrates easily 
+into your Java application. It allows a user to perform many different actions 
+on the Clean Access Manager like adding, updating, and removing MAC addresses, 
+subnets, and users. For more information on the Clean Access Manager API that 
+this library is based on, go to 
+http://www.cisco.com/en/US/products/ps6128/products_installation_and_configuration_guides_list.html
+
+License
+=======
+
+CamClient is licensed under the "New BSD License" Please see the LICENSE file 
+for full license information
+
+Dependencies
+============
+
+Cam Client has no runtime dependencies other than Java. If you are building the 
+library from source, JUnit is required to build.
+
+Building CamClient
+==================
+
+To build Cam Client, make sure you have Apache Ant and Ivy installed and 
+configured. Once configured, run ant on the build.xml file at the root of the 
+project.
+
+Frequently Asked Questions
+==========================
+
+I found a bug. What do I do?
+
+If you find a bug or other issue with CamClient, please file an issue at 
+https://github.com/MaliciousMonkey/CamClient/issues
+
+Why aren't all of the operations listed in the CAM configuration guide supported 
+in Cam Client?
+
+I wrote this API purely from the knowledge gained from working on a Clean Access 
+system while I was in college and from the API documentation provided by Cisco. 
+Unfortunately, the documentation that Cisco provides is not entirely clear and 
+I do not have the tens of thousands of dollars to buy a Clean Access system. 
+Rather than write a buggy API, I only implemented the operations that where the 
+most clearly documented. 
+
+If there is an operation that is not yet in the  Cam Client and you would like 
+it implemented, please file an issue. When filing, please provide as much 
+detail as possible. Data like Clean Access version, parameter values, and 
+return data strings are extremely helpful when implementing new operations.
