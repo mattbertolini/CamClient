@@ -7,6 +7,9 @@ import java.util.Map;
 import com.mattbertolini.camclient.net.Parameter;
 
 /**
+ * Translates a CamRequest object into a properly formatted HTTP POST request 
+ * string.
+ * 
  * @author Matt Bertolini
  */
 public class RequestBuilder {
@@ -15,9 +18,20 @@ public class RequestBuilder {
     private static final String UTF_8 = "UTF-8";
     private static final String EMPTY_STRING = "";
 
+    /**
+     * Builds a HTTP POST request string from the given CamRequest object. All 
+     * keys and values are URL encoded. If a request value is null, an empty 
+     * string is substituted.
+     * 
+     * @param request The CamRequest object to build a request string for.
+     * @return A property formatted string suitable for an HTTP POST request.
+     * @throws IllegalArgumentException If the request object is null.
+     * @throws IllegalStateException If the request object is not in a complete 
+     * state (i.e. Operation is null).
+     */
     public String buildRequest(CamRequest request) {
         if(request == null) {
-            throw new NullPointerException("Request object cannot be null.");
+            throw new IllegalArgumentException("Request object cannot be null.");
         }
         if(request.getOperation() == null) {
             throw new IllegalStateException("Operation needs to be set to a non-null value before request can be built.");
