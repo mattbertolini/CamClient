@@ -50,6 +50,15 @@ are given with every request to the Clean Access Manager. CamClient abstracts
 that work so you only provide the credentials to the library once. I will look 
 to support session-based authentication at some point in the future.
 
+Is CamClient thread safe?
+-------------------------
+
+CamClient uses an HTTP connection behind the scenes so if multiple threads use 
+the same CamConnection object, a new HTTP connection is opened for each caller. 
+That being said, the code has not been examined for thread safety and should be 
+assumed not thread safe. If you see a section of code that is not thread safe, 
+file an issue and I will see about correcting it.
+
 I found a bug. What do I do?
 ----------------------------
 
