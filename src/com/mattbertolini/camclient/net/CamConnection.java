@@ -128,6 +128,13 @@ public class CamConnection {
         return this.userAgent;
     }
 
+    /**
+     * Set the user agent string that will be sent to the CAM with every 
+     * request.
+     * 
+     * @param userAgent The string to set for the user agent.
+     * @throws NullPointerException If the string is null.
+     */
     public void setUserAgent(String userAgent) {
         if(userAgent == null) {
             throw new NullPointerException("User agent cannot be null.");

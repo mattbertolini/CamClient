@@ -124,6 +124,7 @@ public class CamClient {
      * format: <code>01:23:45:67:89:AB</code>
      * @throws CamException If an error occurred making the request to the 
      * server.
+     * @throws NullPointerException If the given MAC address is null.
      */
     public void addMacAddress(String macAddress) throws CamException {
         this.addMacAddress(macAddress, null, null, null, null, null);
@@ -143,6 +144,7 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
+     * @throws NullPointerException If the given MAC address is null.
      */
     public void addMacAddress(String macAddress, String ipAddress, Type type, String role, String description, String ssip) throws CamException {
         if(macAddress == null) {
@@ -273,6 +275,7 @@ public class CamClient {
      * @param macAddress The MAC address of the connected device to bounce.
      * @throws CamException If an error occurred making the request to the 
      * server.
+     * @throws NullPointerException If the given MAC address is null.
      */
     public void bouncePortByMacAddress(String macAddress) throws CamException {
         if(macAddress == null) {
@@ -289,7 +292,16 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Changes the role of the logged in user with the given IP address.
+     * 
+     * @param ipAddress The IP address of the user.
+     * @param role The role to change the user to.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the given IP address or role are null.
+     */
     public void changeLoggedInUserRole(String ipAddress, String role) throws CamException {
         if(ipAddress == null) {
             throw new NullPointerException("IP address cannot be null.");
@@ -309,7 +321,18 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Changes the access role of the logged in user with the given IP address. 
+     * This method removes the given user from the Online Users list and adds 
+     * their MAC address to the Device Filters list with the given role.
+     * 
+     * @param ipAddress The IP address of the user.
+     * @param role The role to place the user in the Device Filters list.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the given IP address or role are null.
+     */
     public void changeUserRole(String ipAddress, String role) throws CamException {
         if(ipAddress == null) {
             throw new NullPointerException("IP address cannot be null.");
@@ -431,6 +454,7 @@ public class CamClient {
      * @param username The username of the user to delete.
      * @throws CamException If an error occurs when making the request to the 
      * server.
+     * @throws NullPointerException If the given username is null.
      */
     public void deleteLocalUser(String username) throws CamException {
         if(username == null) {
@@ -523,7 +547,12 @@ public class CamClient {
         }
         return retList;
     }
-
+    
+    /**
+     * Gets the user agent string that is sent to the CAM with every request.
+     * 
+     * @return A string representing the user agent of the CAM connection.
+     */
     public String getUserAgent() {
         return this.conn.getUserAgent();
     }
@@ -536,6 +565,7 @@ public class CamClient {
      * be in the following format: <code>01:23:45:67:89:AB</code>
      * @throws CamException If an error occurred making the request to the 
      * server.
+     * @throws NullPointerException If the given MAC address is null.
      */
     public void kickOutOfBandUser(String macAddress) throws CamException {
         if(macAddress == null) {
@@ -552,7 +582,16 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Ends the active session of the in-band user with the given IP address 
+     * and removes the user from the In-Band Online Users list.
+     * 
+     * @param ipAddress The IP address of the in-band user to kick.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the given IP address is null.
+     */
     public void kickUser(String ipAddress) throws CamException {
         if(ipAddress == null) {
             throw new NullPointerException("IP address cannot be null.");
@@ -568,7 +607,17 @@ public class CamClient {
             throw new CamException(e);
         }
     }
-
+    
+    /**
+     * Ends the active session of the user with the given MAC address and 
+     * removes the user from the In-Band Online Users list.
+     * 
+     * @param macAddress The MAC address of the out-of-band user to kick. Must 
+     * be in the following format: <code>01:23:45:67:89:AB</code>
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the given MAC address is null.
+     */
     public void kickUserByMacAddress(String macAddress) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -597,6 +646,15 @@ public class CamClient {
         this.removeCleanMacAddress(macAddress, null);
     }
     
+    /**
+     * Removes the given MAC address from the Certified Devices list.
+     * 
+     * @param macAddress The MAC address to remove. Must be in the following 
+     * format: <code>01:23:45:67:89:AB</code>.
+     * @param ssip The Clean Access Server IP address. 
+     * @throws CamException If an error occurs making the request to the server.
+     * @throws NullPointerException If the MAC address is null.
+     */
     public void removeCleanMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
             throw new NullPointerException("MAC address cannot be null.");
@@ -636,6 +694,7 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
+     * @throws NullPointerException If the given MAC address is null.
      */
     public void removeMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
@@ -682,6 +741,7 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
+     * @throws NullPointerException If the given subnet address or mask is null.
      */
     public void removeSubnet(String subnet, String mask, String ssip) throws CamException {
         if(subnet == null) {
@@ -713,6 +773,7 @@ public class CamClient {
      * @param ipAddress The IP address of the user to renew the session.
      * @throws CamException If an error occurred making the request to the 
      * server.
+     * @throws NullPointerException If the given IP address is null.
      */
     public void renewUserSessionTime(String ipAddress) throws CamException {
         if(ipAddress == null) {
@@ -740,7 +801,37 @@ public class CamClient {
     public void setUserAgent(final String userAgent) {
         this.conn.setUserAgent(userAgent);
     }
-
+    
+    /**
+     * Updates the given subnet in the Devices list.
+     * 
+     * @param subnet The subnet address to update.
+     * @param mask The subnet mask in CIDR format(e.g. 16)
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the given subnet address or mask are 
+     * null.
+     */
+    public void updateSubnet(String subnet, String mask) throws CamException {
+        this.updateSubnet(subnet, mask, null, null, null, null);
+    }
+    
+    /**
+     * Updates the given subnet in the Devices list.
+     * 
+     * @param subnet The subnet address to update.
+     * @param mask The subnet mask in CIDR format (e.g. 16).
+     * @param type The filter type to update the subnet with. Possible values 
+     * are DENY, ALLOW, and USE_ROLE. The default value is DENY.
+     * @param role The role to place the subnet in if the filter type is 
+     * USE_ROLE.
+     * @param description The description of the subnet.
+     * @param ssip The Clean Access Server IP address.
+     * @throws CamException If an error occurred making the request to the 
+     * server.
+     * @throws NullPointerException If the given subnet address or mask are 
+     * null.
+     */
     public void updateSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamException {
         if(subnet == null) {
             throw new NullPointerException("Subnet cannot be null.");
