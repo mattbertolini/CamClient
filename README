@@ -1,10 +1,10 @@
-Cam Client
+CamClient
 Written by Matthew Bertolini
 
-About Cam Client
-================
+About CamClient
+===============
 
-Cam Client is a pure Java implementation of the Cisco Clean Access Manager API. 
+CamClient is a pure Java implementation of the Cisco Clean Access Manager API. 
 This library is meant to shield developers from having to deal with the HTTP 
 interface of the Cisco API and provide a clean interface that integrates easily 
 into your Java application. It allows a user to perform many different actions 
@@ -22,37 +22,37 @@ for full license information
 Dependencies
 ============
 
-Cam Client has no runtime dependencies other than Java. If you are building the 
+CamClient has no runtime dependencies other than Java. If you are building the 
 library from source, JUnit is required to build.
 
-Building Cam Client
-===================
+Building CamClient
+==================
 
-To build Cam Client, make sure you have Apache Ant and Ivy installed and 
+To build CamClient, make sure you have Apache Ant and Ivy installed and 
 configured. Once configured, run ant on the build.xml file at the root of the 
 project.
 
 Frequently Asked Questions
 ==========================
 
-What authentication methods does Cam Client support?
-----------------------------------------------------
+What authentication methods does CamClient support?
+---------------------------------------------------
 
 The Cisco documentation lists two possible methods of authentication to the 
-Clean Access Manager: session-based and function-based. Currently, Cam Client 
+Clean Access Manager: session-based and function-based. Currently, CamClient 
 only supports function-based authentication. This means the account credentials 
-are given with every request to the Clean Access Manager. Cam Client abstracts 
+are given with every request to the Clean Access Manager. CamClient abstracts 
 that work so you only provide the credentials to the library once. I will look 
 to support session-based authentication at some point in the future.
 
 I found a bug. What do I do?
 ----------------------------
 
-If you find a bug or other issue with Cam Client, please file an issue at 
+If you find a bug or other issue with CamClient, please file an issue at 
 https://github.com/MaliciousMonkey/CamClient/issues
 
 Why aren't all of the operations listed in the CAM configuration guide supported 
-in Cam Client?
+in CamClient?
 --------------------------------------------------------------------------------
 
 I wrote this API purely from the knowledge gained from working on a Clean Access 
@@ -62,7 +62,7 @@ I do not have the tens of thousands of dollars to buy a Clean Access system.
 Rather than write a buggy API, I only implemented the operations that where the 
 most clearly documented. 
 
-If there is an operation that is not yet in the  Cam Client and you would like 
+If there is an operation that is not yet in the  CamClient and you would like 
 it implemented, please file an issue. When filing, please provide as much 
 detail as possible. Data like Clean Access version, parameter values, and 
 return data strings are extremely helpful when implementing new operations.
