@@ -19,6 +19,11 @@ License
 CamClient is licensed under the "New BSD License" Please see the LICENSE file 
 for full license information
 
+Minimum Requirements
+====================
+
+CamClient requires Java 6 to run.
+
 Dependencies
 ============
 
