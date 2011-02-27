@@ -47,7 +47,7 @@ public class CamClient {
      * @param macAddress The MAC address to add. Must be in the following 
      * format: <code>01:23:45:67:89:AB</code>
      * @throws CamException If an error occurs making a request to the server.
-     * @throws NullPointerException If the MAC address is null.
+     * @throws IllegalArgumentException If the MAC address is null.
      */
     public void addCleanMacAddress(String macAddress) throws CamException {
         this.addCleanMacAddress(macAddress, null);
@@ -61,11 +61,11 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the MAC address is null.
+     * @throws IllegalArgumentException If the MAC address is null.
      */
     public void addCleanMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
-            throw new NullPointerException("MAC address cannot be null.");
+            throw new IllegalArgumentException("MAC address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.ADD_CLEAN_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, macAddress);
@@ -90,18 +90,18 @@ public class CamClient {
      * @param role The user role of the new account.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the user name, password, or role 
+     * @throws IllegalArgumentException If the user name, password, or role 
      * arguments are null.
      */
     public void addLocaluser(String username, String password, String role) throws CamException {
         if(username == null) {
-            throw new NullPointerException("Username cannot be null.");
+            throw new IllegalArgumentException("Username cannot be null.");
         }
         if(password == null) {
-            throw new NullPointerException("Password cannot be null.");
+            throw new IllegalArgumentException("Password cannot be null.");
         }
         if(role == null) {
-            throw new NullPointerException("Role cannot be null.");
+            throw new IllegalArgumentException("Role cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.ADD_LOCAL_USER);
         req.addParameter(RequestParameter.USERNAME, username);
@@ -124,7 +124,7 @@ public class CamClient {
      * format: <code>01:23:45:67:89:AB</code>
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given MAC address is null.
+     * @throws IllegalArgumentException If the given MAC address is null.
      */
     public void addMacAddress(String macAddress) throws CamException {
         this.addMacAddress(macAddress, null, null, null, null, null);
@@ -144,11 +144,11 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given MAC address is null.
+     * @throws IllegalArgumentException If the given MAC address is null.
      */
     public void addMacAddress(String macAddress, String ipAddress, Type type, String role, String description, String ssip) throws CamException {
         if(macAddress == null) {
-            throw new NullPointerException("MAC address cannot be null.");
+            throw new IllegalArgumentException("MAC address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.ADD_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, macAddress);
@@ -184,7 +184,7 @@ public class CamClient {
      * @param mask The subnet mask in CIDR format (e.g. 16).
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the subnet address or subnet mask are 
+     * @throws IllegalArgumentException If the subnet address or subnet mask are 
      * null.
      */
     public void addSubnet(String subnet, String mask) throws CamException {
@@ -203,15 +203,15 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the subnet address or subnet mask are 
+     * @throws IllegalArgumentException If the subnet address or subnet mask are 
      * null.
      */
     public void addSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamException {
         if(subnet == null) {
-            throw new NullPointerException("Subnet cannot be null.");
+            throw new IllegalArgumentException("Subnet cannot be null.");
         }
         if(mask == null) {
-            throw new NullPointerException("Mask cannot be null.");
+            throw new IllegalArgumentException("Mask cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.ADD_SUBNET);
         req.addParameter(RequestParameter.SUBNET, subnet);
@@ -245,12 +245,12 @@ public class CamClient {
      * @param switchId The ID of the switch as inserted in the switches table.
      * @param port The port in the switch to bounce.
      * @throws CamException If an error occurs making the request to the server.
-     * @throws NullPointerException If the switch ID is null.
+     * @throws IllegalArgumentException If the switch ID is null.
      * @throws IllegalArgumentException If the port number is less than zero.
      */
     public void bouncePort(String switchId, int port) throws CamException {
         if(switchId == null) {
-            throw new NullPointerException("Switch ID cannot be null.");
+            throw new IllegalArgumentException("Switch ID cannot be null.");
         }
         if(port < 0) {
             throw new IllegalArgumentException("Switch port cannot be less than zero.");
@@ -275,11 +275,11 @@ public class CamClient {
      * @param macAddress The MAC address of the connected device to bounce.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given MAC address is null.
+     * @throws IllegalArgumentException If the given MAC address is null.
      */
     public void bouncePortByMacAddress(String macAddress) throws CamException {
         if(macAddress == null) {
-            throw new NullPointerException("MAC address cannot be null.");
+            throw new IllegalArgumentException("MAC address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.BOUNCE_PORT_BY_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, macAddress);
@@ -300,14 +300,14 @@ public class CamClient {
      * @param role The role to change the user to.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given IP address or role are null.
+     * @throws IllegalArgumentException If the given IP address or role are null.
      */
     public void changeLoggedInUserRole(String ipAddress, String role) throws CamException {
         if(ipAddress == null) {
-            throw new NullPointerException("IP address cannot be null.");
+            throw new IllegalArgumentException("IP address cannot be null.");
         }
         if(role == null) {
-            throw new NullPointerException("Role cannot be null.");
+            throw new IllegalArgumentException("Role cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.CHANGE_LOGGED_IN_USER_ROLE);
         req.addParameter(RequestParameter.IP_ADDRESS, ipAddress);
@@ -331,14 +331,14 @@ public class CamClient {
      * @param role The role to place the user in the Device Filters list.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given IP address or role are null.
+     * @throws IllegalArgumentException If the given IP address or role are null.
      */
     public void changeUserRole(String ipAddress, String role) throws CamException {
         if(ipAddress == null) {
-            throw new NullPointerException("IP address cannot be null.");
+            throw new IllegalArgumentException("IP address cannot be null.");
         }
         if(role == null) {
-            throw new NullPointerException("Role cannot be null.");
+            throw new IllegalArgumentException("Role cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.CHANGE_USER_ROLE);
         req.addParameter(RequestParameter.IP_ADDRESS, ipAddress);
@@ -364,7 +364,7 @@ public class CamClient {
      * no device is found, null is returned. 
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given MAC address is null.
+     * @throws IllegalArgumentException If the given MAC address is null.
      */
     public CamDevice checkMacAddress(String macAddress) throws CamException {
         return this.checkMacAddress(macAddress, null);
@@ -382,11 +382,11 @@ public class CamClient {
      * no device is found, null is returned. 
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given MAC address is null.
+     * @throws IllegalArgumentException If the given MAC address is null.
      */
     public CamDevice checkMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
-            throw new NullPointerException("MAC address cannot be null.");
+            throw new IllegalArgumentException("MAC address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.CHECK_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, macAddress);
@@ -454,11 +454,11 @@ public class CamClient {
      * @param username The username of the user to delete.
      * @throws CamException If an error occurs when making the request to the 
      * server.
-     * @throws NullPointerException If the given username is null.
+     * @throws IllegalArgumentException If the given username is null.
      */
     public void deleteLocalUser(String username) throws CamException {
         if(username == null) {
-            throw new NullPointerException("Username cannot be null.");
+            throw new IllegalArgumentException("Username cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.DELETE_LOCAL_USER);
         req.addParameter(RequestParameter.QUERY_TYPE, "name");
@@ -565,11 +565,11 @@ public class CamClient {
      * be in the following format: <code>01:23:45:67:89:AB</code>
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given MAC address is null.
+     * @throws IllegalArgumentException If the given MAC address is null.
      */
     public void kickOutOfBandUser(String macAddress) throws CamException {
         if(macAddress == null) {
-            throw new NullPointerException("MAC address cannot be null.");
+            throw new IllegalArgumentException("MAC address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.KICK_OOB_USER);
         req.addParameter(RequestParameter.MAC_ADDRESS, macAddress);
@@ -590,11 +590,11 @@ public class CamClient {
      * @param ipAddress The IP address of the in-band user to kick.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given IP address is null.
+     * @throws IllegalArgumentException If the given IP address is null.
      */
     public void kickUser(String ipAddress) throws CamException {
         if(ipAddress == null) {
-            throw new NullPointerException("IP address cannot be null.");
+            throw new IllegalArgumentException("IP address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.KICK_USER);
         req.addParameter(RequestParameter.IP_ADDRESS, ipAddress);
@@ -616,11 +616,11 @@ public class CamClient {
      * be in the following format: <code>01:23:45:67:89:AB</code>
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given MAC address is null.
+     * @throws IllegalArgumentException If the given MAC address is null.
      */
     public void kickUserByMacAddress(String macAddress) throws CamException {
         if(macAddress == null) {
-            throw new NullPointerException("MAC address cannot be null.");
+            throw new IllegalArgumentException("MAC address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.KICK_USER_BY_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, macAddress);
@@ -640,7 +640,7 @@ public class CamClient {
      * @param macAddress The MAC address to remove. Must be in the following 
      * format: <code>01:23:45:67:89:AB</code>.
      * @throws CamException If an error occurs making the request to the server.
-     * @throws NullPointerException If the MAC address is null.
+     * @throws IllegalArgumentException If the MAC address is null.
      */
     public void removeCleanMacAddress(String macAddress) throws CamException {
         this.removeCleanMacAddress(macAddress, null);
@@ -653,11 +653,11 @@ public class CamClient {
      * format: <code>01:23:45:67:89:AB</code>.
      * @param ssip The Clean Access Server IP address. 
      * @throws CamException If an error occurs making the request to the server.
-     * @throws NullPointerException If the MAC address is null.
+     * @throws IllegalArgumentException If the MAC address is null.
      */
     public void removeCleanMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
-            throw new NullPointerException("MAC address cannot be null.");
+            throw new IllegalArgumentException("MAC address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.REMOVE_CLEAN_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, macAddress);
@@ -694,11 +694,11 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given MAC address is null.
+     * @throws IllegalArgumentException If the given MAC address is null.
      */
     public void removeMacAddress(String macAddress, String ssip) throws CamException {
         if(macAddress == null) {
-            throw new NullPointerException("MAC address cannot be null.");
+            throw new IllegalArgumentException("MAC address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.REMOVE_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, macAddress);
@@ -741,14 +741,14 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given subnet address or mask is null.
+     * @throws IllegalArgumentException If the given subnet address or mask is null.
      */
     public void removeSubnet(String subnet, String mask, String ssip) throws CamException {
         if(subnet == null) {
-            throw new NullPointerException("Subnet cannot be null.");
+            throw new IllegalArgumentException("Subnet cannot be null.");
         }
         if(mask == null) {
-            throw new NullPointerException("Mask cannot be null.");
+            throw new IllegalArgumentException("Mask cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.REMOVE_SUBNET);
         req.addParameter(RequestParameter.SUBNET, subnet);
@@ -773,11 +773,11 @@ public class CamClient {
      * @param ipAddress The IP address of the user to renew the session.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given IP address is null.
+     * @throws IllegalArgumentException If the given IP address is null.
      */
     public void renewUserSessionTime(String ipAddress) throws CamException {
         if(ipAddress == null) {
-            throw new NullPointerException("IP address cannot be null.");
+            throw new IllegalArgumentException("IP address cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.RENEW_USER_SESSION_TIME);
         req.addParameter(RequestParameter.LIST, ipAddress);
@@ -796,7 +796,7 @@ public class CamClient {
      * request.
      * 
      * @param userAgent The string to set for the user agent.
-     * @throws NullPointerException If the string is null.
+     * @throws IllegalArgumentException If the string is null.
      */
     public void setUserAgent(final String userAgent) {
         this.conn.setUserAgent(userAgent);
@@ -809,7 +809,7 @@ public class CamClient {
      * @param mask The subnet mask in CIDR format(e.g. 16)
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given subnet address or mask are 
+     * @throws IllegalArgumentException If the given subnet address or mask are 
      * null.
      */
     public void updateSubnet(String subnet, String mask) throws CamException {
@@ -829,15 +829,15 @@ public class CamClient {
      * @param ssip The Clean Access Server IP address.
      * @throws CamException If an error occurred making the request to the 
      * server.
-     * @throws NullPointerException If the given subnet address or mask are 
+     * @throws IllegalArgumentException If the given subnet address or mask are 
      * null.
      */
     public void updateSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamException {
         if(subnet == null) {
-            throw new NullPointerException("Subnet cannot be null.");
+            throw new IllegalArgumentException("Subnet cannot be null.");
         }
         if(mask == null) {
-            throw new NullPointerException("Mask cannot be null.");
+            throw new IllegalArgumentException("Mask cannot be null.");
         }
         CamRequest req = new CamRequest(Operation.UPDATE_SUBNET);
         req.addParameter(RequestParameter.SUBNET, subnet);
