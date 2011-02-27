@@ -14,7 +14,7 @@ public class CamDeviceParser {
 
     public static CamDevice parseMap(Map<String, String> data) {
         if(data == null) {
-            throw new NullPointerException("data cannot be null.");
+            throw new IllegalArgumentException("data cannot be null.");
         }
         String mac = data.get(MAC);
         String ip = data.get(IP);

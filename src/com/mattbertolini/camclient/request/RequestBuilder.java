@@ -56,10 +56,10 @@ public class RequestBuilder {
 
     public String appendUserNameAndPassword(String username, String password) {
         if(username == null) {
-            throw new NullPointerException("Username cannot be null.");
+            throw new IllegalArgumentException("Username cannot be null.");
         }
         if(password == null) {
-            throw new NullPointerException("Password cannot be null.");
+            throw new IllegalArgumentException("Password cannot be null.");
         }
         StringBuilder sb = new StringBuilder();
         sb.append(PARAMETER_SEPARATOR);

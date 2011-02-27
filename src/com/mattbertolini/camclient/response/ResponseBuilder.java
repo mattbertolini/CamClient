@@ -17,7 +17,7 @@ public class ResponseBuilder {
 
     public CamResponse buildResponse(final String responseString) {
         if(responseString == null) {
-            throw new NullPointerException("Response string cannot be null.");
+            throw new IllegalArgumentException("Response string cannot be null.");
         }
         boolean error = false;
         String errorText = null;

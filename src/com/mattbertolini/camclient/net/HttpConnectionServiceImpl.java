@@ -12,7 +12,7 @@ public class HttpConnectionServiceImpl implements HttpConnectionService {
 
     public HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException {
         if(url == null) {
-            throw new NullPointerException("URL object cannot be null.");
+            throw new IllegalArgumentException("URL object cannot be null.");
         }
         HttpURLConnection conn = null;
         if(proxy != null) {

@@ -34,7 +34,7 @@ public class CamRequestTest {
         Assert.assertFalse(req.containsParameter(RequestParameter.MAC_ADDRESS));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testAddParameterNullName() {
         CamRequest req = new CamRequest(Operation.ADD_MAC_ADDRESS);
         req.addParameter(null, "01:23:45:67:89:AB");

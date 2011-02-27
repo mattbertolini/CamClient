@@ -87,12 +87,12 @@ public class RequestBuilderTest {
         this.requestBuilder.buildRequest(req);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullUsername() {
         this.requestBuilder.appendUserNameAndPassword(null, "testpass");
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullPassword() {
         this.requestBuilder.appendUserNameAndPassword("testuser", null);
     }

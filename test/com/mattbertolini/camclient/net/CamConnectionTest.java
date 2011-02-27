@@ -172,7 +172,7 @@ public class CamConnectionTest {
         cc.submitRequest(req);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSetNullUserAgentString() throws MalformedURLException {
         MockHttpConnectionService mhcs = new MockHttpConnectionService();
         URL url = new URL("https://example.com/");

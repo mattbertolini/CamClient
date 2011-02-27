@@ -133,11 +133,11 @@ public class CamConnection {
      * request.
      * 
      * @param userAgent The string to set for the user agent.
-     * @throws NullPointerException If the string is null.
+     * @throws IllegalArgumentException If the string is null.
      */
     public void setUserAgent(String userAgent) {
         if(userAgent == null) {
-            throw new NullPointerException("User agent cannot be null.");
+            throw new IllegalArgumentException("User agent cannot be null.");
         }
         this.userAgent = userAgent;
     }

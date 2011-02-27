@@ -29,11 +29,11 @@ public class CamRequest {
      * 
      * @param name The Parameter name to add to the request.
      * @param value The value to be associated with the Parameter.
-     * @throws NullPointerException If the given Parameter name is null.
+     * @throws IllegalArgumentException If the given Parameter name is null.
      */
     public void addParameter(final Parameter name, final String value) {
         if(name == null) {
-            throw new NullPointerException("Parameter name cannot be null.");
+            throw new IllegalArgumentException("Parameter name cannot be null.");
         }
         this.parameters.put(name, value);
     }

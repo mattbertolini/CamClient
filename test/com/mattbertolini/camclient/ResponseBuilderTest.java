@@ -93,7 +93,7 @@ public class ResponseBuilderTest {
         Assert.assertEquals("CAM Error - This is an error", resp.getErrorText());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullResponseString() {
         this.respb.buildResponse(null);
     }
