@@ -60,7 +60,7 @@ public class CamConnection {
             throw new IllegalStateException("Null URL object.");
         }
         if(request == null) {
-            throw new NullPointerException("CamRequest object cannot be null.");
+            throw new IllegalArgumentException("CamRequest object cannot be null.");
         }
         if(!this.url.getProtocol().equalsIgnoreCase(HTTPS)) {
             throw new CamConnectionException("The CAM connection must connect via the HTTPS protocol.");
