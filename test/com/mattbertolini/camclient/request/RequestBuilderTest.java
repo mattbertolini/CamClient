@@ -75,7 +75,7 @@ public class RequestBuilderTest {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullRequestObject() {
         CamRequest req = null;
         this.requestBuilder.buildRequest(req);
