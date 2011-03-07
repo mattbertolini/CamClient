@@ -45,7 +45,21 @@ public class CamConnection {
         this.username = username;
         this.password = password;
     }
-
+    
+    /**
+     * Sends the given CamRequest object as a properly formatted HTTP request 
+     * to the CAM. If no connection issues occur, it processes the response data 
+     * into a CamResponse object. This method will always return a CamResponse 
+     * object as long as no exception is thrown. Getting a CamResponse object 
+     * does not necessarily mean that the request was successful.
+     * 
+     * @param request The CamRequest to send to the Clean Access Manager.
+     * @return A CamResponse object with the response data.
+     * @throws CamConnectionException If a HTTP connection error occurs.
+     * @throws IllegalStateException If the CamConnection is not in a usable 
+     * state due to a missing dependency or issue with the request object state.
+     * @throws IllegalArgumentException If the CamRequest object is null.
+     */
     public CamResponse submitRequest(CamRequest request) throws CamConnectionException {
         if(this.httpConnectionService == null) {
             throw new IllegalStateException("Null HttpConnectionService object.");
