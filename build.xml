@@ -55,7 +55,8 @@
     </target>
 
     <target name="javadoc">
-        <javadoc destdir="${build}/javadoc" sourcepath="${src}" failonerror="true" windowtitle="CamClient API Documentation">
+        <javadoc destdir="${build}/javadoc" sourcepath="${src}" failonerror="true" windowtitle="CamClient ${project.version} API Documentation">
+            <doctitle>CamClient ${project.version} API Documentation</doctitle>
             <link href="http://download.oracle.com/javase/6/docs/api/" />
         </javadoc>
     </target>
