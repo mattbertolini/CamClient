@@ -63,11 +63,11 @@ public class RequestBuilder {
         }
         StringBuilder sb = new StringBuilder();
         sb.append(PARAMETER_SEPARATOR);
-        sb.append(this.encode("admin"));
+        sb.append(this.encode(RequestParameter.ADMIN_USERNAME.getName()));
         sb.append(NAME_VALUE_SEPARATOR);
         sb.append(this.encode(username));
         sb.append(PARAMETER_SEPARATOR);
-        sb.append(this.encode("passwd"));
+        sb.append(this.encode(RequestParameter.ADMIN_PASSWORD.getName()));
         sb.append(NAME_VALUE_SEPARATOR);
         sb.append(this.encode(password));
         return sb.toString();
