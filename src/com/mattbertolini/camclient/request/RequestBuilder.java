@@ -82,6 +82,7 @@ public class RequestBuilder {
      * @param s
      *            The string to encode
      * @return Returns a UTF-8 encoded string.
+     * @throws RuntimeException If the UTF-8 charset is not found.
      * @see {@link URLEncoder#encode(String, String)}
      */
     private String encode(String s) {
@@ -89,7 +90,7 @@ public class RequestBuilder {
         try {
             ec = URLEncoder.encode(s, UTF_8);
         } catch(UnsupportedEncodingException e) {
-            // Do nothing
+            throw new RuntimeException("UTF-8 charset not found.", e);
         }
         return ec;
     }
