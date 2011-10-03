@@ -1,61 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="CamClient" default="main" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="CamClient" default="main" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:emma="antlib:net.sf.emma">
 
-    <property file="build.properties" />
-    <property name="src" location="src" />
-    <property name="test" location="test" />
-    <property name="build" location="build" />
-    <property name="dist" location="dist" />
+    <property file="build.properties"/>
 
     <target name="clean">
-        <delete dir="${build}" />
-        <delete dir="${dist}" />
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
     </target>
 
     <target name="init" depends="clean">
-        <mkdir dir="${build}" />
-        <mkdir dir="${build}/classes" />
-        <mkdir dir="${build}/testclasses" />
-        <mkdir dir="${build}/javadoc" />
-        <mkdir dir="${dist}" />
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.instrumentedclasses.dir}"/>
+        <mkdir dir="${build.testclasses.dir}"/>
+        <mkdir dir="${build.reports.unittest.dir}"/>
+        <mkdir dir="${build.reports.coverage.dir}"/>
+        <mkdir dir="${build.javadoc.dir}"/>
+        <mkdir dir="${dist.dir}"/>
     </target>
 
     <target name="resolve" depends="init">
-        <ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact]-[revision].[ext]" />
-
-        <path id="classpath-test">
-            <fileset dir="${ivy.lib.dir}/test" />
-            <pathelement location="${build}/classes" />
-            <pathelement location="${build}/testclasses" />
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision](-[classifier]).[ext]" sync="true"/>
+        <ivy:report todir="${build.reports.dependency.dir}"/>
+    </target>
+    
+    <target name="create-paths" depends="resolve">
+        <path id="classpath-build">
+            <fileset dir="${lib.dir}/build"/>
         </path>
+        
+        <path id="classpath-compile-tests">
+            <fileset dir="${lib.dir}/test"/>
+            <pathelement location="${build.classes.dir}"/>
+        </path>
+        
+        <path id="classpath-run-tests">
+            <fileset dir="${lib.dir}/test"/>
+            <fileset dir="${lib.dir}/build"/>
+            <pathelement location="${build.instrumentedclasses.dir}"/>
+            <pathelement location="${build.classes.dir}"/>
+            <pathelement location="${build.testclasses.dir}"/>
+            <pathelement location="${build.resources.dir}"/>
+        </path>
+    </target>
+    
+    <target name="init-third-party-tasks" depends="resolve">
+        <taskdef resource="emma_ant.properties" classpathref="classpath-build" uri="antlib:net.sf.emma"/>
     </target>
 
     <target name="compile" depends="resolve">
-        <javac srcdir="${src}" destdir="${build}/classes/" source="1.6" fork="false" failonerror="true" includeantruntime="false" />
-        <copy todir="${build}/classes/META-INF/">
-            <fileset dir="${src}/META-INF/" defaultexcludes="true" />
+        <javac srcdir="${src.main.java.dir}" destdir="${build.classes.dir}" source="1.6" fork="true" failonerror="true" includeantruntime="false" debug="true"/>
+    </target>
+    
+    <target name="stage-resources">
+        <copy todir="${build.resources.dir}">
+            <fileset dir="${src.main.resources.dir}" defaultexcludes="true" />
         </copy>
     </target>
 
-    <target name="compile-tests" depends="compile">
-        <javac srcdir="${test}" destdir="${build}/testclasses/" source="1.6" fork="false" failonerror="true" includeantruntime="false">
-            <classpath refid="classpath-test" />
+    <target name="compile-tests" depends="compile, create-paths, stage-resources">
+        <javac srcdir="${src.test.java.dir}" destdir="${build.testclasses.dir}" source="1.6" fork="true" failonerror="true" includeantruntime="false" debug="true">
+            <classpath refid="classpath-compile-tests"/>
         </javac>
     </target>
+    
+    <target name="instrument-classes" depends="init-third-party-tasks, compile">
+        <emma:emma enabled="true">
+            <instr instrpath="${build.classes.dir}" destdir="${build.instrumentedclasses.dir}" mode="copy" metadatafile="${build.reports.coverage.dir}/metadata.emma" merge="true"/>
+        </emma:emma>
+    </target>
 
-    <target name="test" depends="compile-tests">
-        <junit haltonerror="true" printsummary="true" outputtoformatters="false">
-            <classpath refid="classpath-test" />
-            <batchtest fork="true">
-                <fileset dir="${test}">
-                    <include name="**/*Test.java" />
+    <target name="test" depends="compile-tests, instrument-classes">
+        <junit haltonerror="false" haltonfailure="false" printsummary="true" errorproperty="test.failed" failureproperty="test.failed">
+            <classpath refid="classpath-run-tests"/>
+            <formatter type="xml"/>
+            <batchtest fork="true" todir="${build.reports.unittest.dir}">
+                <fileset dir="${build.testclasses.dir}">
+                    <include name="**/*Test.class"/>
                 </fileset>
             </batchtest>
+            <sysproperty key="emma.coverage.out.file" value="${build.reports.coverage.dir}/coverage.emma"/>
+            <sysproperty key="emma.coverage.out.merge" value="true"/>
         </junit>
+        <junitreport todir="${build.reports.unittest.dir}">
+            <fileset dir="${build.reports.unittest.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${build.reports.unittest.dir}"/>
+        </junitreport>
+        <emma:emma enabled="true">
+            <report sourcepath="${src.main.java.dir}">
+                <fileset dir="${build.reports.coverage.dir}">
+                    <include name="*.emma"/>
+                </fileset>
+                <html outfile="${build.reports.coverage.dir}/coverage.html"/>
+            </report>
+        </emma:emma>
+        <fail if="test.failed">One or more unit tests failed/errored. Check ${build.reports.unittest.dir} for details.</fail>
     </target>
 
     <target name="javadoc">
-        <javadoc destdir="${build}/javadoc" sourcepath="${src}" failonerror="true" windowtitle="CamClient ${project.version} API Documentation">
+        <javadoc destdir="${build.javadoc.dir}" sourcepath="${src.main.java.dir}" failonerror="true" windowtitle="CamClient ${project.version} API Documentation">
             <doctitle>CamClient ${project.version} API Documentation</doctitle>
             <link href="http://download.oracle.com/javase/6/docs/api/" />
         </javadoc>
@@ -63,70 +108,75 @@
 
     <target name="jar" depends="test">
         <tstamp>
-            <format property="build-date" pattern="yyyyMMdd" />
+            <format property="build-date" pattern="yyyyMMdd"/>
         </tstamp>
-        <manifest file="${build}/classes/META-INF/MANIFEST.MF">
-            <attribute name="Specification-Title" value="${project.name}" />
-            <attribute name="Specification-Version" value="${project.version}" />
-            <attribute name="Specification-Vendor" value="${project.vendor}" />
-            <attribute name="Implementation-Title" value="${project.name}" />
-            <attribute name="Implementation-Version" value="${project.version}" />
-            <attribute name="Implementation-Vendor" value="${project.vendor}" />
-            <attribute name="Build-Date" value="${build-date}" />
-            <attribute name="Sealed" value="false" />
+        <manifest file="${build.resources.dir}/META-INF/MANIFEST.MF">
+            <attribute name="Specification-Title" value="${project.name}"/>
+            <attribute name="Specification-Version" value="${project.version}"/>
+            <attribute name="Specification-Vendor" value="${project.vendor}"/>
+            <attribute name="Implementation-Title" value="${project.name}"/>
+            <attribute name="Implementation-Version" value="${project.version}"/>
+            <attribute name="Implementation-Vendor" value="${project.vendor}"/>
+            <attribute name="Build-Date" value="${build-date}"/>
+            <attribute name="Sealed" value="false"/>
         </manifest>
-        <jar destfile="${dist}/${project.filename}.jar" basedir="${build}/classes" manifest="${build}/classes/META-INF/MANIFEST.MF" />
+        <jar destfile="${dist.dir}/${project.filename}.jar" manifest="${build.resources.dir}/META-INF/MANIFEST.MF">
+            <fileset dir="${build.classes.dir}"/>
+            <fileset dir="${build.resources.dir}"/>
+        </jar>
     </target>
 
     <target name="jar-javadoc" depends="init,javadoc">
-        <jar destfile="${dist}/${project.filename}-javadoc.jar" basedir="${build}/javadoc" />
+        <jar destfile="${dist.dir}/${project.filename}-javadoc.jar" basedir="${build.javadoc.dir}"/>
     </target>
 
     <target name="jar-sources" depends="init">
-        <jar destfile="${dist}/${project.filename}-sources.jar" basedir="${src}" />
+        <jar destfile="${dist.dir}/${project.filename}-sources.jar">
+            <fileset dir="${src.main.java.dir}"/>
+            <fileset dir="${src.main.resources.dir}"/>
+        </jar>
     </target>
 
     <target name="archive-bin" depends="jar,jar-javadoc,jar-sources">
-        <fileset id="bin-fileset" dir="${dist}">
-            <include name="${project.filename}.jar" />
-            <include name="${project.filename}-javadoc.jar" />
-            <include name="${project.filename}-sources.jar" />
+        <fileset id="bin-fileset" dir="${dist.dir}">
+            <include name="${project.filename}.jar"/>
+            <include name="${project.filename}-javadoc.jar"/>
+            <include name="${project.filename}-sources.jar"/>
         </fileset>
-        <zipfileset id="bin-javadoc-fileset" dir="${build}/javadoc" prefix="apidocs" />
-        <zip destfile="${dist}/${project.filename}-bin.zip">
+        <zipfileset id="bin-javadoc-fileset" dir="${build.javadoc.dir}/" prefix="apidocs"/>
+        <zip destfile="${dist.dir}/${project.filename}-bin.zip">
             <fileset refid="bin-fileset" />
             <zipfileset refid="bin-javadoc-fileset" />
         </zip>
-        <tar destfile="${dist}/${project.filename}-bin.tar">
+        <tar destfile="${dist.dir}/${project.filename}-bin.tar">
             <fileset refid="bin-fileset" />
             <zipfileset refid="bin-javadoc-fileset" />
         </tar>
-        <gzip src="${dist}/${project.filename}-bin.tar" destfile="${dist}/${project.filename}-bin.tar.gz" />
-        <delete file="${dist}/${project.filename}-bin.tar" />
+        <gzip src="${dist.dir}/${project.filename}-bin.tar" destfile="${dist.dir}/${project.filename}-bin.tar.gz"/>
+        <delete file="${dist.dir}/${project.filename}-bin.tar"/>
     </target>
 
     <target name="archive-project" depends="init">
         <fileset id="project-fileset" dir="." defaultexcludes="true">
-            <exclude name="**/.git/" />
-            <exclude name="**/.gitignore" />
-            <exclude name="**/*.project" />
-            <exclude name="**/*.classpath" />
-            <exclude name="**/.settings/" />
-            <exclude name="**/lib/" />
-            <exclude name="**/bin/" />
-            <exclude name="**/build/" />
-            <exclude name="**/dist/" />
+            <exclude name="**/.git/"/>
+            <exclude name="**/.gitignore"/>
+            <exclude name="**/*.project"/>
+            <exclude name="**/*.classpath"/>
+            <exclude name="**/.settings/"/>
+            <exclude name="**/lib/"/>
+            <exclude name="**/bin/"/>
+            <exclude name="**/build/"/>
+            <exclude name="**/dist/"/>
         </fileset>
-        <zip destfile="${dist}/${project.filename}-src.zip">
-            <fileset refid="project-fileset" />
+        <zip destfile="${dist.dir}/${project.filename}-src.zip">
+            <fileset refid="project-fileset"/>
         </zip>
-        <tar destfile="${dist}/${project.filename}-src.tar">
+        <tar destfile="${dist.dir}/${project.filename}-src.tar">
             <fileset refid="project-fileset" />
         </tar>
-        <gzip src="${dist}/${project.filename}-src.tar" destfile="${dist}/${project.filename}-src.tar.gz" />
-        <delete file="${dist}/${project.filename}-src.tar" />
+        <gzip src="${dist.dir}/${project.filename}-src.tar" destfile="${dist.dir}/${project.filename}-src.tar.gz"/>
+        <delete file="${dist.dir}/${project.filename}-src.tar" />
     </target>
 
-    <target name="main" depends="archive-bin,archive-project" description="Compiles all files." />
-
+    <target name="main" depends="archive-bin,archive-project" description="Compiles all files."/>
 </project>
