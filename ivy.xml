@@ -9,6 +9,5 @@
         <dependency org="junit" name="junit" rev="4.8.2" conf="test->default"/>
         <dependency org="emma" name="emma" rev="2.1.5320" conf="build->default"/>
         <dependency org="emma" name="emma_ant" rev="2.1.5320" conf="build->default"/>
-        <dependency org="com.google.code.findbugs" name="findbugs-ant" rev="1.3.9" conf="build->default"/>
     </dependencies>
 </ivy-module>
