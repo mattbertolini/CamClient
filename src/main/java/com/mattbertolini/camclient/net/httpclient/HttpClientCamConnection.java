@@ -34,4 +34,8 @@ public class HttpClientCamConnection implements CamConnection {
         }
         return null;
     }
+
+    public void setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 }
