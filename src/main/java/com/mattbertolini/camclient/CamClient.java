@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.mattbertolini.camclient.net.CamConnection;
+import com.mattbertolini.camclient.net.CamConnectionImpl;
 import com.mattbertolini.camclient.net.CamConnectionException;
 import com.mattbertolini.camclient.net.CamConnectionFactory;
 import com.mattbertolini.camclient.request.CamRequest;
@@ -19,9 +19,9 @@ public class CamClient {
     private static final String FOUND_KEY = "found";
     private static final String VERSION_KEY = "version";
 
-    private CamConnection conn;
+    private CamConnectionImpl conn;
 
-    public CamClient(CamConnection conn) {
+    public CamClient(CamConnectionImpl conn) {
         this.conn = conn;
     }
 

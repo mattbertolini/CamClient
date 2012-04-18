@@ -15,7 +15,7 @@ import com.mattbertolini.camclient.request.RequestParameter;
 import com.mattbertolini.camclient.response.CamResponse;
 import com.mattbertolini.camclient.response.ResponseBuilder;
 
-public class CamConnectionTest {
+public class CamConnectionImplTest {
     private RequestBuilder reqb;
     private ResponseBuilder respb;
     private String userAgent;
@@ -38,7 +38,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = new CamRequest(Operation.ADD_CLEAN_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, "01:23:45:67:89:AB");
         CamResponse resp = cc.submitRequest(req);
@@ -52,7 +52,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         String expected = "TestUserAgentString";
         cc.setUserAgent(expected);
         String actual = cc.getUserAgent();
@@ -65,7 +65,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         int expected = 30000;
         cc.setTimeout(expected);
         int actual = cc.getTimeout();
@@ -78,8 +78,8 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
-        String expected = "CamConnection: https://example.com/";
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        String expected = "CamConnectionImpl: https://example.com/";
         String actual = cc.toString();
         Assert.assertEquals(expected, actual);
     }
@@ -89,7 +89,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(null, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(null, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = null;
         cc.submitRequest(req);
     }
@@ -100,7 +100,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, null, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, null, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = null;
         cc.submitRequest(req);
     }
@@ -111,7 +111,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, null, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, null, this.userAgent, url, null, user, pw);
         CamRequest req = null;
         cc.submitRequest(req);
     }
@@ -121,7 +121,7 @@ public class CamConnectionTest {
         MockHttpConnectionService mhcs = new MockHttpConnectionService();
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, null, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, null, null, user, pw);
         CamRequest req = null;
         cc.submitRequest(req);
     }
@@ -132,7 +132,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = null;
         cc.submitRequest(req);
     }
@@ -143,7 +143,7 @@ public class CamConnectionTest {
         URL url = new URL("http://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = new CamRequest(Operation.GET_VERSION);
         cc.submitRequest(req);
     }
@@ -155,7 +155,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = new CamRequest(Operation.GET_VERSION);
         cc.submitRequest(req);
     }
@@ -167,7 +167,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = new CamRequest(Operation.GET_VERSION);
         cc.submitRequest(req);
     }
@@ -178,7 +178,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         cc.setUserAgent(null);
     }
 
@@ -188,7 +188,7 @@ public class CamConnectionTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         cc.setTimeout(-500);
     }
 }

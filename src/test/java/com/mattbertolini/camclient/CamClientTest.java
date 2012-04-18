@@ -4,12 +4,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import com.mattbertolini.camclient.net.CamConnectionImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mattbertolini.camclient.net.CamConnection;
 import com.mattbertolini.camclient.net.MockHttpConnectionService;
 import com.mattbertolini.camclient.net.TestParameter;
 import com.mattbertolini.camclient.net.UserAgentBuilder;
@@ -44,7 +44,7 @@ public class CamClientTest {
     public void testGetLocalUserList() throws CamException {
         this.hcs.resetTestParameters();
         this.hcs.addTestParameter(TestParameter.COUNT, "5");
-        CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
+        CamConnectionImpl conn = new CamConnectionImpl(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
         int expectedCount = 5;
         List<CamLocalUser> actualList = client.getLocalUserList();
@@ -56,7 +56,7 @@ public class CamClientTest {
     public void testGetMacAddressList() throws CamException {
         this.hcs.resetTestParameters();
         this.hcs.addTestParameter(TestParameter.COUNT, "5");
-        CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
+        CamConnectionImpl conn = new CamConnectionImpl(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
         int expectedCount = 5;
         List<CamDevice> actualList = client.getMacAddressList();
@@ -68,7 +68,7 @@ public class CamClientTest {
     public void testGetMacAddressListException() throws CamException {
         this.hcs.resetTestParameters();
         this.hcs.addTestParameter(TestParameter.RETURN_ERROR, Boolean.toString(true));
-        CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
+        CamConnectionImpl conn = new CamConnectionImpl(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
         client.getMacAddressList();
     }
@@ -77,7 +77,7 @@ public class CamClientTest {
     public void testGetMacAddressListConnectionException() throws CamException {
         this.hcs.resetTestParameters();
         this.hcs.addTestParameter(TestParameter.THROW_IO_EXCEPTION_ON_CONNECT, Boolean.toString(true));
-        CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
+        CamConnectionImpl conn = new CamConnectionImpl(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
         client.getMacAddressList();
     }
@@ -85,7 +85,7 @@ public class CamClientTest {
     @Test
     public void testGetCamVersion() throws CamException {
         this.hcs.resetTestParameters();
-        CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
+        CamConnectionImpl conn = new CamConnectionImpl(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
         String expected = "4.7(3)";
         String actual = client.getCamVersion();
@@ -96,7 +96,7 @@ public class CamClientTest {
     public void testGetCamVersionException() throws CamException {
         this.hcs.resetTestParameters();
         this.hcs.addTestParameter(TestParameter.RETURN_ERROR, Boolean.toString(true));
-        CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
+        CamConnectionImpl conn = new CamConnectionImpl(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
         client.getCamVersion();
     }
@@ -105,7 +105,7 @@ public class CamClientTest {
     public void testGetCamVersionConnectionException() throws CamException {
         this.hcs.resetTestParameters();
         this.hcs.addTestParameter(TestParameter.THROW_IO_EXCEPTION_ON_CONNECT, Boolean.toString(true));
-        CamConnection conn = new CamConnection(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
+        CamConnectionImpl conn = new CamConnectionImpl(this.hcs, this.reqBldr, this.respBldr, this.ua, this.u, null, this.name, this.pass);
         CamClient client = new CamClient(conn);
         client.getCamVersion();
     }

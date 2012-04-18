@@ -2,11 +2,15 @@
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
     <info organisation="com.mattbertolini" module="camclient"/>
     <configurations>
+        <conf name="httpclient"/>
         <conf name="test"/>
         <conf name="build"/>
     </configurations>
     <dependencies>
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.1.3" conf="httpclient->default"/>
+        <!-- Test Dependencies -->
         <dependency org="junit" name="junit" rev="4.8.2" conf="test->default"/>
+        <!-- Build Dependencies -->
         <dependency org="emma" name="emma" rev="2.1.5320" conf="build->default"/>
         <dependency org="emma" name="emma_ant" rev="2.1.5320" conf="build->default"/>
     </dependencies>

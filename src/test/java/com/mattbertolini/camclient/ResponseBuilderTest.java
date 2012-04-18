@@ -4,12 +4,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 
+import com.mattbertolini.camclient.net.CamConnectionImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mattbertolini.camclient.net.CamConnection;
 import com.mattbertolini.camclient.net.CamConnectionException;
 import com.mattbertolini.camclient.net.MockHttpConnectionService;
 import com.mattbertolini.camclient.net.TestParameter;
@@ -43,7 +43,7 @@ public class ResponseBuilderTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = new CamRequest(Operation.ADD_CLEAN_MAC_ADDRESS);
         req.addParameter(RequestParameter.MAC_ADDRESS, "01:23:45:67:89:AB");
         CamResponse resp = cc.submitRequest(req);
@@ -58,7 +58,7 @@ public class ResponseBuilderTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = new CamRequest(Operation.GET_MAC_ADDRESS_LIST);
         CamResponse resp = cc.submitRequest(req);
         Assert.assertFalse(resp.isError());
@@ -72,7 +72,7 @@ public class ResponseBuilderTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = new CamRequest(Operation.GET_MAC_ADDRESS_LIST);
         CamResponse resp = cc.submitRequest(req);
         Assert.assertFalse(resp.isError());
@@ -86,7 +86,7 @@ public class ResponseBuilderTest {
         URL url = new URL("https://example.com/");
         String user = "testuser";
         String pw = "testpass";
-        CamConnection cc = new CamConnection(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
+        CamConnectionImpl cc = new CamConnectionImpl(mhcs, this.reqb, this.respb, this.userAgent, url, null, user, pw);
         CamRequest req = new CamRequest(Operation.GET_MAC_ADDRESS_LIST);
         CamResponse resp = cc.submitRequest(req);
         Assert.assertTrue(resp.isError());

@@ -8,21 +8,21 @@ import com.mattbertolini.camclient.request.RequestBuilder;
 import com.mattbertolini.camclient.response.ResponseBuilder;
 
 public class CamConnectionFactory {
-    public static CamConnection getConnection(String urlString, String username, String password) throws MalformedURLException {
+    public static CamConnectionImpl getConnection(String urlString, String username, String password) throws MalformedURLException {
         return getConnection(urlString, null, username, password);
     }
 
-    public static CamConnection getConnection(String urlString, Proxy proxy, String username, String password) throws MalformedURLException {
+    public static CamConnectionImpl getConnection(String urlString, Proxy proxy, String username, String password) throws MalformedURLException {
         URL url = new URL(urlString);
         return getConnection(url, proxy, username, password);
     }
 
-    public static CamConnection getConnection(URL url, String username, String password) {
+    public static CamConnectionImpl getConnection(URL url, String username, String password) {
         return getConnection(url, null, username, password);
     }
 
-    public static CamConnection getConnection(URL url, Proxy proxy, String username, String password) {
-        return new CamConnection(injectHttpConnectionService(), 
+    public static CamConnectionImpl getConnection(URL url, Proxy proxy, String username, String password) {
+        return new CamConnectionImpl(injectHttpConnectionService(),
                 injectRequestBuilder(), injectResponseBuilder(), 
                 injectUserAgent(injectUserAgentBuilder()), url, proxy, username, password);
     }
