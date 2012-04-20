@@ -1,7 +1,6 @@
 package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.net.Proxy;
-import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.Map;
  * @author Matt Bertolini
  */
 public class HttpRequestBuilder {
-    private HttpPayload content;
+    private HttpPayload payload;
     private RequestMethod method;
     private Map<String, List<String>> headers;
     private Url url;
@@ -23,7 +22,7 @@ public class HttpRequestBuilder {
 
     public HttpRequestBuilder(HttpRequest request) {
         //
-        this.content = request.getPayload();
+        this.payload = request.getPayload();
         this.method = request.getMethod();
         this.headers = request.getHeaders();
         this.url = request.getUrl();
@@ -46,7 +45,7 @@ public class HttpRequestBuilder {
     }
 
     public HttpRequestBuilder setPayload(HttpPayload content) {
-        this.content = content;
+        this.payload = content;
         return this;
     }
 
@@ -61,6 +60,6 @@ public class HttpRequestBuilder {
     }
 
     public HttpRequest build() {
-        return new HttpRequestImpl(this.url, this.method, this.headers, this.content, this.proxy);
+        return new HttpRequestImpl(this.url, this.method, this.headers, this.payload, this.proxy);
     }
 }
