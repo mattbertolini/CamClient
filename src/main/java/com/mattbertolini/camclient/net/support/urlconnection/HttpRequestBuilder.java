@@ -1,4 +1,4 @@
-package com.mattbertolini.camclient.net.urlconnection;
+package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.net.Proxy;
 import java.net.URL;
@@ -14,11 +14,20 @@ public class HttpRequestBuilder {
     private HttpPayload content;
     private RequestMethod method;
     private Map<String, List<String>> headers;
-    private URL url;
+    private Url url;
     private Proxy proxy;
 
     public HttpRequestBuilder() {
         this.headers = new LinkedHashMap<String, List<String>>();
+    }
+
+    public HttpRequestBuilder(HttpRequest request) {
+        //
+        this.content = request.getPayload();
+        this.method = request.getMethod();
+        this.headers = request.getHeaders();
+        this.url = request.getUrl();
+        this.proxy = request.getProxy();
     }
 
     public HttpRequestBuilder setMethod(RequestMethod method) {
@@ -36,12 +45,12 @@ public class HttpRequestBuilder {
         return this;
     }
 
-    public HttpRequestBuilder setContent(HttpPayload content) {
+    public HttpRequestBuilder setPayload(HttpPayload content) {
         this.content = content;
         return this;
     }
 
-    public HttpRequestBuilder setUrl(URL url) {
+    public HttpRequestBuilder setUrl(Url url) {
         this.url = url;
         return this;
     }

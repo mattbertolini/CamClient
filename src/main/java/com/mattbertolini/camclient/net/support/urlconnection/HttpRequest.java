@@ -1,4 +1,4 @@
-package com.mattbertolini.camclient.net.urlconnection;
+package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.net.Proxy;
 import java.net.URL;
@@ -10,9 +10,10 @@ import java.util.Map;
  */
 public interface HttpRequest {
     HttpPayload getPayload();
+    boolean containsHeader(String name);
     String getHeader(String name);
     Map<String, List<String>> getHeaders();
     RequestMethod getMethod();
-    URL getUrl();
+    Url getUrl();
     Proxy getProxy();
 }

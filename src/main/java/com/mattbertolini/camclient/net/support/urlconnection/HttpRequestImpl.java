@@ -1,7 +1,8 @@
-package com.mattbertolini.camclient.net.urlconnection;
+package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.net.Proxy;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +13,13 @@ public final class HttpRequestImpl implements HttpRequest {
     private final HttpPayload payload;
     private final RequestMethod method;
     private final Map<String, List<String>> headers;
-    private final URL url;
+    private final Url url;
     private final Proxy proxy;
 
-    public HttpRequestImpl(URL url, RequestMethod method, Map<String, List<String>> headers, HttpPayload payload, Proxy proxy) {
+    public HttpRequestImpl(Url url, RequestMethod method, Map<String, List<String>> headers, HttpPayload payload, Proxy proxy) {
         this.url = url;
         this.method = method;
-        this.headers = headers;
+        this.headers = new HashMap<String, List<String>>(headers);
         this.payload = payload;
         this.proxy = proxy;
     }
@@ -29,13 +30,18 @@ public final class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
+    public boolean containsHeader(String name) {
+        return this.headers.containsKey(name);
+    }
+
+    @Override
     public String getHeader(String name) {
         return null;
     }
 
     @Override
     public Map<String, List<String>> getHeaders() {
-        return this.headers;
+        return new HashMap<String, List<String>>(this.headers);
     }
 
     @Override
@@ -44,7 +50,7 @@ public final class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
-    public URL getUrl() {
+    public Url getUrl() {
         return this.url;
     }
 

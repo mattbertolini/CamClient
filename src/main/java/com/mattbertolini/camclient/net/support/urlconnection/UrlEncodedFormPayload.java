@@ -1,4 +1,4 @@
-package com.mattbertolini.camclient.net.urlconnection;
+package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -20,6 +21,10 @@ public class UrlEncodedFormPayload implements HttpPayload {
 
     private Map<String, String> parameters;
 
+    public UrlEncodedFormPayload() {
+        this.parameters = new LinkedHashMap<String, String>();
+    }
+
     public void addParameter(String name, String value) {
         this.parameters.put(name, value);
     }
@@ -30,7 +35,12 @@ public class UrlEncodedFormPayload implements HttpPayload {
     }
 
     @Override
-    public InputStream getPayload() {
+    public String getCharacterEncoding() {
+        return UTF_8;
+    }
+
+    @Override
+    public InputStream getInputStream() {
         String s = this.buildPayloadString();
         try {
             return new ByteArrayInputStream(s.getBytes(UTF_8));
@@ -44,6 +54,7 @@ public class UrlEncodedFormPayload implements HttpPayload {
         String s = this.buildPayloadString();
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         writer.write(s);
+        writer.flush();
     }
 
     private String buildPayloadString() {

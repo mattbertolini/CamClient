@@ -1,6 +1,5 @@
-package com.mattbertolini.camclient.net.urlconnection;
+package com.mattbertolini.camclient.net.support.urlconnection;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 

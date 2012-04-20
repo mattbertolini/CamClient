@@ -1,5 +1,6 @@
 package com.mattbertolini.camclient.net;
 
+import com.mattbertolini.camclient.CamCredentials;
 import com.mattbertolini.camclient.request.CamRequest;
 
 import java.net.URL;
@@ -9,5 +10,5 @@ import java.net.URL;
  * @author Matt Bertolini
  */
 public interface CamRequestAdapter<T> {
-    T buildRequest(URL url, CamRequest camRequest);
+    T buildRequest(URL url, CamCredentials credentials, CamRequest camRequest);
 }

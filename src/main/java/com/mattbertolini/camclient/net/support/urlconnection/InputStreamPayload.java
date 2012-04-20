@@ -1,4 +1,4 @@
-package com.mattbertolini.camclient.net.urlconnection;
+package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +11,12 @@ import java.util.Scanner;
 public class InputStreamPayload implements HttpPayload {
     private InputStream payload;
     private String contentType;
+    private String characterEncoding;
 
-    public InputStreamPayload(InputStream payload, String contentType) {
+    public InputStreamPayload(InputStream payload, String contentType, String characterEncoding) {
         this.payload = payload;
         this.contentType = contentType;
+        this.characterEncoding = characterEncoding;
     }
 
     @Override
@@ -23,13 +25,18 @@ public class InputStreamPayload implements HttpPayload {
     }
 
     @Override
-    public InputStream getPayload() {
+    public String getCharacterEncoding() {
+        return this.characterEncoding;
+    }
+
+    @Override
+    public InputStream getInputStream() {
         return this.payload;
     }
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
-        Scanner scanner = new Scanner(this.payload);
+        Scanner scanner = new Scanner(this.payload, this.characterEncoding);
         while(scanner.hasNextByte()) {
             outputStream.write(scanner.nextByte());
         }

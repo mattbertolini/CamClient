@@ -1,4 +1,4 @@
-package com.mattbertolini.camclient.net.urlconnection;
+package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +9,7 @@ import java.io.OutputStream;
  */
 public interface HttpPayload {
     String getContentType();
-    InputStream getPayload();
+    String getCharacterEncoding();
+    InputStream getInputStream();
     void writeTo(OutputStream outputStream) throws IOException;
 }
