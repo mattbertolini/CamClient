@@ -32,6 +32,7 @@ package com.mattbertolini.camclient;
 
 import com.mattbertolini.camclient.net.CamConnection;
 import com.mattbertolini.camclient.request.CamRequest;
+import com.mattbertolini.camclient.request.CamRequestImpl;
 import com.mattbertolini.camclient.request.Operation;
 import com.mattbertolini.camclient.request.RequestParameter;
 import com.mattbertolini.camclient.response.CamResponse;
@@ -60,7 +61,7 @@ public class CamClientImpl implements CamClient {
         if(macAddress == null) {
             throw new IllegalArgumentException("MAC address cannot be null.");
         }
-        CamRequest request = new CamRequest(Operation.ADD_CLEAN_MAC_ADDRESS);
+        CamRequest request = new CamRequestImpl(Operation.ADD_CLEAN_MAC_ADDRESS);
         request.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
@@ -82,7 +83,7 @@ public class CamClientImpl implements CamClient {
         if(role == null) {
             throw new IllegalArgumentException("Role cannot be null.");
         }
-        CamRequest request = new CamRequest(Operation.ADD_LOCAL_USER);
+        CamRequest request = new CamRequestImpl(Operation.ADD_LOCAL_USER);
         request.addParameter(RequestParameter.USERNAME, username);
         request.addParameter(RequestParameter.USER_PASSWORD, password);
         request.addParameter(RequestParameter.USER_ROLE, role);
@@ -172,7 +173,7 @@ public class CamClientImpl implements CamClient {
 
     @Override
     public String getCamVersion() throws CamClientException {
-        CamRequest request = new CamRequest(Operation.GET_VERSION);
+        CamRequest request = new CamRequestImpl(Operation.GET_VERSION);
         CamResponse response = this.connection.submitRequest(request);
         if(response.isError()) {
             throw new CamClientException();
@@ -211,7 +212,7 @@ public class CamClientImpl implements CamClient {
         if(macAddress == null) {
             throw new IllegalArgumentException("MAC address cannot be null.");
         }
-        CamRequest request = new CamRequest(Operation.KICK_USER_BY_MAC_ADDRESS);
+        CamRequest request = new CamRequestImpl(Operation.KICK_USER_BY_MAC_ADDRESS);
         request.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
         CamResponse response = this.connection.submitRequest(request);
         if(response.isError()) {
