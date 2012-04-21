@@ -1,14 +1,23 @@
 package com.mattbertolini.camclient;
 
-public class CamDevice {
-    private String macAddress;
-    private String ipAddress;
-    private String casAddress;
-    private Type type;
-    private String role;
-    private String description;
+import java.net.InetAddress;
 
-    public CamDevice(String macAddress, String ipAddress, String casAddress, Type type, String role, String description) {
+/**
+ * @author Matt Bertolini
+ */
+public class CamDevice {
+    private final MacAddress macAddress;
+    private final InetAddress ipAddress;
+    private final InetAddress casAddress;
+    private final Type type;
+    private final String role;
+    private final String description;
+
+    public CamDevice(MacAddress macAddress, Type type, String description) {
+        this(macAddress, null, null, type, null, description);
+    }
+
+    public CamDevice(MacAddress macAddress, InetAddress ipAddress, InetAddress casAddress, Type type, String role, String description) {
         this.macAddress = macAddress;
         this.ipAddress = ipAddress;
         this.casAddress = casAddress;
@@ -17,15 +26,15 @@ public class CamDevice {
         this.description = description;
     }
 
-    public String getMacAddress() {
+    public MacAddress getMacAddress() {
         return this.macAddress;
     }
 
-    public String getIpAddress() {
+    public InetAddress getIpAddress() {
         return this.ipAddress;
     }
 
-    public String getCasAddress() {
+    public InetAddress getCasAddress() {
         return this.casAddress;
     }
 

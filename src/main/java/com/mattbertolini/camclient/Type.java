@@ -1,5 +1,11 @@
 package com.mattbertolini.camclient;
 
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author Matt Bertolini
+ */
 public enum Type {
     /**
      * Value sent to CAM: <code>allow</code>.
@@ -26,6 +32,14 @@ public enum Type {
      */
     USE_ROLE("userole");
 
+    private static final Map<String, Type> lookupMap = new HashMap<String, Type>(Type.values().length);
+
+    static {
+        for(Type type : Type.values()) {
+            lookupMap.put(type.getName(), type);
+        }
+    }
+
     private String name;
 
     private Type(String name) {
@@ -51,13 +65,9 @@ public enum Type {
      * valid match cannot be found.
      */
     public static Type fromName(final String name) {
-        Type retVal = null;
-        for(Type type : Type.values()) {
-            if(type.getName().equalsIgnoreCase(name)) {
-                retVal = type;
-                break;
-            }
+        if(name == null) {
+            return null;
         }
-        return retVal;
+        return lookupMap.get(name.toLowerCase());
     }
 }

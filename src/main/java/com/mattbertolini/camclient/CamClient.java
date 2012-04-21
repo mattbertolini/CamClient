@@ -100,8 +100,7 @@ public interface CamClient {
      * @param switchId The ID of the switch as inserted in the switches table.
      * @param port The port in the switch to bounce.
      * @throws CamClientException If an error occurs making the request to the server.
-     * @throws IllegalArgumentException If the switch ID is null.
-     * @throws IllegalArgumentException If the port number is less than zero.
+     * @throws IllegalArgumentException If the switch ID is null or the port number is less than zero.
      */
     void bouncePort(String switchId, int port) throws CamClientException;
 

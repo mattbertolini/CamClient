@@ -67,6 +67,39 @@ public class CamAsyncClientImpl extends CamClientImpl implements CamAsyncClient 
         });
     }
 
+    @Override
+    public Future<Void> addMacAddressAsync(final MacAddress macAddress, final InetAddress ipAddress, final Type type, final String role, final String description, final InetAddress ssip) {
+        return this.executorService.submit(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                addMacAddress(macAddress, ipAddress, type, role, description, ssip);
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public Future<Void> addSubnetAsync(final String subnet, final String mask) {
+        return this.executorService.submit(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                addSubnet(subnet, mask);
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public Future<Void> addSubnetAsync(final String subnet, final String mask, final Type type, final String role, final String description, final InetAddress ssip) {
+        return this.executorService.submit(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                addSubnet(subnet, mask, type, role, description, ssip);
+                return null;
+            }
+        });
+    }
+
     public void setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
     }

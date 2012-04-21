@@ -126,7 +126,12 @@ public class CamClientImpl implements CamClient {
 
     @Override
     public String getCamVersion() throws CamClientException {
-        return null;  //
+        CamRequest request = new CamRequest(Operation.GET_VERSION);
+        CamResponse response = this.connection.submitRequest(request);
+        if(response.isError()) {
+            throw new CamClientException();
+        }
+        return null;
     }
 
     @Override
