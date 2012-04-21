@@ -10,6 +10,7 @@ import com.mattbertolini.camclient.net.support.urlconnection.HttpConnection;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpRequest;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpResponse;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -48,10 +49,15 @@ public class HttpConnectionCamConnection implements CamConnection {
         if(this.responseAdapter == null) {
             throw new IllegalStateException("Response adapter is null.");
         }
-        HttpRequest httpRequest = this.requestAdapter.buildRequest(this.url, this.credentials, request);
-        //TODO: Add user agent
-        HttpResponse httpResponse = this.httpConnection.submitRequest(httpRequest);
-        CamResponse camResponse = this.responseAdapter.buildResponse(httpResponse);
+        CamResponse camResponse = null;
+        try {
+            HttpRequest httpRequest = this.requestAdapter.buildRequest(this.url, this.credentials, request);
+            //TODO: Add user agent
+            HttpResponse httpResponse = this.httpConnection.submitRequest(httpRequest);
+            camResponse = this.responseAdapter.buildResponse(httpResponse);
+        } catch (IOException e) {
+            //
+        }
         return camResponse;
     }
 

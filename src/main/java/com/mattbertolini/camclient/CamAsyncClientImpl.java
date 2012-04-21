@@ -1,5 +1,9 @@
 package com.mattbertolini.camclient;
 
+import com.mattbertolini.camclient.net.CamConnection;
+import com.mattbertolini.camclient.net.urlconnection.HttpConnectionCamConnection;
+
+import java.net.InetAddress;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -10,7 +14,12 @@ import java.util.concurrent.Future;
 public class CamAsyncClientImpl extends CamClientImpl implements CamAsyncClient {
     private ExecutorService executorService;
 
-    public CamAsyncClientImpl(ExecutorService executorService) {
+    public CamAsyncClientImpl() {
+        //
+    }
+
+    public CamAsyncClientImpl(CamConnection connection, ExecutorService executorService) {
+        super(connection);
         this.executorService = executorService;
     }
 
@@ -26,7 +35,7 @@ public class CamAsyncClientImpl extends CamClientImpl implements CamAsyncClient 
     }
 
     @Override
-    public Future<Void> addCleanMacAddressAsync(final String macAddress, final String ssip) {
+    public Future<Void> addCleanMacAddressAsync(final String macAddress, final InetAddress ssip) {
         return this.executorService.submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -56,5 +65,9 @@ public class CamAsyncClientImpl extends CamClientImpl implements CamAsyncClient 
                 return null;
             }
         });
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 }

@@ -21,7 +21,6 @@ public class HttpRequestBuilder {
     }
 
     public HttpRequestBuilder(HttpRequest request) {
-        //
         this.payload = request.getPayload();
         this.method = request.getMethod();
         this.headers = request.getHeaders();

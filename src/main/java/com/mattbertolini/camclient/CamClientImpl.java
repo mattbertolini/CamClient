@@ -3,31 +3,35 @@ package com.mattbertolini.camclient;
 import com.mattbertolini.camclient.net.CamConnection;
 import com.mattbertolini.camclient.response.CamResponse;
 
+import java.net.InetAddress;
 import java.util.List;
 
 public class CamClientImpl implements CamClient {
-    private CamConnection conn;
+    private CamConnection connection;
 
     public CamClientImpl() {
         //
     }
 
-    public CamClientImpl(CamConnection conn) {
-        this.conn = conn;
+    public CamClientImpl(CamConnection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public void addCleanMacAddress(String macAddress) throws CamClientException {
+    public void addCleanMacAddress(MacAddress macAddress) throws CamClientException {
         this.addCleanMacAddress(macAddress, null);
     }
 
     @Override
-    public void addCleanMacAddress(String macAddress, String ssip) throws CamClientException {
+    public void addCleanMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException {
         //
+        if(macAddress == null) {
+            throw new IllegalArgumentException("MAC address cannot be null.");
+        }
         if(ssip != null) {
             //
         }
-        CamResponse response = this.conn.submitRequest(null);
+        CamResponse response = this.connection.submitRequest(null);
         if(response.isError()) {
             throw new CamClientException("");
         }
@@ -44,7 +48,7 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void addMacAddress(String macAddress, String ipAddress, Type type, String role, String description, String ssip) throws CamClientException {
+    public void addMacAddress(String macAddress, InetAddress ipAddress, Type type, String role, String description, InetAddress ssip) throws CamClientException {
         //
         if(macAddress == null) {
             throw new IllegalArgumentException("MAC address cannot be null.");
@@ -55,7 +59,7 @@ public class CamClientImpl implements CamClient {
         }
         if(type != null) {
         }
-        CamResponse response = this.conn.submitRequest(null);
+        CamResponse response = this.connection.submitRequest(null);
         if(response.isError()) {
             // throw new CamClientException();
         }
@@ -67,7 +71,7 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void addSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamClientException {
+    public void addSubnet(String subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException {
         //
     }
 
@@ -97,7 +101,7 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public CamDevice checkMacAddress(String macAddress, String ssip) throws CamClientException {
+    public CamDevice checkMacAddress(String macAddress, InetAddress ssip) throws CamClientException {
         return null;  //
     }
 
@@ -157,7 +161,7 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void removeCleanMacAddress(String macAddress, String ssip) throws CamClientException {
+    public void removeCleanMacAddress(String macAddress, InetAddress ssip) throws CamClientException {
         //
     }
 
@@ -167,7 +171,7 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void removeMacAddress(String macAddress, String ssip) throws CamClientException {
+    public void removeMacAddress(String macAddress, InetAddress ssip) throws CamClientException {
         //
     }
 
@@ -177,12 +181,12 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void removeSubnet(String subnet, String mask, String ssip) throws CamClientException {
+    public void removeSubnet(String subnet, String mask, InetAddress ssip) throws CamClientException {
         //
     }
 
     @Override
-    public void renewUserSessionTime(String ipAddress) throws CamClientException {
+    public void renewUserSessionTime(InetAddress ipAddress) throws CamClientException {
         //
     }
 
@@ -197,7 +201,11 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void updateSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamClientException {
+    public void updateSubnet(String subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException {
         //
+    }
+
+    public void setCamConnection(CamConnection connection) {
+        this.connection = connection;
     }
 }

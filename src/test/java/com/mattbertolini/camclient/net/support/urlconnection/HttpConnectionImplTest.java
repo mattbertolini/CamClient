@@ -73,20 +73,20 @@ public class HttpConnectionImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testSubmitRequestNullArgument() {
+    public void testSubmitRequestNullArgument() throws IOException {
         HttpConnection connection = new HttpConnectionImpl();
         connection.submitRequest(null);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void testSubmitRequestNullUrl() {
+    public void testSubmitRequestNullUrl() throws IOException {
         HttpRequest request = new HttpRequestBuilder().build();
         HttpConnection connection = new HttpConnectionImpl();
         connection.submitRequest(request);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void testSubmitRequestNonHttpUrl() throws MalformedURLException {
+    public void testSubmitRequestNonHttpUrl() throws IOException {
         HttpRequest request = new HttpRequestBuilder().setUrl(new Url(new URL("ftp://localhost"))).build();
         HttpConnection connection = new HttpConnectionImpl();
         connection.submitRequest(request);

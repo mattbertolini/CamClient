@@ -1,5 +1,6 @@
 package com.mattbertolini.camclient;
 
+import java.net.InetAddress;
 import java.util.concurrent.Future;
 
 /**
@@ -7,7 +8,7 @@ import java.util.concurrent.Future;
  */
 public interface CamAsyncClient {
     Future<Void> addCleanMacAddressAsync(String macAddress);
-    Future<Void> addCleanMacAddressAsync(String macAddress, String ssip);
+    Future<Void> addCleanMacAddressAsync(String macAddress, InetAddress ssip);
     Future<Void> addLocalUserAsync(String username, String password, String role);
     Future<Void> addMacAddressAsync(String macAddress);
 }

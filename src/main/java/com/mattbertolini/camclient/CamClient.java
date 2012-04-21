@@ -1,17 +1,17 @@
 package com.mattbertolini.camclient;
 
+import java.net.InetAddress;
 import java.util.List;
 
 public interface CamClient {
     /**
      * Adds a MAC address to the Certified Devices list as an exempted device.
      * 
-     * @param macAddress The MAC address to add. Must be in the following 
-     * format: <code>01:23:45:67:89:AB</code>
+     * @param macAddress The MAC address to add.
      * @throws CamClientException If an error occurs making a request to the server.
      * @throws IllegalArgumentException If the MAC address is null.
      */
-    void addCleanMacAddress(String macAddress) throws CamClientException;
+    void addCleanMacAddress(MacAddress macAddress) throws CamClientException;
     
     /**
      * Adds a MAC address to the Certified Devices list as an exempted device.
@@ -23,7 +23,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the MAC address is null.
      */
-    void addCleanMacAddress(String macAddress, String ssip) throws CamClientException;
+    void addCleanMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException;
 
     /**
      * Adds a new local user account to the Clean Access Manager.
@@ -65,7 +65,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    void addMacAddress(String macAddress, String ipAddress, Type type, String role, String description, String ssip) throws CamClientException;
+    void addMacAddress(String macAddress, InetAddress ipAddress, Type type, String role, String description, InetAddress ssip) throws CamClientException;
     
     /**
      * Adds the given subnet to the Devices list.
@@ -94,7 +94,7 @@ public interface CamClient {
      * @throws IllegalArgumentException If the subnet address or subnet mask are 
      * null.
      */
-    void addSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamClientException;
+    void addSubnet(String subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException;
     
     /**
      * Bounces and out-of-band port in a switch given a switch ID and a port 
@@ -172,7 +172,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    CamDevice checkMacAddress(String macAddress, String ssip) throws CamClientException;
+    CamDevice checkMacAddress(String macAddress, InetAddress ssip) throws CamClientException;
 
     /**
      * Deletes all entries in the Certified Devices list.
@@ -290,7 +290,7 @@ public interface CamClient {
      * @throws CamClientException If an error occurs making the request to the server.
      * @throws IllegalArgumentException If the MAC address is null.
      */
-    void removeCleanMacAddress(String macAddress, String ssip) throws CamClientException;
+    void removeCleanMacAddress(String macAddress, InetAddress ssip) throws CamClientException;
     
     /**
      * Removes the given MAC address from the Device Filters list.
@@ -312,7 +312,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    void removeMacAddress(String macAddress, String ssip) throws CamClientException;
+    void removeMacAddress(String macAddress, InetAddress ssip) throws CamClientException;
 
     /**
      * Deletes all entries from the Device Filters list.
@@ -332,7 +332,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given subnet address or mask is null.
      */
-    void removeSubnet(String subnet, String mask, String ssip) throws CamClientException;
+    void removeSubnet(String subnet, String mask, InetAddress ssip) throws CamClientException;
     
     /**
      * Renews the session timeout of the user with the given IP address by one 
@@ -343,7 +343,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given IP address is null.
      */
-    void renewUserSessionTime(String ipAddress) throws CamClientException;
+    void renewUserSessionTime(InetAddress ipAddress) throws CamClientException;
     
     /**
      * Set the user agent string that will be sent to the CAM with every 
@@ -382,5 +382,5 @@ public interface CamClient {
      * @throws IllegalArgumentException If the given subnet address or mask are 
      * null.
      */
-    void updateSubnet(String subnet, String mask, Type type, String role, String description, String ssip) throws CamClientException;
+    void updateSubnet(String subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException;
 }
