@@ -7,8 +7,8 @@ import java.util.concurrent.Future;
  * @author Matt Bertolini
  */
 public interface CamAsyncClient {
-    Future<Void> addCleanMacAddressAsync(String macAddress);
-    Future<Void> addCleanMacAddressAsync(String macAddress, InetAddress ssip);
+    Future<Void> addCleanMacAddressAsync(MacAddress macAddress);
+    Future<Void> addCleanMacAddressAsync(MacAddress macAddress, InetAddress ssip);
     Future<Void> addLocalUserAsync(String username, String password, String role);
-    Future<Void> addMacAddressAsync(String macAddress);
+    Future<Void> addMacAddressAsync(MacAddress macAddress);
 }

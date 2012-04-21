@@ -24,7 +24,6 @@ public class CamClientImpl implements CamClient {
 
     @Override
     public void addCleanMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException {
-        //
         if(macAddress == null) {
             throw new IllegalArgumentException("MAC address cannot be null.");
         }
@@ -43,12 +42,12 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void addMacAddress(String macAddress) throws CamClientException {
+    public void addMacAddress(MacAddress macAddress) throws CamClientException {
         this.addMacAddress(macAddress, null, null, null, null, null);
     }
 
     @Override
-    public void addMacAddress(String macAddress, InetAddress ipAddress, Type type, String role, String description, InetAddress ssip) throws CamClientException {
+    public void addMacAddress(MacAddress macAddress, InetAddress ipAddress, Type type, String role, String description, InetAddress ssip) throws CamClientException {
         //
         if(macAddress == null) {
             throw new IllegalArgumentException("MAC address cannot be null.");
@@ -81,27 +80,27 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void bouncePortByMacAddress(String macAddress) throws CamClientException {
+    public void bouncePortByMacAddress(MacAddress macAddress) throws CamClientException {
         //
     }
 
     @Override
-    public void changeLoggedInUserRole(String ipAddress, String role) throws CamClientException {
+    public void changeLoggedInUserRole(InetAddress ipAddress, String role) throws CamClientException {
         //
     }
 
     @Override
-    public void changeUserRole(String ipAddress, String role) throws CamClientException {
+    public void changeUserRole(InetAddress ipAddress, String role) throws CamClientException {
         //
     }
 
     @Override
-    public CamDevice checkMacAddress(String macAddress) throws CamClientException {
+    public CamDevice checkMacAddress(MacAddress macAddress) throws CamClientException {
         return null;  //
     }
 
     @Override
-    public CamDevice checkMacAddress(String macAddress, InetAddress ssip) throws CamClientException {
+    public CamDevice checkMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException {
         return null;  //
     }
 
@@ -146,32 +145,32 @@ public class CamClientImpl implements CamClient {
     }
 
     @Override
-    public void kickUser(String ipAddress) throws CamClientException {
+    public void kickUser(InetAddress ipAddress) throws CamClientException {
         //
     }
 
     @Override
-    public void kickUserByMacAddress(String macAddress) throws CamClientException {
+    public void kickUserByMacAddress(MacAddress macAddress) throws CamClientException {
         //
     }
 
     @Override
-    public void removeCleanMacAddress(String macAddress) throws CamClientException {
+    public void removeCleanMacAddress(MacAddress macAddress) throws CamClientException {
         //
     }
 
     @Override
-    public void removeCleanMacAddress(String macAddress, InetAddress ssip) throws CamClientException {
+    public void removeCleanMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException {
         //
     }
 
     @Override
-    public void removeMacAddress(String macAddress) throws CamClientException {
+    public void removeMacAddress(MacAddress macAddress) throws CamClientException {
         //
     }
 
     @Override
-    public void removeMacAddress(String macAddress, InetAddress ssip) throws CamClientException {
+    public void removeMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException {
         //
     }
 

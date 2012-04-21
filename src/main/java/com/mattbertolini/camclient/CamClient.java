@@ -16,8 +16,7 @@ public interface CamClient {
     /**
      * Adds a MAC address to the Certified Devices list as an exempted device.
      * 
-     * @param macAddress The MAC address to add. Must be in the following 
-     * format: <code>01:23:45:67:89:AB</code>
+     * @param macAddress The MAC address to add.
      * @param ssip The Clean Access Server IP address.
      * @throws CamClientException If an error occurred making the request to the
      * server.
@@ -41,19 +40,17 @@ public interface CamClient {
     /**
      * Adds the given MAC address to the Device Filters list.
      * 
-     * @param macAddress The MAC address to add. Must be in the following 
-     * format: <code>01:23:45:67:89:AB</code>
+     * @param macAddress The MAC address to add.
      * @throws CamClientException If an error occurred making the request to the
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    void addMacAddress(String macAddress) throws CamClientException;
+    void addMacAddress(MacAddress macAddress) throws CamClientException;
     
     /**
      * Adds the given MAC address to the Device Filters list.
      * 
-     * @param macAddress The MAC address to add. Must be in the following 
-     * format: <code>01:23:45:67:89:AB</code>
+     * @param macAddress The MAC address to add.
      * @param ipAddress The IP address to use for the MAC address.
      * @param type The type of filter to associate with this MAC address. 
      * Supported values are DENY, ALLOW, USE_ROLE, CHECK, and IGNORE.
@@ -65,7 +62,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    void addMacAddress(String macAddress, InetAddress ipAddress, Type type, String role, String description, InetAddress ssip) throws CamClientException;
+    void addMacAddress(MacAddress macAddress, InetAddress ipAddress, Type type, String role, String description, InetAddress ssip) throws CamClientException;
     
     /**
      * Adds the given subnet to the Devices list.
@@ -117,7 +114,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    void bouncePortByMacAddress(String macAddress) throws CamClientException;
+    void bouncePortByMacAddress(MacAddress macAddress) throws CamClientException;
     
     /**
      * Changes the role of the logged in user with the given IP address.
@@ -128,7 +125,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given IP address or role are null.
      */
-    void changeLoggedInUserRole(String ipAddress, String role) throws CamClientException;
+    void changeLoggedInUserRole(InetAddress ipAddress, String role) throws CamClientException;
     
     /**
      * Changes the access role of the logged in user with the given IP address. 
@@ -141,30 +138,28 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given IP address or role are null.
      */
-    void changeUserRole(String ipAddress, String role) throws CamClientException;
+    void changeUserRole(InetAddress ipAddress, String role) throws CamClientException;
     
     /**
      * Checks the Device Filters list to see if the given MAC address exists. 
      * If the MAC address is found, collects device information from the 
      * filters list and places it in a CamDevice object.
      * 
-     * @param macAddress The MAC address to search for. Must match the display 
-     * format <code>01:23:45:67:89:AB</code>.
+     * @param macAddress The MAC address to search for.
      * @return If the MAC is found, the method returns a CamDevice object. If 
      * no device is found, null is returned. 
      * @throws CamClientException If an error occurred making the request to the
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    CamDevice checkMacAddress(String macAddress) throws CamClientException;
+    CamDevice checkMacAddress(MacAddress macAddress) throws CamClientException;
     
     /**
      * Checks the Device Filters list to see if the given MAC address exists. 
      * If the MAC address is found, collects device information from the 
      * filters list and places it in a CamDevice object.
      * 
-     * @param macAddress The MAC address to search for. Must match the display 
-     * format <code>01:23:45:67:89:AB</code>.
+     * @param macAddress The MAC address to search for.
      * @param ssip The Clean Access Server IP address.
      * @return If the MAC is found, the method returns a CamDevice object. If 
      * no device is found, null is returned. 
@@ -172,7 +167,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    CamDevice checkMacAddress(String macAddress, InetAddress ssip) throws CamClientException;
+    CamDevice checkMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException;
 
     /**
      * Deletes all entries in the Certified Devices list.
@@ -257,62 +252,57 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given IP address is null.
      */
-    void kickUser(String ipAddress) throws CamClientException;
+    void kickUser(InetAddress ipAddress) throws CamClientException;
     
     /**
      * Ends the active session of the user with the given MAC address and 
      * removes the user from the In-Band Online Users list.
      * 
-     * @param macAddress The MAC address of the out-of-band user to kick. Must 
-     * be in the following format: <code>01:23:45:67:89:AB</code>
+     * @param macAddress The MAC address of the out-of-band user to kick.
      * @throws CamClientException If an error occurred making the request to the
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    void kickUserByMacAddress(String macAddress) throws CamClientException;
+    void kickUserByMacAddress(MacAddress macAddress) throws CamClientException;
 
     /**
      * Removes the given MAC address from the Certified Devices list.
      * 
-     * @param macAddress The MAC address to remove. Must be in the following 
-     * format: <code>01:23:45:67:89:AB</code>.
+     * @param macAddress The MAC address to remove.
      * @throws CamClientException If an error occurs making the request to the server.
      * @throws IllegalArgumentException If the MAC address is null.
      */
-    void removeCleanMacAddress(String macAddress) throws CamClientException;
+    void removeCleanMacAddress(MacAddress macAddress) throws CamClientException;
     
     /**
      * Removes the given MAC address from the Certified Devices list.
      * 
-     * @param macAddress The MAC address to remove. Must be in the following 
-     * format: <code>01:23:45:67:89:AB</code>.
+     * @param macAddress The MAC address to remove.
      * @param ssip The Clean Access Server IP address. 
      * @throws CamClientException If an error occurs making the request to the server.
      * @throws IllegalArgumentException If the MAC address is null.
      */
-    void removeCleanMacAddress(String macAddress, InetAddress ssip) throws CamClientException;
+    void removeCleanMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException;
     
     /**
      * Removes the given MAC address from the Device Filters list.
      * 
-     * @param macAddress The MAC address to remove. Must be in the following 
-     * format: <code>01:23:45:67:89:AB</code>
+     * @param macAddress The MAC address to remove.
      * @throws CamClientException If an error occurred making the request to the
      * server.
      */
-    void removeMacAddress(String macAddress) throws CamClientException;
+    void removeMacAddress(MacAddress macAddress) throws CamClientException;
 
     /**
      * Removes the given MAC address from the Device Filters list.
      * 
-     * @param macAddress The MAC address to remove. Must be in the following 
-     * format: <code>01:23:45:67:89:AB</code>
+     * @param macAddress The MAC address to remove.
      * @param ssip The Clean Access Server IP address.
      * @throws CamClientException If an error occurred making the request to the
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    void removeMacAddress(String macAddress, InetAddress ssip) throws CamClientException;
+    void removeMacAddress(MacAddress macAddress, InetAddress ssip) throws CamClientException;
 
     /**
      * Deletes all entries from the Device Filters list.

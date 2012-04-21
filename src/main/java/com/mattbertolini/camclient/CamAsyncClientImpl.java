@@ -24,7 +24,7 @@ public class CamAsyncClientImpl extends CamClientImpl implements CamAsyncClient 
     }
 
     @Override
-    public Future<Void> addCleanMacAddressAsync(final String macAddress) {
+    public Future<Void> addCleanMacAddressAsync(final MacAddress macAddress) {
         return this.executorService.submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -35,7 +35,7 @@ public class CamAsyncClientImpl extends CamClientImpl implements CamAsyncClient 
     }
 
     @Override
-    public Future<Void> addCleanMacAddressAsync(final String macAddress, final InetAddress ssip) {
+    public Future<Void> addCleanMacAddressAsync(final MacAddress macAddress, final InetAddress ssip) {
         return this.executorService.submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -57,7 +57,7 @@ public class CamAsyncClientImpl extends CamClientImpl implements CamAsyncClient 
     }
 
     @Override
-    public Future<Void> addMacAddressAsync(final String macAddress) {
+    public Future<Void> addMacAddressAsync(final MacAddress macAddress) {
         return this.executorService.submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
