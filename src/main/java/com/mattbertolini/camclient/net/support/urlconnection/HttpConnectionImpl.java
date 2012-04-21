@@ -24,15 +24,14 @@ public class HttpConnectionImpl implements HttpConnection {
         }
         Url url = request.getUrl();
         if(url == null) {
-            throw new IllegalStateException("");
+            throw new IllegalStateException("URL cannot be null.");
         }
         String protocol = url.getProtocol();
         if(!HTTP.equalsIgnoreCase(protocol) && !HTTPS.equalsIgnoreCase(protocol)) {
-            //
-            throw new IllegalStateException("");
+            throw new IllegalStateException("Only HTTP and HTTPS protocols are supported.");
         }
         InputStream responseStream = null;
-        HttpResponse response = null;
+        HttpResponse response;
         try {
             Proxy proxy = request.getProxy();
             HttpURLConnection conn;
@@ -52,7 +51,7 @@ public class HttpConnectionImpl implements HttpConnection {
             }
 
             HttpPayload requestPayload = request.getPayload();
-            if(requestPayload != null) {
+            if(RequestMethod.POST == request.getMethod() && requestPayload != null) {
                 conn.setDoOutput(true);
                 // We override any content type that has already been set by the content type in the payload object.
                 String contentTypeStr = this.buildContentTypeHeader(requestPayload.getContentType(), requestPayload.getCharacterEncoding());
@@ -160,7 +159,7 @@ public class HttpConnectionImpl implements HttpConnection {
      */
     private String buildContentTypeHeader(String contentType, String characterEncoding) {
         if(characterEncoding != null) {
-            return contentType + "; " + characterEncoding;
+            return contentType + "; charset=" + characterEncoding;
         }
         return contentType;
     }
