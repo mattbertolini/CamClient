@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
- * Class representing an MAC-48/EUI-48 MAC address.
+ * Class representing a MAC-48/EUI-48 MAC address.
  *
  * @author Matt Bertolini
  */
@@ -123,5 +123,22 @@ public final class MacAddress {
             throw new IllegalArgumentException("Input string cannot be null.");
         }
         return address.matches(EUI_48_PATTERN);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MacAddress)) return false;
+
+        MacAddress that = (MacAddress) o;
+
+        if (!Arrays.equals(address, that.address)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(address);
     }
 }

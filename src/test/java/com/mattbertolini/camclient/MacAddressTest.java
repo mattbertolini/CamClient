@@ -1,5 +1,7 @@
 package com.mattbertolini.camclient;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -130,5 +132,10 @@ public class MacAddressTest {
     public void testToStringWithNoFormatting() {
         MacAddress address = MacAddress.valueOf("0123456789ab");
         Assert.assertEquals("0123456789AB", address.toString(MacAddress.Delimiter.NONE));
+    }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        EqualsVerifier.forClass(MacAddress.class).suppress(Warning.NULL_FIELDS).verify();
     }
 }

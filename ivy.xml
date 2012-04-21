@@ -11,6 +11,7 @@
         <!-- Test Dependencies -->
         <dependency org="junit" name="junit" rev="4.8.2" conf="test->default"/>
         <dependency org="org.mockito" name="mockito-core" rev="1.9.0" conf="test->default"/>
+        <dependency org="nl.jqno.equalsverifier" name="equalsverifier" rev="1.1.2" conf="test->default"/>
         <!-- Build Dependencies -->
         <dependency org="emma" name="emma" rev="2.1.5320" conf="build->default"/>
         <dependency org="emma" name="emma_ant" rev="2.1.5320" conf="build->default"/>
