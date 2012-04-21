@@ -40,7 +40,8 @@ public class HttpConnectionImpl implements HttpConnection {
             } else {
                 conn = url.openConnection();
             }
-            conn.setRequestMethod(request.getMethod().toString().toUpperCase(Locale.ROOT));
+            RequestMethod method = request.getMethod();
+            conn.setRequestMethod(method.toString().toUpperCase(Locale.ROOT));
 
             // Headers
             Map<String, List<String>> requestHeaders = request.getHeaders();
@@ -51,7 +52,7 @@ public class HttpConnectionImpl implements HttpConnection {
             }
 
             HttpPayload requestPayload = request.getPayload();
-            if(RequestMethod.POST == request.getMethod() && requestPayload != null) {
+            if((RequestMethod.POST == method || RequestMethod.PUT == method) && requestPayload != null) {
                 conn.setDoOutput(true);
                 // We override any content type that has already been set by the content type in the payload object.
                 String contentTypeStr = this.buildContentTypeHeader(requestPayload.getContentType(), requestPayload.getCharacterEncoding());
@@ -86,7 +87,7 @@ public class HttpConnectionImpl implements HttpConnection {
                 try {
                     responseStream.close();
                 } catch (IOException e1) {
-                    //
+                    // Do nothing
                 }
             }
             // Re-throw IOException after closing input stream.

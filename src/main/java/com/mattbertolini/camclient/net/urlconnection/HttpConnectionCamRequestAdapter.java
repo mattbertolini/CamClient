@@ -21,6 +21,16 @@ public class HttpConnectionCamRequestAdapter implements CamRequestAdapter<HttpRe
     @Override
     public HttpRequest buildRequest(URL url, CamCredentials credentials, CamRequest camRequest) {
         //
+        if(url == null) {
+            throw new IllegalArgumentException();
+        }
+        if(credentials == null) {
+            throw new IllegalArgumentException();
+        }
+        if(camRequest == null) {
+            throw new IllegalArgumentException();
+        }
+
         HttpRequestBuilder requestBuilder = new HttpRequestBuilder();
         requestBuilder.setUrl(new Url(url));
         requestBuilder.setMethod(RequestMethod.POST);

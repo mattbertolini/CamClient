@@ -36,7 +36,7 @@ public final class HttpRequestImpl implements HttpRequest {
 
     @Override
     public String getHeader(String name) {
-        return null;
+        return null; // TODO
     }
 
     @Override

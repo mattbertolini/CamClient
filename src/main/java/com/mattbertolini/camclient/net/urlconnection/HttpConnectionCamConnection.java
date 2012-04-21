@@ -27,8 +27,9 @@ public class HttpConnectionCamConnection implements CamConnection {
         //
     }
 
-    public HttpConnectionCamConnection(HttpConnection httpConnection, CamCredentials credentials, CamRequestAdapter<HttpRequest> requestAdapter, CamResponseAdapter<HttpResponse> responseAdapter) {
+    public HttpConnectionCamConnection(HttpConnection httpConnection, URL url, CamCredentials credentials, CamRequestAdapter<HttpRequest> requestAdapter, CamResponseAdapter<HttpResponse> responseAdapter) {
         this.httpConnection = httpConnection;
+        this.url = url;
         this.credentials = credentials;
         this.requestAdapter = requestAdapter;
         this.responseAdapter = responseAdapter;
@@ -36,9 +37,11 @@ public class HttpConnectionCamConnection implements CamConnection {
 
     @Override
     public CamResponse submitRequest(CamRequest request) {
-        //
         if(this.httpConnection == null) {
             throw new IllegalStateException("Http connection is null.");
+        }
+        if(this.url == null) {
+            throw new IllegalStateException("URL is null.");
         }
         if(this.credentials == null) {
             throw new IllegalStateException("Credentials object is null.");
@@ -63,6 +66,10 @@ public class HttpConnectionCamConnection implements CamConnection {
 
     public void setHttpConnection(HttpConnection connection) {
         this.httpConnection = connection;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
     }
 
     public void setCredentials(CamCredentials credentials) {

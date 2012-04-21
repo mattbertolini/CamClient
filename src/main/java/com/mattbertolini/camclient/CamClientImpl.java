@@ -1,6 +1,9 @@
 package com.mattbertolini.camclient;
 
 import com.mattbertolini.camclient.net.CamConnection;
+import com.mattbertolini.camclient.request.CamRequest;
+import com.mattbertolini.camclient.request.Operation;
+import com.mattbertolini.camclient.request.RequestParameter;
 import com.mattbertolini.camclient.response.CamResponse;
 
 import java.net.InetAddress;
@@ -27,10 +30,12 @@ public class CamClientImpl implements CamClient {
         if(macAddress == null) {
             throw new IllegalArgumentException("MAC address cannot be null.");
         }
+        CamRequest request = new CamRequest(Operation.ADD_CLEAN_MAC_ADDRESS);
+        request.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
         if(ssip != null) {
-            //
+            request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(null);
+        CamResponse response = this.connection.submitRequest(request);
         if(response.isError()) {
             throw new CamClientException("");
         }
