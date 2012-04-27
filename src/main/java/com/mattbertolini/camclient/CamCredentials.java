@@ -35,5 +35,7 @@ package com.mattbertolini.camclient;
  */
 public interface CamCredentials {
     String getUsername();
+    void setUsername(String username);
     String getPassword();
+    void setPassword(String password);
 }

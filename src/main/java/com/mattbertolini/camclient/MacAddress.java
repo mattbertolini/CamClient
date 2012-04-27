@@ -111,14 +111,15 @@ public final class MacAddress {
         return sb.toString();
     }
 
-    public static MacAddress valueOf(String address) {
+    public static MacAddress valueOf(CharSequence address) {
         if(address == null) {
             throw new IllegalArgumentException("MAC address cannot be null.");
         }
-        if(!address.matches(EUI_48_PATTERN)) {
+        final String addressStr = address.toString();
+        if(!addressStr.matches(EUI_48_PATTERN)) {
             throw new IllegalArgumentException("Input string is not a valid MAC address.");
         }
-        final String cleanMac = address.replaceAll("(?i)[^0-9a-f]", "");
+        final String cleanMac = addressStr.replaceAll("(?i)[^0-9a-f]", "");
         byte[] macBytes = new byte[BYTE_ARRAY_LENGTH];
         for (int i = 0; i < macBytes.length; i++) {
             macBytes[i] = (byte) Integer.parseInt(cleanMac.substring(2 * i, 2 * i + 2), 16);

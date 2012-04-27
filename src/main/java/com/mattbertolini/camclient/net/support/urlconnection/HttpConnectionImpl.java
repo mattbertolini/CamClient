@@ -108,7 +108,6 @@ public class HttpConnectionImpl implements HttpConnection {
             String responseMessage = conn.getResponseMessage();
             Map<String,List<String>> responseHeaders = conn.getHeaderFields();
             response = new HttpResponseImpl(responseCode, responseMessage, responsePayload, responseHeaders);
-            conn.disconnect();
         } catch (IOException e) {
             // We are only closing the response input stream if there is an exception because the input stream is given
             // to the response object in a non-exception scenario. It is the user's responsibility to close the stream
