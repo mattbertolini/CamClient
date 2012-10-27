@@ -31,6 +31,7 @@
 package com.mattbertolini.camclient;
 
 import java.net.InetAddress;
+import java.util.List;
 import java.util.concurrent.Future;
 
 /**
@@ -42,9 +43,32 @@ public interface CamAsyncClient {
     Future<Void> addLocalUserAsync(String username, String password, String role);
     Future<Void> addMacAddressAsync(MacAddress macAddress);
     Future<Void> addMacAddressAsync(MacAddress macAddress, InetAddress ipAddress, Type type, String role, String description, InetAddress ssip);
-    Future<Void> addSubnetAsync(String subnet, String mask);
-    Future<Void> addSubnetAsync(String subnet, String mask, Type type, String role, String description, InetAddress ssip);
+    Future<Void> addSubnetAsync(InetAddress subnet, String mask);
+    Future<Void> addSubnetAsync(InetAddress subnet, String mask, Type type, String role, String description, InetAddress ssip);
     Future<Void> bouncePortAsync(String switchId, int port);
     Future<Void> bouncePortByMacAddressAsync(MacAddress macAddress);
     Future<Void> changeLoggedInUserRoleAsync(InetAddress ipAddress, String role);
+    Future<Void> changeUserRoleAsync(InetAddress ipAddress, String role) throws CamClientException;
+    Future<CamDevice> checkMacAddressAsync(MacAddress macAddress) throws CamClientException;
+    Future<CamDevice> checkMacAddressAsync(MacAddress macAddress, InetAddress ssip) throws CamClientException;
+    Future<Void> clearCertifiedListAsync() throws CamClientException;
+    Future<Void> deleteAllLocalUsersAsync() throws CamClientException;
+    Future<Void> deleteLocalUserAsync(String username) throws CamClientException;
+    Future<String> getCamVersionAsync() throws CamClientException;
+    Future<List<CamLocalUser>> getLocalUserListAsync() throws CamClientException;
+    Future<List<CamDevice>> getMacAddressListAsync() throws CamClientException;
+    Future<List<CamUserInfo>> getUserInfoAsync(QueryType queryType, String queryValue);
+    Future<Void> kickOutOfBandUserAsync(MacAddress macAddress) throws CamClientException;
+    Future<Void> kickUserAsync(InetAddress ipAddress) throws CamClientException;
+    Future<Void> kickUserByMacAddressAsync(MacAddress macAddress) throws CamClientException;
+    Future<Void> removeCleanMacAddressAsync(MacAddress macAddress) throws CamClientException;
+    Future<Void> removeCleanMacAddressAsync(MacAddress macAddress, InetAddress ssip) throws CamClientException;
+    Future<Void> removeMacAddressAsync(MacAddress macAddress) throws CamClientException;
+    Future<Void> removeMacAddressAsync(MacAddress macAddress, InetAddress ssip) throws CamClientException;
+    Future<Void> removeMacAddressListAsync() throws CamClientException;
+    Future<Void> removeSubnetAsync(InetAddress subnet, String mask) throws CamClientException;
+    Future<Void> removeSubnetAsync(InetAddress subnet, String mask, InetAddress ssip) throws CamClientException;
+    Future<Void> renewUserSessionTimeAsync(InetAddress ipAddress) throws CamClientException;
+    Future<Void> updateSubnetAsync(InetAddress subnet, String mask) throws CamClientException;
+    Future<Void> updateSubnetAsync(InetAddress subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException;
 }

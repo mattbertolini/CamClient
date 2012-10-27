@@ -57,7 +57,9 @@ public class HttpConnectionCamConnection implements CamConnection {
         //
     }
 
-    public HttpConnectionCamConnection(HttpConnection httpConnection, URL url, CamCredentials credentials, CamRequestAdapter<HttpRequest> requestAdapter, CamResponseAdapter<HttpResponse> responseAdapter) {
+    public HttpConnectionCamConnection(HttpConnection httpConnection, URL url, CamCredentials credentials,
+                                       CamRequestAdapter<HttpRequest> requestAdapter,
+                                       CamResponseAdapter<HttpResponse> responseAdapter) {
         this.httpConnection = httpConnection;
         this.url = url;
         this.credentials = credentials;

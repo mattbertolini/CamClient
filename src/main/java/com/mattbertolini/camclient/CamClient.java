@@ -104,7 +104,7 @@ public interface CamClient {
      * @throws IllegalArgumentException If the subnet address or subnet mask are 
      * null.
      */
-    void addSubnet(String subnet, String mask) throws CamClientException;
+    void addSubnet(InetAddress subnet, String mask) throws CamClientException;
     
     /**
      * Adds the given subnet to the Devices list.
@@ -121,7 +121,7 @@ public interface CamClient {
      * @throws IllegalArgumentException If the subnet address or subnet mask are 
      * null.
      */
-    void addSubnet(String subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException;
+    void addSubnet(InetAddress subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException;
     
     /**
      * Bounces and out-of-band port in a switch given a switch ID and a port 
@@ -252,13 +252,8 @@ public interface CamClient {
      * server.
      */
     List<CamDevice> getMacAddressList() throws CamClientException;
-    
-    /**
-     * Gets the user agent string that is sent to the CAM with every request.
-     * 
-     * @return A string representing the user agent of the CAM connection.
-     */
-    String getUserAgent();
+
+    List<CamUserInfo> getUserInfo(QueryType queryType, String queryValue);
 
     /**
      * Ends the active session of the out-of-band user with the given MAC 
@@ -270,7 +265,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given MAC address is null.
      */
-    void kickOutOfBandUser(String macAddress) throws CamClientException;
+    void kickOutOfBandUser(MacAddress macAddress) throws CamClientException;
     
     /**
      * Ends the active session of the in-band user with the given IP address 
@@ -340,6 +335,17 @@ public interface CamClient {
      * server.
      */
     void removeMacAddressList() throws CamClientException;
+
+    /**
+     * Removes a subnet from the Devices list.
+     *
+     * @param subnet The subnet address to remove.
+     * @param mask The subnet mask in CIDR format (e.g. 16)
+     * @throws CamClientException If an error occurred making the request to the
+     * server.
+     * @throws IllegalArgumentException If the given subnet address or mask is null.
+     */
+    void removeSubnet(InetAddress subnet, String mask) throws CamClientException;
     
     /**
      * Removes a subnet from the Devices list.
@@ -351,7 +357,7 @@ public interface CamClient {
      * server.
      * @throws IllegalArgumentException If the given subnet address or mask is null.
      */
-    void removeSubnet(String subnet, String mask, InetAddress ssip) throws CamClientException;
+    void removeSubnet(InetAddress subnet, String mask, InetAddress ssip) throws CamClientException;
     
     /**
      * Renews the session timeout of the user with the given IP address by one 
@@ -374,7 +380,7 @@ public interface CamClient {
      * @throws IllegalArgumentException If the given subnet address or mask are 
      * null.
      */
-    void updateSubnet(String subnet, String mask) throws CamClientException;
+    void updateSubnet(InetAddress subnet, String mask) throws CamClientException;
     
     /**
      * Updates the given subnet in the Devices list.
@@ -392,5 +398,5 @@ public interface CamClient {
      * @throws IllegalArgumentException If the given subnet address or mask are 
      * null.
      */
-    void updateSubnet(String subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException;
+    void updateSubnet(InetAddress subnet, String mask, Type type, String role, String description, InetAddress ssip) throws CamClientException;
 }

@@ -28,28 +28,20 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.mattbertolini.camclient.net.urlconnection;
+package com.mattbertolini.camclient.net;
 
-import com.mattbertolini.camclient.net.CamResponseAdapter;
 import com.mattbertolini.camclient.response.CamResponse;
 import com.mattbertolini.camclient.response.CamResponseImpl;
-import com.mattbertolini.camclient.net.support.urlconnection.HttpPayload;
-import com.mattbertolini.camclient.net.support.urlconnection.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
- * @author Matt Betolini
+ * @param <T> The object to create a CamResponse object from.
+ * @author Matt Bertolini
  */
-public class HttpConnectionCamResponseAdapter implements CamResponseAdapter<HttpResponse> {
+public abstract class AbstractCamResponseAdapter<T> implements CamResponseAdapter<T> {
     private static final String COMMENT_BEGIN_PATTERN = "\\s*<!--\\s*";
     private static final String COMMENT_END_PATTERN = "\\s*-->\\s*";
     private static final String NAME_VALUE_DELIMITER_PATTERN = "[=,]";
@@ -59,25 +51,13 @@ public class HttpConnectionCamResponseAdapter implements CamResponseAdapter<Http
     private static final String ZERO = "0";
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    @Override
-    public CamResponse buildResponse(HttpResponse response) {
+    public CamResponse foo(InputStream responsePayload, String encoding) {
+        return this.foo(responsePayload, encoding, false, null);
+    }
+
+    public CamResponse foo(InputStream responsePayload, String encoding, boolean error, String errorText) {
         //
-        boolean error = false;
-        String errorText = null;
-        int httpStatusCode = response.getStatusCode();
-        if(httpStatusCode >= HttpURLConnection.HTTP_BAD_REQUEST) {
-            error = true;
-            errorText = response.getStatusMessage();
-
-        }
-
-        HttpPayload payload = response.getPayload();
-        String encoding = payload.getCharacterEncoding();
-        if(encoding == null) {
-            encoding = "UTF-8";
-        }
-        InputStream is = payload.getInputStream();
-        Scanner scanner = new Scanner(is, encoding);
+        Scanner scanner = new Scanner(responsePayload, encoding);
         StringBuilder sb = new StringBuilder();
         while(scanner.hasNextLine()) {
             sb.append(scanner.nextLine());
@@ -85,7 +65,7 @@ public class HttpConnectionCamResponseAdapter implements CamResponseAdapter<Http
         }
         scanner.close();
         try {
-            is.close();
+            responsePayload.close();
         } catch (IOException e) {
             //
         }

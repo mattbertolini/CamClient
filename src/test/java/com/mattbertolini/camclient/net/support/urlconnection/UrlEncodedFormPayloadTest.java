@@ -49,8 +49,14 @@ public class UrlEncodedFormPayloadTest {
     }
 
     @Test
-    public void testGetCharacterEncoding() {
+    public void testGetCharacterEncodingReturnNull() {
         UrlEncodedFormPayload payload = new UrlEncodedFormPayload();
+        Assert.assertNull(payload.getCharacterEncoding());
+    }
+
+    @Test
+    public void testGetCharacterEncodingReturnString() {
+        UrlEncodedFormPayload payload = new UrlEncodedFormPayload("UTF-8");
         Assert.assertEquals("UTF-8", payload.getCharacterEncoding());
     }
 
@@ -60,7 +66,7 @@ public class UrlEncodedFormPayloadTest {
         UrlEncodedFormPayload payload = new UrlEncodedFormPayload();
         payload.addParameter("param1", "value1");
         InputStream inputStream = payload.getInputStream();
-        Scanner scanner = new Scanner(inputStream, "UTF-8");
+        Scanner scanner = new Scanner(inputStream, "ISO-8859-1");
         StringBuilder sb = new StringBuilder();
         while(scanner.hasNext()) {
             sb.append(scanner.next());

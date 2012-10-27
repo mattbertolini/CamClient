@@ -41,18 +41,26 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * A special HttpPayload type that enables quick building of URL encoded form requests.
+ *
  * @author Matt Bertolini
  */
 public class UrlEncodedFormPayload implements HttpPayload {
+    public static final String DEFAULT_ENCODING = "ISO-8859-1";
     private static final String FORM_URL_ENCODED = "application/x-www-form-urlencoded";
-    private static final String UTF_8 = "UTF-8";
     private static final char EQUALS_SIGN = '=';
     private static final char AMPERSAND = '&';
 
     private Map<String, String> parameters;
+    private String encoding;
 
     public UrlEncodedFormPayload() {
+        this(null);
+    }
+
+    public UrlEncodedFormPayload(String encoding) {
         this.parameters = new LinkedHashMap<String, String>();
+        this.encoding = encoding;
     }
 
     public void addParameter(String name, String value) {
@@ -66,14 +74,14 @@ public class UrlEncodedFormPayload implements HttpPayload {
 
     @Override
     public String getCharacterEncoding() {
-        return UTF_8;
+        return this.encoding;
     }
 
     @Override
     public InputStream getInputStream() {
         String s = this.buildPayloadString();
         try {
-            return new ByteArrayInputStream(s.getBytes(UTF_8));
+            return new ByteArrayInputStream(s.getBytes(this.getEncoding()));
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
@@ -96,16 +104,20 @@ public class UrlEncodedFormPayload implements HttpPayload {
             } else {
                 sb.append(AMPERSAND);
             }
-            sb.append(this.urlEncode(entry.getKey())).append(EQUALS_SIGN).append(this.urlEncode(entry.getValue()));
+            sb.append(this.urlEncode(entry.getKey(), this.getEncoding())).append(EQUALS_SIGN).append(this.urlEncode(entry.getValue(), this.getEncoding()));
         }
         return sb.toString();
     }
 
-    private String urlEncode(String input) {
+    private String urlEncode(String input, String encoding) {
         try {
-            return URLEncoder.encode(input, UTF_8);
+            return URLEncoder.encode(input, encoding);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getEncoding() {
+        return (this.encoding == null) ? DEFAULT_ENCODING : this.encoding;
     }
 }

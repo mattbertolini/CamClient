@@ -41,6 +41,11 @@ import java.net.Proxy;
 import java.net.URL;
 import java.util.*;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 /**
  * @author Matt Bertolini
  */
@@ -52,16 +57,16 @@ public class HttpConnectionImplTest {
         String expectedStatusMessage = "OK";
         ByteArrayInputStream responsePayload = new ByteArrayInputStream(expectedResponsePayloadString.getBytes("UTF-8"));
 
-        HttpURLConnection mockHttpUrlConnection = Mockito.mock(HttpURLConnection.class);
-        Mockito.when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
-        Mockito.when(mockHttpUrlConnection.getResponseMessage()).thenReturn(expectedStatusMessage);
-        Mockito.when(mockHttpUrlConnection.getInputStream()).thenReturn(responsePayload);
-        Mockito.when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
-        Mockito.when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain");
+        HttpURLConnection mockHttpUrlConnection = mock(HttpURLConnection.class);
+        when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
+        when(mockHttpUrlConnection.getResponseMessage()).thenReturn(expectedStatusMessage);
+        when(mockHttpUrlConnection.getInputStream()).thenReturn(responsePayload);
+        when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
+        when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain");
 
-        Url mockUrl = Mockito.mock(Url.class);
-        Mockito.when(mockUrl.getProtocol()).thenReturn("HTTP");
-        Mockito.when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
+        Url mockUrl = mock(Url.class);
+        when(mockUrl.getProtocol()).thenReturn("HTTP");
+        when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
 
         HttpRequest httpRequest = new HttpRequestBuilder()
                 .setUrl(mockUrl)
@@ -73,17 +78,16 @@ public class HttpConnectionImplTest {
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
 
-        Assert.assertEquals(expectedStatusCode, httpResponse.getStatusCode());
-        Assert.assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
+        assertEquals(expectedStatusCode, httpResponse.getStatusCode());
+        assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
 
         HttpPayload httpResponsePayload = httpResponse.getPayload();
         InputStream inputStream = httpResponsePayload.getInputStream();
-        Scanner scanner = new Scanner(inputStream, "UTF-8");
-        Assert.assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
+        Scanner scanner = new Scanner(inputStream, "ISO-8859-1");
+        assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        Mockito.verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
-        Mockito.verify(mockHttpUrlConnection).connect();
-        Mockito.verify(mockHttpUrlConnection).disconnect();
+        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
+        verify(mockHttpUrlConnection).connect();
     }
 
     @Test
@@ -97,17 +101,17 @@ public class HttpConnectionImplTest {
         ByteArrayOutputStream requestPayload = new ByteArrayOutputStream();
         ByteArrayInputStream responsePayload = new ByteArrayInputStream(expectedResponsePayloadString.getBytes("UTF-8"));
 
-        HttpURLConnection mockHttpUrlConnection = Mockito.mock(HttpURLConnection.class);
-        Mockito.when(mockHttpUrlConnection.getOutputStream()).thenReturn(requestPayload);
-        Mockito.when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
-        Mockito.when(mockHttpUrlConnection.getResponseMessage()).thenReturn(expectedStatusMessage);
-        Mockito.when(mockHttpUrlConnection.getInputStream()).thenReturn(responsePayload);
-        Mockito.when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
-        Mockito.when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain; charset=UTF-8");
+        HttpURLConnection mockHttpUrlConnection = mock(HttpURLConnection.class);
+        when(mockHttpUrlConnection.getOutputStream()).thenReturn(requestPayload);
+        when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
+        when(mockHttpUrlConnection.getResponseMessage()).thenReturn(expectedStatusMessage);
+        when(mockHttpUrlConnection.getInputStream()).thenReturn(responsePayload);
+        when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
+        when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain; charset=UTF-8");
 
-        Url mockUrl = Mockito.mock(Url.class);
-        Mockito.when(mockUrl.getProtocol()).thenReturn("HTTP");
-        Mockito.when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
+        Url mockUrl = mock(Url.class);
+        when(mockUrl.getProtocol()).thenReturn("HTTP");
+        when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
 
         UrlEncodedFormPayload payload = new UrlEncodedFormPayload();
         payload.addParameter("param1", "value1");
@@ -122,21 +126,20 @@ public class HttpConnectionImplTest {
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
 
-        Assert.assertEquals(expectedStatusCode, httpResponse.getStatusCode());
-        Assert.assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
+        assertEquals(expectedStatusCode, httpResponse.getStatusCode());
+        assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
 
         HttpPayload httpResponsePayload = httpResponse.getPayload();
         InputStream inputStream = httpResponsePayload.getInputStream();
         Scanner scanner = new Scanner(inputStream, "UTF-8");
-        Assert.assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
+        assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        Mockito.verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.POST.toString());
-        Mockito.verify(mockHttpUrlConnection).setDoOutput(true);
-        Mockito.verify(mockHttpUrlConnection).connect();
-        Mockito.verify(mockHttpUrlConnection).disconnect();
+        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.POST.toString());
+        verify(mockHttpUrlConnection).setDoOutput(true);
+        verify(mockHttpUrlConnection).connect();
 
         String actualRequestPayloadString = requestPayload.toString("UTF-8");
-        Assert.assertEquals(expectedRequestPayloadString, actualRequestPayloadString);
+        assertEquals(expectedRequestPayloadString, actualRequestPayloadString);
     }
 
     @Test
@@ -146,18 +149,18 @@ public class HttpConnectionImplTest {
         String expectedStatusMessage = "OK";
         ByteArrayInputStream responsePayload = new ByteArrayInputStream(expectedResponsePayloadString.getBytes("UTF-8"));
 
-        HttpURLConnection mockHttpUrlConnection = Mockito.mock(HttpURLConnection.class);
-        Mockito.when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
-        Mockito.when(mockHttpUrlConnection.getResponseMessage()).thenReturn(expectedStatusMessage);
-        Mockito.when(mockHttpUrlConnection.getInputStream()).thenReturn(responsePayload);
-        Mockito.when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
-        Mockito.when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain");
+        HttpURLConnection mockHttpUrlConnection = mock(HttpURLConnection.class);
+        when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
+        when(mockHttpUrlConnection.getResponseMessage()).thenReturn(expectedStatusMessage);
+        when(mockHttpUrlConnection.getInputStream()).thenReturn(responsePayload);
+        when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
+        when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain");
 
-        Proxy mockProxy = Mockito.mock(Proxy.class);
+        Proxy mockProxy = mock(Proxy.class);
 
-        Url mockUrl = Mockito.mock(Url.class);
-        Mockito.when(mockUrl.getProtocol()).thenReturn("HTTP");
-        Mockito.when(mockUrl.openConnection(mockProxy)).thenReturn(mockHttpUrlConnection);
+        Url mockUrl = mock(Url.class);
+        when(mockUrl.getProtocol()).thenReturn("HTTP");
+        when(mockUrl.openConnection(mockProxy)).thenReturn(mockHttpUrlConnection);
 
         HttpRequest httpRequest = new HttpRequestBuilder()
                 .setUrl(mockUrl)
@@ -168,17 +171,16 @@ public class HttpConnectionImplTest {
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
 
-        Assert.assertEquals(expectedStatusCode, httpResponse.getStatusCode());
-        Assert.assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
+        assertEquals(expectedStatusCode, httpResponse.getStatusCode());
+        assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
 
         HttpPayload httpResponsePayload = httpResponse.getPayload();
         InputStream inputStream = httpResponsePayload.getInputStream();
         Scanner scanner = new Scanner(inputStream, "UTF-8");
-        Assert.assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
+        assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        Mockito.verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
-        Mockito.verify(mockHttpUrlConnection).connect();
-        Mockito.verify(mockHttpUrlConnection).disconnect();
+        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
+        verify(mockHttpUrlConnection).connect();
     }
 
     @Test
@@ -188,16 +190,16 @@ public class HttpConnectionImplTest {
         String expectedStatusMessage = "Not Found";
         ByteArrayInputStream errorResponsePayload = new ByteArrayInputStream(expectedErrorResponsePayloadString.getBytes("UTF-8"));
 
-        HttpURLConnection mockHttpUrlConnection = Mockito.mock(HttpURLConnection.class);
-        Mockito.when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
-        Mockito.when(mockHttpUrlConnection.getResponseMessage()).thenReturn(expectedStatusMessage);
-        Mockito.when(mockHttpUrlConnection.getErrorStream()).thenReturn(errorResponsePayload);
-        Mockito.when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
-        Mockito.when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain");
+        HttpURLConnection mockHttpUrlConnection = mock(HttpURLConnection.class);
+        when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
+        when(mockHttpUrlConnection.getResponseMessage()).thenReturn(expectedStatusMessage);
+        when(mockHttpUrlConnection.getErrorStream()).thenReturn(errorResponsePayload);
+        when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
+        when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain");
 
-        Url mockUrl = Mockito.mock(Url.class);
-        Mockito.when(mockUrl.getProtocol()).thenReturn("HTTP");
-        Mockito.when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
+        Url mockUrl = mock(Url.class);
+        when(mockUrl.getProtocol()).thenReturn("HTTP");
+        when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
 
         HttpRequest httpRequest = new HttpRequestBuilder()
                 .setUrl(mockUrl)
@@ -207,17 +209,16 @@ public class HttpConnectionImplTest {
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
 
-        Assert.assertEquals(expectedStatusCode, httpResponse.getStatusCode());
-        Assert.assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
+        assertEquals(expectedStatusCode, httpResponse.getStatusCode());
+        assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
 
         HttpPayload httpResponsePayload = httpResponse.getPayload();
         InputStream inputStream = httpResponsePayload.getInputStream();
         Scanner scanner = new Scanner(inputStream, "UTF-8");
-        Assert.assertEquals(expectedErrorResponsePayloadString, scanner.useDelimiter("\\A").next());
+        assertEquals(expectedErrorResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        Mockito.verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
-        Mockito.verify(mockHttpUrlConnection).connect();
-        Mockito.verify(mockHttpUrlConnection).disconnect();
+        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
+        verify(mockHttpUrlConnection).connect();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -242,9 +243,9 @@ public class HttpConnectionImplTest {
 
     @Test(expected = IOException.class)
     public void testSubmitRequestExceptionGettingConnection() throws IOException {
-        Url mockUrl = Mockito.mock(Url.class);
-        Mockito.when(mockUrl.getProtocol()).thenReturn("HTTP");
-        Mockito.when(mockUrl.openConnection()).thenThrow(new IOException());
+        Url mockUrl = mock(Url.class);
+        when(mockUrl.getProtocol()).thenReturn("HTTP");
+        when(mockUrl.openConnection()).thenThrow(new IOException());
 
         HttpRequest httpRequest = new HttpRequestBuilder()
                 .setUrl(mockUrl)
@@ -262,16 +263,16 @@ public class HttpConnectionImplTest {
         String expectedStatusMessage = "OK";
         ByteArrayInputStream responsePayload = new ByteArrayInputStream(expectedResponsePayloadString.getBytes("UTF-8"));
 
-        HttpURLConnection mockHttpUrlConnection = Mockito.mock(HttpURLConnection.class);
-        Mockito.when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
-        Mockito.when(mockHttpUrlConnection.getResponseMessage()).thenThrow(new IOException());
-        Mockito.when(mockHttpUrlConnection.getInputStream()).thenReturn(responsePayload);
-        Mockito.when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
-        Mockito.when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain");
+        HttpURLConnection mockHttpUrlConnection = mock(HttpURLConnection.class);
+        when(mockHttpUrlConnection.getResponseCode()).thenReturn(expectedStatusCode);
+        when(mockHttpUrlConnection.getResponseMessage()).thenThrow(new IOException());
+        when(mockHttpUrlConnection.getInputStream()).thenReturn(responsePayload);
+        when(mockHttpUrlConnection.getHeaderFields()).thenReturn(Collections.<String, List<String>>emptyMap());
+        when(mockHttpUrlConnection.getHeaderField("Content-Type")).thenReturn("text/plain");
 
-        Url mockUrl = Mockito.mock(Url.class);
-        Mockito.when(mockUrl.getProtocol()).thenReturn("HTTP");
-        Mockito.when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
+        Url mockUrl = mock(Url.class);
+        when(mockUrl.getProtocol()).thenReturn("HTTP");
+        when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
 
         HttpRequest httpRequest = new HttpRequestBuilder()
                 .setUrl(mockUrl)
@@ -283,16 +284,16 @@ public class HttpConnectionImplTest {
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
 
-        Assert.assertEquals(expectedStatusCode, httpResponse.getStatusCode());
-        Assert.assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
+        assertEquals(expectedStatusCode, httpResponse.getStatusCode());
+        assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
 
         HttpPayload httpResponsePayload = httpResponse.getPayload();
         InputStream inputStream = httpResponsePayload.getInputStream();
         Scanner scanner = new Scanner(inputStream, "UTF-8");
-        Assert.assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
+        assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        Mockito.verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
-        Mockito.verify(mockHttpUrlConnection).connect();
-        Mockito.verify(mockHttpUrlConnection).disconnect();
+        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
+        verify(mockHttpUrlConnection).connect();
+        verify(mockHttpUrlConnection).disconnect();
     }
 }

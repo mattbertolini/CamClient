@@ -50,7 +50,6 @@ import java.util.Map;
 public class HttpConnectionCamRequestAdapter implements CamRequestAdapter<HttpRequest> {
     @Override
     public HttpRequest buildRequest(URL url, CamCredentials credentials, CamRequest camRequest) {
-        //
         if(url == null) {
             throw new IllegalArgumentException();
         }

@@ -30,7 +30,7 @@
 
 package com.mattbertolini.camclient;
 
-public class CamClientException extends Exception {
+public class CamClientException extends RuntimeException {
     private static final long serialVersionUID = 5947975468952957595L;
 
     public CamClientException() {

@@ -36,6 +36,8 @@ import java.net.Proxy;
 import java.net.URL;
 
 /**
+ * A wrapper around the java URL object that allows for easier mocking.
+ *
  * @author Matt Bertolini
  */
 public class Url {

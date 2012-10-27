@@ -84,7 +84,7 @@ public class HttpConnectionImpl implements HttpConnection {
             HttpPayload requestPayload = request.getPayload();
             if((RequestMethod.POST == method || RequestMethod.PUT == method) && requestPayload != null) {
                 conn.setDoOutput(true);
-                // We override any content type that has already been set by the content type in the payload object.
+                // We override any content type that has already been set with the content type in the payload object.
                 String contentTypeStr = this.buildContentTypeHeader(requestPayload.getContentType(), requestPayload.getCharacterEncoding());
                 conn.setRequestProperty(CONTENT_TYPE, contentTypeStr);
                 OutputStream outputStream = conn.getOutputStream();
