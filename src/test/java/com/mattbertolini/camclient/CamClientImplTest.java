@@ -45,12 +45,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CamClientImplTest {
     private static final String SUCCESS_RESPONSE_STRING = "error=0";
+    private static final String ERROR_RESPONSE_STRING = "error=CAM error";
 
     @Test
     public void testAddCleanMacAddressSuccess() {
@@ -90,7 +89,7 @@ public class CamClientImplTest {
         CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_CLEAN_MAC_ADDRESS);
         expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
         List<Map<String, String>> responseData = Collections.emptyList();
-        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, true, "Cam Error");
+        CamResponse expectedResponse = new CamResponseImpl(ERROR_RESPONSE_STRING, responseData, true, "Cam Error");
 
         CamConnection mockConnection = mock(CamConnection.class);
         when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
@@ -134,7 +133,7 @@ public class CamClientImplTest {
         expectedRequest.addParameter(RequestParameter.USER_PASSWORD, password);
         expectedRequest.addParameter(RequestParameter.USER_ROLE, role);
         List<Map<String, String>> responseData = Collections.emptyList();
-        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, true, "CAM Error");
+        CamResponse expectedResponse = new CamResponseImpl(ERROR_RESPONSE_STRING, responseData, true, "CAM Error");
 
         CamConnection mockConnection = mock(CamConnection.class);
         when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
@@ -168,5 +167,181 @@ public class CamClientImplTest {
         String role = null;
         CamClientImpl client = new CamClientImpl();
         client.addLocalUser(username, password, role);
+    }
+
+    @Test
+    public void testAddMacAddressSuccess() {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test(expected = CamClientException.class)
+    public void testAddMacAddressErrorResponse() {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(ERROR_RESPONSE_STRING, responseData, true, "CAM error");
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddMacAddressNullMacAddress() {
+        CamClientImpl client = new CamClientImpl();
+        client.addMacAddress(null);
+    }
+
+    @Test
+    public void testAddMacAddressWithIpAddressSuccess() throws UnknownHostException {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        InetAddress ipAddress = InetAddress.getLocalHost();
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        expectedRequest.addParameter(RequestParameter.IP_ADDRESS, ipAddress.getHostAddress());
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress, ipAddress, null, null, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddMacAddressWithTypeSuccess() {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        Type type = Type.ALLOW;
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        expectedRequest.addParameter(RequestParameter.TYPE, type.getName());
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress, null, type, null, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddMacAddressWithTypeUseRoleAndRoleNameSuccess() {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        Type type = Type.USE_ROLE;
+        String roleName = "a_role_name";
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        expectedRequest.addParameter(RequestParameter.TYPE, type.getName());
+        expectedRequest.addParameter(RequestParameter.ROLE_NAME, roleName);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress, null, type, roleName, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddMacAddressWithTypeCheckAndRoleNameSuccess() {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        Type type = Type.CHECK;
+        String roleName = "a_role_name";
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        expectedRequest.addParameter(RequestParameter.TYPE, type.getName());
+        expectedRequest.addParameter(RequestParameter.ROLE_NAME, roleName);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress, null, type, roleName, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddMacAddressWithTypeUseRoleAndNoRoleName() {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        Type type = Type.USE_ROLE;
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        expectedRequest.addParameter(RequestParameter.TYPE, type.getName());
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress, null, type, null, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddMacAddressWithTypeCheckAndNoRoleName() {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        Type type = Type.CHECK;
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        expectedRequest.addParameter(RequestParameter.TYPE, type.getName());
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress, null, type, null, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddMacAddressWithDescriptionSuccess() {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        String description = "example description";
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        expectedRequest.addParameter(RequestParameter.DESCRIPTION, description);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress, null, null, null, description, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddMacAddressWithSsipSuccess() throws UnknownHostException {
+        MacAddress macAddress = MacAddress.valueOf("01-23-45-67-89-AB");
+        InetAddress ssip = InetAddress.getLocalHost();
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_MAC_ADDRESS);
+        expectedRequest.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
+        expectedRequest.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addMacAddress(macAddress, null, null, null, null, ssip);
+        verify(mockConnection).submitRequest(expectedRequest);
     }
 }
