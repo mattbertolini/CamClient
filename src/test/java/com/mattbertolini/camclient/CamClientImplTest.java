@@ -306,7 +306,8 @@ public class CamClientImplTest {
 
         CamConnection mockConnection = mock(CamConnection.class);
         when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
-        CamClientImpl client = new CamClientImpl(mockConnection);
+        CamClientImpl client = new CamClientImpl();
+        client.setCamConnection(mockConnection);
         client.addMacAddress(macAddress, null, type, null, null, null);
         verify(mockConnection).submitRequest(expectedRequest);
     }
