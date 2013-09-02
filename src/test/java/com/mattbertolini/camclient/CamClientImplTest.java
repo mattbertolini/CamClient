@@ -345,4 +345,170 @@ public class CamClientImplTest {
         client.addMacAddress(macAddress, null, null, null, null, ssip);
         verify(mockConnection).submitRequest(expectedRequest);
     }
+
+    @Test
+    public void testAddSubnetSuccess() throws UnknownHostException {
+        InetAddress subnet = InetAddress.getLocalHost();
+        String mask = "16";
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, subnet.getHostAddress());
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddSubnetNullSubnetAddress() {
+        InetAddress subnet = null;
+        String mask = "16";
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, null);
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddSubnetNullSubnetMask() throws UnknownHostException {
+        InetAddress subnet = InetAddress.getLocalHost();
+        String mask = null;
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, subnet.getHostAddress());
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddSubnetWithDescriptionSuccess() throws UnknownHostException {
+        InetAddress subnet = InetAddress.getLocalHost();
+        String mask = "16";
+        String description = "Hello World";
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, subnet.getHostAddress());
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        expectedRequest.addParameter(RequestParameter.DESCRIPTION, description);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask, null, null, description, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddSubnetWithSsipSuccess() throws UnknownHostException {
+        InetAddress subnet = InetAddress.getLocalHost();
+        String mask = "16";
+        InetAddress ssip = InetAddress.getLocalHost();
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, subnet.getHostAddress());
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        expectedRequest.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask, null, null, null, ssip);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddSubnetWithTypeSuccess() throws UnknownHostException {
+        InetAddress subnet = InetAddress.getLocalHost();
+        String mask = "16";
+        Type type = Type.ALLOW;
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, subnet.getHostAddress());
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        expectedRequest.addParameter(RequestParameter.TYPE, type.getName());
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask, type, null, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test
+    public void testAddSubnetWithUseRoleTypeSuccess() throws UnknownHostException {
+        InetAddress subnet = InetAddress.getLocalHost();
+        String mask = "16";
+        Type type = Type.USE_ROLE;
+        String role = "foo";
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, subnet.getHostAddress());
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        expectedRequest.addParameter(RequestParameter.TYPE, type.getName());
+        expectedRequest.addParameter(RequestParameter.ROLE_NAME, role);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask, type, role, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddSubnetWithUseRoleTypeMissingRole() throws UnknownHostException {
+        InetAddress subnet = InetAddress.getLocalHost();
+        String mask = "16";
+        Type type = Type.USE_ROLE;
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, subnet.getHostAddress());
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        expectedRequest.addParameter(RequestParameter.TYPE, type.getName());
+        expectedRequest.addParameter(RequestParameter.ROLE_NAME, null);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask, type, null, null, null);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
+
+    @Test(expected = CamClientException.class)
+    public void testAddSubnetErrorResponse() throws UnknownHostException {
+        InetAddress subnet = InetAddress.getLocalHost();
+        String mask = "16";
+        CamRequest expectedRequest = new CamRequestImpl(Operation.ADD_SUBNET);
+        expectedRequest.addParameter(RequestParameter.SUBNET, subnet.getHostAddress());
+        expectedRequest.addParameter(RequestParameter.SUBNET_MASK, mask);
+        List<Map<String, String>> responseData = Collections.emptyList();
+        CamResponse expectedResponse = new CamResponseImpl(ERROR_RESPONSE_STRING, responseData, true, "Cam Error");
+
+        CamConnection mockConnection = mock(CamConnection.class);
+        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        CamClientImpl client = new CamClientImpl(mockConnection);
+        client.addSubnet(subnet, mask);
+        verify(mockConnection).submitRequest(expectedRequest);
+    }
 }
