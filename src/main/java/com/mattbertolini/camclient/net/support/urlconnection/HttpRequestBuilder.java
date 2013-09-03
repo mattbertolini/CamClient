@@ -89,6 +89,6 @@ public class HttpRequestBuilder {
     }
 
     public HttpRequest build() {
-        return new HttpRequestImpl(this.url, this.method, this.headers, this.payload, this.proxy);
+        return null;
     }
 }

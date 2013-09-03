@@ -74,7 +74,7 @@ public class HttpConnectionImpl implements HttpConnection {
             conn.setRequestMethod(method.toString().toUpperCase(Locale.ROOT));
 
             // Headers
-            Map<String, List<String>> requestHeaders = request.getHeaders();
+            MultivaluedMap<String, String> requestHeaders = request.getHeaders();
             if(requestHeaders != null && !requestHeaders.isEmpty()) {
                 for(Map.Entry<String, List<String>> header : requestHeaders.entrySet()) {
                     conn.setRequestProperty(header.getKey(), this.buildHeaderValueString(header.getValue()));
@@ -106,7 +106,7 @@ public class HttpConnectionImpl implements HttpConnection {
             String responseContentType = this.getContentType(contentTypeHeader);
             HttpPayload responsePayload = new InputStreamPayload(responseStream, responseContentType, responseCharacterEncoding);
             String responseMessage = conn.getResponseMessage();
-            Map<String,List<String>> responseHeaders = conn.getHeaderFields();
+            MultivaluedMap<String, String> responseHeaders = new MultivaluedHashMap<String, String>(conn.getHeaderFields());
             response = new HttpResponseImpl(responseCode, responseMessage, responsePayload, responseHeaders);
         } catch (IOException e) {
             // We are only closing the response input stream if there is an exception because the input stream is given

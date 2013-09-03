@@ -31,6 +31,7 @@
 package com.mattbertolini.camclient.net.httpclient;
 
 import com.mattbertolini.camclient.CamCredentials;
+import com.mattbertolini.camclient.net.AbstractCamConnection;
 import com.mattbertolini.camclient.net.CamConnection;
 import com.mattbertolini.camclient.net.CamRequestAdapter;
 import com.mattbertolini.camclient.request.CamRequest;
@@ -47,7 +48,7 @@ import java.net.URL;
 /**
  * @author Matt Bertolini
  */
-public class HttpClientCamConnection implements CamConnection {
+public class HttpClientCamConnection extends AbstractCamConnection implements CamConnection {
     private URL url;
     private CamCredentials credentials;
     private HttpClient httpClient;
@@ -68,8 +69,8 @@ public class HttpClientCamConnection implements CamConnection {
             throw new IllegalStateException("HTTP client is null.");
         }
         HttpPost httpRequest = this.requestAdapter.buildRequest(this.url, this.credentials, request);
-        //TODO: Add common method for generating CamClient user agent string.
-        Header userAgentHeader = new BasicHeader("User-Agent", "CamClient/2.0.0 Java/1.6.0_31 Linux/3.2.0");
+        String userAgent = this.getUserAgent();
+        Header userAgentHeader = new BasicHeader("User-Agent", userAgent);
         httpRequest.addHeader(userAgentHeader);
         try {
             HttpResponse httpResponse = this.httpClient.execute(httpRequest);

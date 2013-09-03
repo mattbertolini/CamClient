@@ -40,10 +40,17 @@ import java.util.Map;
  */
 public interface HttpRequest {
     HttpPayload getPayload();
+    void addHeader(String name, String value);
+    void addHeader(String name, List<String> values);
+    void addHeader(String name, String... values);
     boolean containsHeader(String name);
     String getHeader(String name);
-    Map<String, List<String>> getHeaders();
+    MultivaluedMap<String, String> getHeaders();
+    void setHeader(String name, String value);
+    void setHeader(String name, List<String> values);
+    void setHeader(String name, String... values);
     RequestMethod getMethod();
+    void setMethod(RequestMethod method);
     Url getUrl();
     Proxy getProxy();
 }

@@ -32,6 +32,7 @@ package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.net.Proxy;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,23 +41,32 @@ import java.util.Map;
  * @author Matt Bertolini
  */
 public final class HttpRequestImpl implements HttpRequest {
-    private final HttpPayload payload;
-    private final RequestMethod method;
-    private final Map<String, List<String>> headers;
-    private final Url url;
-    private final Proxy proxy;
+    private HttpPayload payload;
+    private RequestMethod method;
+    private MultivaluedMap<String, String> headers;
 
-    public HttpRequestImpl(Url url, RequestMethod method, Map<String, List<String>> headers, HttpPayload payload, Proxy proxy) {
-        this.url = url;
-        this.method = method;
-        this.headers = new HashMap<String, List<String>>(headers);
-        this.payload = payload;
-        this.proxy = proxy;
+    public HttpRequestImpl() {
+        this.headers = new MultivaluedHashMap<String, String>();
     }
 
     @Override
     public HttpPayload getPayload() {
-        return this.payload;
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void addHeader(String name, String value) {
+        this.headers.add(name, value);
+    }
+
+    @Override
+    public void addHeader(String name, List<String> values) {
+        this.headers.addAll(name, values);
+    }
+
+    @Override
+    public void addHeader(String name, String... values) {
+        this.headers.addAll(name, values);
     }
 
     @Override
@@ -66,12 +76,27 @@ public final class HttpRequestImpl implements HttpRequest {
 
     @Override
     public String getHeader(String name) {
-        return null; // TODO
+        return this.headers.getFirst(name);
     }
 
     @Override
-    public Map<String, List<String>> getHeaders() {
-        return new HashMap<String, List<String>>(this.headers);
+    public MultivaluedMap<String, String> getHeaders() {
+        return this.headers;
+    }
+
+    @Override
+    public void setHeader(String name, String value) {
+        this.headers.putSingle(name, value);
+    }
+
+    @Override
+    public void setHeader(String name, List<String> values) {
+        this.headers.put(name, values);
+    }
+
+    @Override
+    public void setHeader(String name, String... values) {
+        this.headers.put(name, Arrays.asList(values));
     }
 
     @Override
@@ -80,12 +105,17 @@ public final class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
+    public void setMethod(RequestMethod method) {
+        this.method = method;
+    }
+
+    @Override
     public Url getUrl() {
-        return this.url;
+        return null;
     }
 
     @Override
     public Proxy getProxy() {
-        return this.proxy;
+        return null;
     }
 }

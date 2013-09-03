@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public interface HttpResponse {
     HttpPayload getPayload();
-    Map<String, List<String>> getHeaders();
+    MultivaluedMap<String, String> getHeaders();
     int getStatusCode();
     String getStatusMessage();
 }

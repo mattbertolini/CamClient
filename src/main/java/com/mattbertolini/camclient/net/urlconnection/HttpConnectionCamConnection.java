@@ -31,6 +31,7 @@
 package com.mattbertolini.camclient.net.urlconnection;
 
 import com.mattbertolini.camclient.CamCredentials;
+import com.mattbertolini.camclient.net.AbstractCamConnection;
 import com.mattbertolini.camclient.net.CamConnection;
 import com.mattbertolini.camclient.net.CamRequestAdapter;
 import com.mattbertolini.camclient.net.CamResponseAdapter;
@@ -46,7 +47,7 @@ import java.net.URL;
 /**
  * @author Matt Bertolini
  */
-public class HttpConnectionCamConnection implements CamConnection {
+public class HttpConnectionCamConnection extends AbstractCamConnection implements CamConnection {
     private URL url;
     private CamCredentials credentials;
     private HttpConnection httpConnection;
@@ -88,6 +89,7 @@ public class HttpConnectionCamConnection implements CamConnection {
         try {
             HttpRequest httpRequest = this.requestAdapter.buildRequest(this.url, this.credentials, request);
             //TODO: Add user agent
+            String userAgentString = this.getUserAgent();
             HttpResponse httpResponse = this.httpConnection.submitRequest(httpRequest);
             camResponse = this.responseAdapter.buildResponse(httpResponse);
         } catch (IOException e) {
