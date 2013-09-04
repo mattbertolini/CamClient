@@ -70,7 +70,7 @@ public class HttpConnectionImpl implements HttpConnection {
             } else {
                 conn = url.openConnection();
             }
-            RequestMethod method = request.getMethod();
+            Method method = request.getMethod();
             conn.setRequestMethod(method.toString().toUpperCase(Locale.ROOT));
 
             // Headers
@@ -82,7 +82,7 @@ public class HttpConnectionImpl implements HttpConnection {
             }
 
             HttpPayload requestPayload = request.getPayload();
-            if((RequestMethod.POST == method || RequestMethod.PUT == method) && requestPayload != null) {
+            if((Method.POST == method || Method.PUT == method) && requestPayload != null) {
                 conn.setDoOutput(true);
                 // We override any content type that has already been set with the content type in the payload object.
                 ContentType contentType = requestPayload.getContentType();

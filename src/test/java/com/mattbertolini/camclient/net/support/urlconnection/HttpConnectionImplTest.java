@@ -75,7 +75,7 @@ public class HttpConnectionImplTest {
         httpRequest.setUrl(mockUrl);
         httpRequest.addHeader("x-header-1", "value1");
         httpRequest.addHeader("x-header-2", Arrays.asList("value1", "value2"));
-        httpRequest.setMethod(RequestMethod.GET);
+        httpRequest.setMethod(Method.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.executeRequest(httpRequest);
@@ -88,7 +88,7 @@ public class HttpConnectionImplTest {
         Scanner scanner = new Scanner(inputStream, "ISO-8859-1");
         assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
+        verify(mockHttpUrlConnection).setRequestMethod(Method.GET.toString());
         verify(mockHttpUrlConnection).connect();
     }
 
@@ -121,7 +121,7 @@ public class HttpConnectionImplTest {
 
         HttpRequest httpRequest = new HttpRequestImpl();
         httpRequest.setUrl(mockUrl);
-        httpRequest.setMethod(RequestMethod.POST);
+        httpRequest.setMethod(Method.POST);
         httpRequest.setPayload(payload);
 
         HttpConnection connection = new HttpConnectionImpl();
@@ -135,7 +135,7 @@ public class HttpConnectionImplTest {
         Scanner scanner = new Scanner(inputStream, "UTF-8");
         assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.POST.toString());
+        verify(mockHttpUrlConnection).setRequestMethod(Method.POST.toString());
         verify(mockHttpUrlConnection).setDoOutput(true);
         verify(mockHttpUrlConnection).connect();
 
@@ -166,7 +166,7 @@ public class HttpConnectionImplTest {
         HttpRequest httpRequest = new HttpRequestImpl();
         httpRequest.setUrl(mockUrl);
         httpRequest.setProxy(mockProxy);
-        httpRequest.setMethod(RequestMethod.GET);
+        httpRequest.setMethod(Method.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.executeRequest(httpRequest);
@@ -179,7 +179,7 @@ public class HttpConnectionImplTest {
         Scanner scanner = new Scanner(inputStream, "UTF-8");
         assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
+        verify(mockHttpUrlConnection).setRequestMethod(Method.GET.toString());
         verify(mockHttpUrlConnection).connect();
     }
 
@@ -203,7 +203,7 @@ public class HttpConnectionImplTest {
 
         HttpRequest httpRequest = new HttpRequestImpl();
         httpRequest.setUrl(mockUrl);
-        httpRequest.setMethod(RequestMethod.GET);
+        httpRequest.setMethod(Method.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.executeRequest(httpRequest);
@@ -216,7 +216,7 @@ public class HttpConnectionImplTest {
         Scanner scanner = new Scanner(inputStream, "UTF-8");
         assertEquals(expectedErrorResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
+        verify(mockHttpUrlConnection).setRequestMethod(Method.GET.toString());
         verify(mockHttpUrlConnection).connect();
     }
 
@@ -249,7 +249,7 @@ public class HttpConnectionImplTest {
 
         HttpRequest httpRequest = new HttpRequestImpl();
         httpRequest.setUrl(mockUrl);
-        httpRequest.setMethod(RequestMethod.GET);
+        httpRequest.setMethod(Method.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         connection.executeRequest(httpRequest);
@@ -277,7 +277,7 @@ public class HttpConnectionImplTest {
         httpRequest.setUrl(mockUrl);
         httpRequest.addHeader("x-header-1", "value1");
         httpRequest.addHeader("x-header-2", Arrays.asList("value1", "value2"));
-        httpRequest.setMethod(RequestMethod.GET);
+        httpRequest.setMethod(Method.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.executeRequest(httpRequest);
@@ -290,7 +290,7 @@ public class HttpConnectionImplTest {
         Scanner scanner = new Scanner(inputStream, "UTF-8");
         assertEquals(expectedResponsePayloadString, scanner.useDelimiter("\\A").next());
 
-        verify(mockHttpUrlConnection).setRequestMethod(RequestMethod.GET.toString());
+        verify(mockHttpUrlConnection).setRequestMethod(Method.GET.toString());
         verify(mockHttpUrlConnection).connect();
         verify(mockHttpUrlConnection).disconnect();
     }

@@ -38,7 +38,7 @@ import com.mattbertolini.camclient.net.support.urlconnection.HttpPayload;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpRequest;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpRequestImpl;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpResponse;
-import com.mattbertolini.camclient.net.support.urlconnection.RequestMethod;
+import com.mattbertolini.camclient.net.support.urlconnection.Method;
 import com.mattbertolini.camclient.net.support.urlconnection.UrlEncodedFormPayload;
 import com.mattbertolini.camclient.request.CamRequest;
 import com.mattbertolini.camclient.request.RequestParameter;
@@ -67,7 +67,7 @@ public class HttpConnectionCamConnection extends AbstractCamConnection<HttpReque
         }
 
         HttpRequest request = new HttpRequestImpl();
-        request.setMethod(RequestMethod.POST);
+        request.setMethod(Method.POST);
 
         UrlEncodedFormPayload postData = new UrlEncodedFormPayload();
         postData.addParameter(RequestParameter.OPERATION.getName(), camRequest.getOperation().getName());

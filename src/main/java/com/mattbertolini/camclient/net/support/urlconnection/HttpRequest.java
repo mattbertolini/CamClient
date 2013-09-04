@@ -31,9 +31,7 @@
 package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.net.Proxy;
-import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Matt Bertolini
@@ -50,8 +48,8 @@ public interface HttpRequest {
     void setHeader(String name, String value);
     void setHeader(String name, List<String> values);
     void setHeader(String name, String... values);
-    RequestMethod getMethod();
-    void setMethod(RequestMethod method);
+    Method getMethod();
+    void setMethod(Method method);
     Url getUrl();
     void setUrl(Url url);
     Proxy getProxy();

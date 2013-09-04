@@ -41,7 +41,7 @@ public final class HttpRequestImpl implements HttpRequest {
     private Url url;
     private Proxy proxy;
     private HttpPayload payload;
-    private RequestMethod method;
+    private Method method;
     private MultivaluedMap<String, String> headers;
 
     public HttpRequestImpl() {
@@ -104,12 +104,12 @@ public final class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
-    public RequestMethod getMethod() {
+    public Method getMethod() {
         return this.method;
     }
 
     @Override
-    public void setMethod(RequestMethod method) {
+    public void setMethod(Method method) {
         this.method = method;
     }
 

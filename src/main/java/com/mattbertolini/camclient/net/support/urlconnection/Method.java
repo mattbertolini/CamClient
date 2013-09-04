@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,9 +33,12 @@ package com.mattbertolini.camclient.net.support.urlconnection;
 /**
  * @author Matt Bertolini
  */
-public enum RequestMethod {
+public enum Method {
     DELETE,
     GET,
+    HEAD,
+    OPTIONS,
     POST,
-    PUT
+    PUT,
+    TRACE
 }
