@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,7 +67,7 @@ public class CamClientImpl implements CamClient {
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -88,7 +88,7 @@ public class CamClientImpl implements CamClient {
         request.addParameter(RequestParameter.USERNAME, username);
         request.addParameter(RequestParameter.USER_PASSWORD, password);
         request.addParameter(RequestParameter.USER_ROLE, role);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -124,7 +124,7 @@ public class CamClientImpl implements CamClient {
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -161,7 +161,7 @@ public class CamClientImpl implements CamClient {
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -178,7 +178,7 @@ public class CamClientImpl implements CamClient {
         CamRequest request = new CamRequestImpl(Operation.BOUNCE_PORT);
         request.addParameter(RequestParameter.SWITCH_ID, switchId);
         request.addParameter(RequestParameter.SWITCH_PORT, Integer.toString(port));
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -191,7 +191,7 @@ public class CamClientImpl implements CamClient {
         }
         CamRequest request = new CamRequestImpl(Operation.BOUNCE_PORT_BY_MAC_ADDRESS);
         request.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -208,7 +208,7 @@ public class CamClientImpl implements CamClient {
         CamRequest request = new CamRequestImpl(Operation.CHANGE_LOGGED_IN_USER_ROLE);
         request.addParameter(RequestParameter.IP_ADDRESS, ipAddress.getHostAddress());
         request.addParameter(RequestParameter.ROLE_NAME, role);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -225,7 +225,7 @@ public class CamClientImpl implements CamClient {
         CamRequest request = new CamRequestImpl(Operation.CHANGE_USER_ROLE);
         request.addParameter(RequestParameter.IP_ADDRESS, ipAddress.getHostAddress());
         request.addParameter(RequestParameter.ROLE_NAME, role);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -246,7 +246,7 @@ public class CamClientImpl implements CamClient {
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -257,7 +257,7 @@ public class CamClientImpl implements CamClient {
     @Override
     public void clearCertifiedList() throws CamClientException {
         CamRequest request = new CamRequestImpl(Operation.CLEAR_CERTIFIED_LIST);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -268,7 +268,7 @@ public class CamClientImpl implements CamClient {
         CamRequest request = new CamRequestImpl(Operation.DELETE_LOCAL_USER);
         request.addParameter(RequestParameter.QUERY_TYPE, QueryType.ALL.getValue());
         request.addParameter(RequestParameter.QUERY_VALUE, "");
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -282,7 +282,7 @@ public class CamClientImpl implements CamClient {
         CamRequest request = new CamRequestImpl(Operation.DELETE_LOCAL_USER);
         request.addParameter(RequestParameter.QUERY_TYPE, QueryType.USERNAME.getValue());
         request.addParameter(RequestParameter.QUERY_VALUE, username);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -291,7 +291,7 @@ public class CamClientImpl implements CamClient {
     @Override
     public String getCamVersion() throws CamClientException {
         CamRequest request = new CamRequestImpl(Operation.GET_VERSION);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -307,7 +307,7 @@ public class CamClientImpl implements CamClient {
     @Override
     public List<CamDevice> getMacAddressList() throws CamClientException {
         CamRequest request = new CamRequestImpl(Operation.GET_MAC_ADDRESS_LIST);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -332,7 +332,7 @@ public class CamClientImpl implements CamClient {
             safeValue = queryValue;
         }
         request.addParameter(RequestParameter.QUERY_VALUE, safeValue);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -346,7 +346,7 @@ public class CamClientImpl implements CamClient {
         }
         CamRequest request = new CamRequestImpl(Operation.KICK_OOB_USER);
         request.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -359,7 +359,7 @@ public class CamClientImpl implements CamClient {
         }
         CamRequest request = new CamRequestImpl(Operation.KICK_OOB_USER);
         request.addParameter(RequestParameter.IP_ADDRESS, ipAddress.getHostAddress());
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -372,7 +372,7 @@ public class CamClientImpl implements CamClient {
         }
         CamRequest request = new CamRequestImpl(Operation.KICK_USER_BY_MAC_ADDRESS);
         request.addParameter(RequestParameter.MAC_ADDRESS, macAddress.toString(MacAddress.Delimiter.NONE));
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -393,7 +393,7 @@ public class CamClientImpl implements CamClient {
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -414,7 +414,7 @@ public class CamClientImpl implements CamClient {
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -423,7 +423,7 @@ public class CamClientImpl implements CamClient {
     @Override
     public void removeMacAddressList() throws CamClientException {
         CamRequest request = new CamRequestImpl(Operation.REMOVE_MAC_ADDRESS_LIST);
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -448,7 +448,7 @@ public class CamClientImpl implements CamClient {
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -461,7 +461,7 @@ public class CamClientImpl implements CamClient {
         }
         CamRequest request = new CamRequestImpl(Operation.RENEW_USER_SESSION_TIME);
         request.addParameter(RequestParameter.IP_ADDRESS, ipAddress.getHostAddress());
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }
@@ -498,7 +498,7 @@ public class CamClientImpl implements CamClient {
         if(ssip != null) {
             request.addParameter(RequestParameter.SERVER_IP_ADDRESS, ssip.getHostAddress());
         }
-        CamResponse response = this.connection.submitRequest(request);
+        CamResponse response = this.connection.executeRequest(request);
         if(response.isError()) {
             throw this.createCamClientExceptionFromResponse(response);
         }

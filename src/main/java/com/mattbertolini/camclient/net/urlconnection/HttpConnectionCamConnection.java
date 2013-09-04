@@ -90,9 +90,9 @@ public class HttpConnectionCamConnection extends AbstractCamConnection<HttpReque
     }
 
     @Override
-    public HttpResponse execute(HttpRequest httpRequest) {
+    public HttpResponse submitRequest(HttpRequest httpRequest) {
         try {
-            return this.connection.submitRequest(httpRequest);
+            return this.connection.executeRequest(httpRequest);
         } catch (IOException e) {
             // TODO: Finish
             throw new RuntimeException(e);

@@ -78,7 +78,7 @@ public class HttpConnectionImplTest {
         httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
-        HttpResponse httpResponse = connection.submitRequest(httpRequest);
+        HttpResponse httpResponse = connection.executeRequest(httpRequest);
 
         assertEquals(expectedStatusCode, httpResponse.getStatusCode());
         assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
@@ -125,7 +125,7 @@ public class HttpConnectionImplTest {
         httpRequest.setPayload(payload);
 
         HttpConnection connection = new HttpConnectionImpl();
-        HttpResponse httpResponse = connection.submitRequest(httpRequest);
+        HttpResponse httpResponse = connection.executeRequest(httpRequest);
 
         assertEquals(expectedStatusCode, httpResponse.getStatusCode());
         assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
@@ -169,7 +169,7 @@ public class HttpConnectionImplTest {
         httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
-        HttpResponse httpResponse = connection.submitRequest(httpRequest);
+        HttpResponse httpResponse = connection.executeRequest(httpRequest);
 
         assertEquals(expectedStatusCode, httpResponse.getStatusCode());
         assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
@@ -206,7 +206,7 @@ public class HttpConnectionImplTest {
         httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
-        HttpResponse httpResponse = connection.submitRequest(httpRequest);
+        HttpResponse httpResponse = connection.executeRequest(httpRequest);
 
         assertEquals(expectedStatusCode, httpResponse.getStatusCode());
         assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());
@@ -223,14 +223,14 @@ public class HttpConnectionImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void testSubmitRequestNullArgument() throws IOException {
         HttpConnection connection = new HttpConnectionImpl();
-        connection.submitRequest(null);
+        connection.executeRequest(null);
     }
 
     @Test(expected = IllegalStateException.class)
     public void testSubmitRequestNullUrl() throws IOException {
         HttpRequest request = new HttpRequestImpl();
         HttpConnection connection = new HttpConnectionImpl();
-        connection.submitRequest(request);
+        connection.executeRequest(request);
     }
 
     @Test(expected = IllegalStateException.class)
@@ -238,7 +238,7 @@ public class HttpConnectionImplTest {
         HttpRequest request = new HttpRequestImpl();
         request.setUrl(new Url(new URL("ftp://localhost")));
         HttpConnection connection = new HttpConnectionImpl();
-        connection.submitRequest(request);
+        connection.executeRequest(request);
     }
 
     @Test(expected = IOException.class)
@@ -252,7 +252,7 @@ public class HttpConnectionImplTest {
         httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
-        connection.submitRequest(httpRequest);
+        connection.executeRequest(httpRequest);
     }
 
     @Test(expected = IOException.class)
@@ -280,7 +280,7 @@ public class HttpConnectionImplTest {
         httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
-        HttpResponse httpResponse = connection.submitRequest(httpRequest);
+        HttpResponse httpResponse = connection.executeRequest(httpRequest);
 
         assertEquals(expectedStatusCode, httpResponse.getStatusCode());
         assertEquals(expectedStatusMessage, httpResponse.getStatusMessage());

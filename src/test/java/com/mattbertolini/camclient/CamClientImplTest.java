@@ -60,10 +60,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addCleanMacAddress(macAddress);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -77,10 +77,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addCleanMacAddress(macAddress, ssip);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = CamClientException.class)
@@ -92,10 +92,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(ERROR_RESPONSE_STRING, responseData, true, "Cam Error");
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addCleanMacAddress(macAddress);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -117,10 +117,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addLocalUser(username, password, role);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = CamClientException.class)
@@ -136,10 +136,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(ERROR_RESPONSE_STRING, responseData, true, "CAM Error");
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addLocalUser(username, password, role);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -178,10 +178,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = CamClientException.class)
@@ -193,10 +193,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(ERROR_RESPONSE_STRING, responseData, true, "CAM error");
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -216,10 +216,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress, ipAddress, null, null, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -233,10 +233,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress, null, type, null, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -252,10 +252,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress, null, type, roleName, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -271,10 +271,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress, null, type, roleName, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -288,10 +288,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress, null, type, null, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -305,11 +305,11 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl();
         client.setCamConnection(mockConnection);
         client.addMacAddress(macAddress, null, type, null, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -323,10 +323,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress, null, null, null, description, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -340,10 +340,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addMacAddress(macAddress, null, null, null, null, ssip);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -357,10 +357,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -374,10 +374,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -391,10 +391,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -410,10 +410,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask, null, null, description, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -429,10 +429,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask, null, null, null, ssip);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -448,10 +448,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask, type, null, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test
@@ -469,10 +469,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask, type, role, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -489,10 +489,10 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(SUCCESS_RESPONSE_STRING, responseData, false, null);
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask, type, null, null, null);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 
     @Test(expected = CamClientException.class)
@@ -506,9 +506,9 @@ public class CamClientImplTest {
         CamResponse expectedResponse = new CamResponseImpl(ERROR_RESPONSE_STRING, responseData, true, "Cam Error");
 
         CamConnection mockConnection = mock(CamConnection.class);
-        when(mockConnection.submitRequest(expectedRequest)).thenReturn(expectedResponse);
+        when(mockConnection.executeRequest(expectedRequest)).thenReturn(expectedResponse);
         CamClientImpl client = new CamClientImpl(mockConnection);
         client.addSubnet(subnet, mask);
-        verify(mockConnection).submitRequest(expectedRequest);
+        verify(mockConnection).executeRequest(expectedRequest);
     }
 }

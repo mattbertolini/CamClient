@@ -100,7 +100,7 @@ public class HttpClientCamConnection extends AbstractCamConnection<HttpPost, Htt
     }
 
     @Override
-    public HttpResponse execute(HttpPost httpPost) {
+    public HttpResponse submitRequest(HttpPost httpPost) {
         try {
             return this.httpClient.execute(httpPost);
         } catch (IOException e) {

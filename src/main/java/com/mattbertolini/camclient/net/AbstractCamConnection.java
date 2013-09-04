@@ -39,7 +39,7 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
 
     public abstract Request buildRequest(CamRequest camRequest);
     public abstract CamResponse buildResponse(Response httpResponse);
-    public abstract Response execute(Request request);
+    public abstract Response submitRequest(Request request);
 
     public String getUserAgent() {
         // TODO: Finish
@@ -48,9 +48,9 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
     }
 
     @Override
-    public CamResponse submitRequest(CamRequest camRequest) {
+    public CamResponse executeRequest(CamRequest camRequest) {
         Request request = this.buildRequest(camRequest);
-        Response response = this.execute(request);
+        Response response = this.submitRequest(request);
         return this.buildResponse(response);
     }
 

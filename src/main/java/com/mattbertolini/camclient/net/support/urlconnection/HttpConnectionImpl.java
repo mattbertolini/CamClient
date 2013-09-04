@@ -48,7 +48,7 @@ public class HttpConnectionImpl implements HttpConnection {
     private static final String HTTPS = "HTTPS";
 
     @Override
-    public HttpResponse submitRequest(HttpRequest request) throws IOException {
+    public HttpResponse executeRequest(HttpRequest request) throws IOException {
         if(request == null) {
             throw new IllegalArgumentException("Request argument cannot be null.");
         }
