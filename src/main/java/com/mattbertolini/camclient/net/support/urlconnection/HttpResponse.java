@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,6 @@
  */
 
 package com.mattbertolini.camclient.net.support.urlconnection;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Matt Bertolini

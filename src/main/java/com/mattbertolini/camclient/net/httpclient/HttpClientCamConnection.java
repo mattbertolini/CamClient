@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,58 +33,79 @@ package com.mattbertolini.camclient.net.httpclient;
 import com.mattbertolini.camclient.CamCredentials;
 import com.mattbertolini.camclient.net.AbstractCamConnection;
 import com.mattbertolini.camclient.net.CamConnection;
-import com.mattbertolini.camclient.net.CamRequestAdapter;
+import com.mattbertolini.camclient.net.Parameter;
 import com.mattbertolini.camclient.request.CamRequest;
+import com.mattbertolini.camclient.request.RequestParameter;
 import com.mattbertolini.camclient.response.CamResponse;
-import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt Bertolini
  */
-public class HttpClientCamConnection extends AbstractCamConnection implements CamConnection {
-    private URL url;
-    private CamCredentials credentials;
+public class HttpClientCamConnection extends AbstractCamConnection<HttpPost, HttpResponse> implements CamConnection {
     private HttpClient httpClient;
-    private CamRequestAdapter<HttpPost> requestAdapter;
 
-    public HttpClientCamConnection() {
-        //
-    }
-
-    public HttpClientCamConnection(HttpClient httpClient) {
+    public HttpClientCamConnection(URI uri, CamCredentials credentials, HttpClient httpClient) {
+        super(uri, credentials);
         this.httpClient = httpClient;
     }
 
     @Override
-    public CamResponse submitRequest(CamRequest request) {
-        //
-        if(this.httpClient == null) {
-            throw new IllegalStateException("HTTP client is null.");
-        }
-        HttpPost httpRequest = this.requestAdapter.buildRequest(this.url, this.credentials, request);
-        String userAgent = this.getUserAgent();
-        Header userAgentHeader = new BasicHeader("User-Agent", userAgent);
-        httpRequest.addHeader(userAgentHeader);
+    public HttpPost buildRequest(CamRequest camRequest) {
+        HttpPost request = null;
         try {
-            HttpResponse httpResponse = this.httpClient.execute(httpRequest);
-        } catch (IOException e) {
+            request = new HttpPost(this.getUri());
+            List<NameValuePair> formParams = new LinkedList<NameValuePair>();
+            formParams.add(new BasicNameValuePair(RequestParameter.OPERATION.getName(), camRequest.getOperation().getName()));
+            Map<Parameter, String> parameters = camRequest.getParameters();
+            for(Map.Entry<Parameter, String> parameter : parameters.entrySet()) {
+                formParams.add(new BasicNameValuePair(parameter.getKey().getName(), parameter.getValue()));
+            }
+            formParams.add(new BasicNameValuePair(RequestParameter.ADMIN_USERNAME.getName(), this.getCredentials().getUsername()));
+            formParams.add(new BasicNameValuePair(RequestParameter.ADMIN_PASSWORD.getName(), this.getCredentials().getPassword()));
+            UrlEncodedFormEntity postData = new UrlEncodedFormEntity(formParams);
+            request.setEntity(postData);
+            request.setHeader(new BasicHeader(USER_AGENT, this.getUserAgent()));
+        } catch (UnsupportedEncodingException e) {
             //
         }
-        return null;
+        return request;
     }
 
-    public void setCredentials(CamCredentials credentials) {
-        this.credentials = credentials;
+    @Override
+    public CamResponse buildResponse(HttpResponse httpResponse) {
+        HttpEntity entity = httpResponse.getEntity();
+        InputStream content = null;
+        try {
+            content = entity.getContent();
+        } catch (IOException e) {
+            // TODO
+        }
+        return this.parseResponse(content, "");
     }
 
-    public void setHttpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+    @Override
+    public HttpResponse execute(HttpPost httpPost) {
+        try {
+            return this.httpClient.execute(httpPost);
+        } catch (IOException e) {
+            // TODO: Finish
+            throw new RuntimeException(e);
+        }
     }
 }

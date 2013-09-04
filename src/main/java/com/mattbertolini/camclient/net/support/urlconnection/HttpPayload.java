@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,8 +38,7 @@ import java.io.OutputStream;
  * @author Matt Bertolini
  */
 public interface HttpPayload {
-    String getContentType();
-    String getCharacterEncoding();
+    ContentType getContentType();
     InputStream getInputStream();
     void writeTo(OutputStream outputStream) throws IOException;
 }

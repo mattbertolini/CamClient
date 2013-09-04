@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,10 +47,10 @@ public class UserAgentBuilder {
         String libraryName = null;
         String libraryVersion = null;
         String libraryBuildDate = null;
-        String runtimeVersion = null;
-        String osName = null;
-        String osVersion = null;
-        String osArchitecture = null;
+        String runtimeVersion;
+        String osName;
+        String osVersion;
+        String osArchitecture;
 
         InputStream is = null;
         try {

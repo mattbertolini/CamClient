@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,23 +40,16 @@ import java.util.Scanner;
  */
 public class InputStreamPayload implements HttpPayload {
     private InputStream payload;
-    private String contentType;
-    private String characterEncoding;
+    private ContentType contentType;
 
-    public InputStreamPayload(InputStream payload, String contentType, String characterEncoding) {
+    public InputStreamPayload(InputStream payload, ContentType contentType) {
         this.payload = payload;
         this.contentType = contentType;
-        this.characterEncoding = characterEncoding;
     }
 
     @Override
-    public String getContentType() {
+    public ContentType getContentType() {
         return this.contentType;
-    }
-
-    @Override
-    public String getCharacterEncoding() {
-        return this.characterEncoding;
     }
 
     @Override
@@ -66,7 +59,7 @@ public class InputStreamPayload implements HttpPayload {
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
-        Scanner scanner = new Scanner(this.payload, this.characterEncoding);
+        Scanner scanner = new Scanner(this.payload, this.getContentType().getCharsetOrDefault());
         while(scanner.hasNextByte()) {
             outputStream.write(scanner.nextByte());
         }

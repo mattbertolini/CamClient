@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,21 +46,23 @@ import java.util.Map;
  * @author Matt Bertolini
  */
 public class UrlEncodedFormPayload implements HttpPayload {
-    public static final String DEFAULT_ENCODING = "ISO-8859-1";
-    private static final String FORM_URL_ENCODED = "application/x-www-form-urlencoded";
     private static final char EQUALS_SIGN = '=';
     private static final char AMPERSAND = '&';
 
     private Map<String, String> parameters;
-    private String encoding;
+    private ContentType contentType;
 
     public UrlEncodedFormPayload() {
-        this(null);
+        this(ContentType.APPLICATION_FORM_URLENCODED);
     }
 
     public UrlEncodedFormPayload(String encoding) {
+        this(ContentType.APPLICATION_FORM_URLENCODED.withCharset(encoding));
+    }
+
+    private UrlEncodedFormPayload(ContentType contentType) {
         this.parameters = new LinkedHashMap<String, String>();
-        this.encoding = encoding;
+        this.contentType = contentType;
     }
 
     public void addParameter(String name, String value) {
@@ -68,13 +70,8 @@ public class UrlEncodedFormPayload implements HttpPayload {
     }
 
     @Override
-    public String getContentType() {
-        return FORM_URL_ENCODED;
-    }
-
-    @Override
-    public String getCharacterEncoding() {
-        return this.encoding;
+    public ContentType getContentType() {
+        return this.contentType;
     }
 
     @Override
@@ -118,6 +115,6 @@ public class UrlEncodedFormPayload implements HttpPayload {
     }
 
     private String getEncoding() {
-        return (this.encoding == null) ? DEFAULT_ENCODING : this.encoding;
+        return this.contentType.getCharsetOrDefault();
     }
 }

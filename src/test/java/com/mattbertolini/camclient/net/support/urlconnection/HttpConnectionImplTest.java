@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,16 +30,19 @@
 
 package com.mattbertolini.camclient.net.support.urlconnection;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -68,12 +71,11 @@ public class HttpConnectionImplTest {
         when(mockUrl.getProtocol()).thenReturn("HTTP");
         when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
 
-        HttpRequest httpRequest = new HttpRequestBuilder()
-                .setUrl(mockUrl)
-                .addHeader("x-header-1", "value1")
-                .addHeader("x-header-2", Arrays.asList("value1", "value2"))
-                .setMethod(RequestMethod.GET)
-                .build();
+        HttpRequest httpRequest = new HttpRequestImpl();
+        httpRequest.setUrl(mockUrl);
+        httpRequest.addHeader("x-header-1", "value1");
+        httpRequest.addHeader("x-header-2", Arrays.asList("value1", "value2"));
+        httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
@@ -117,11 +119,10 @@ public class HttpConnectionImplTest {
         payload.addParameter("param1", "value1");
         payload.addParameter("param2", "value2");
 
-        HttpRequest httpRequest = new HttpRequestBuilder()
-                .setUrl(mockUrl)
-                .setMethod(RequestMethod.POST)
-                .setPayload(payload)
-                .build();
+        HttpRequest httpRequest = new HttpRequestImpl();
+        httpRequest.setUrl(mockUrl);
+        httpRequest.setMethod(RequestMethod.POST);
+        httpRequest.setPayload(payload);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
@@ -162,11 +163,10 @@ public class HttpConnectionImplTest {
         when(mockUrl.getProtocol()).thenReturn("HTTP");
         when(mockUrl.openConnection(mockProxy)).thenReturn(mockHttpUrlConnection);
 
-        HttpRequest httpRequest = new HttpRequestBuilder()
-                .setUrl(mockUrl)
-                .setProxy(mockProxy)
-                .setMethod(RequestMethod.GET)
-                .build();
+        HttpRequest httpRequest = new HttpRequestImpl();
+        httpRequest.setUrl(mockUrl);
+        httpRequest.setProxy(mockProxy);
+        httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
@@ -201,10 +201,9 @@ public class HttpConnectionImplTest {
         when(mockUrl.getProtocol()).thenReturn("HTTP");
         when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
 
-        HttpRequest httpRequest = new HttpRequestBuilder()
-                .setUrl(mockUrl)
-                .setMethod(RequestMethod.GET)
-                .build();
+        HttpRequest httpRequest = new HttpRequestImpl();
+        httpRequest.setUrl(mockUrl);
+        httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);
@@ -229,14 +228,15 @@ public class HttpConnectionImplTest {
 
     @Test(expected = IllegalStateException.class)
     public void testSubmitRequestNullUrl() throws IOException {
-        HttpRequest request = new HttpRequestBuilder().build();
+        HttpRequest request = new HttpRequestImpl();
         HttpConnection connection = new HttpConnectionImpl();
         connection.submitRequest(request);
     }
 
     @Test(expected = IllegalStateException.class)
     public void testSubmitRequestNonHttpUrl() throws IOException {
-        HttpRequest request = new HttpRequestBuilder().setUrl(new Url(new URL("ftp://localhost"))).build();
+        HttpRequest request = new HttpRequestImpl();
+        request.setUrl(new Url(new URL("ftp://localhost")));
         HttpConnection connection = new HttpConnectionImpl();
         connection.submitRequest(request);
     }
@@ -247,10 +247,9 @@ public class HttpConnectionImplTest {
         when(mockUrl.getProtocol()).thenReturn("HTTP");
         when(mockUrl.openConnection()).thenThrow(new IOException());
 
-        HttpRequest httpRequest = new HttpRequestBuilder()
-                .setUrl(mockUrl)
-                .setMethod(RequestMethod.GET)
-                .build();
+        HttpRequest httpRequest = new HttpRequestImpl();
+        httpRequest.setUrl(mockUrl);
+        httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         connection.submitRequest(httpRequest);
@@ -274,12 +273,11 @@ public class HttpConnectionImplTest {
         when(mockUrl.getProtocol()).thenReturn("HTTP");
         when(mockUrl.openConnection()).thenReturn(mockHttpUrlConnection);
 
-        HttpRequest httpRequest = new HttpRequestBuilder()
-                .setUrl(mockUrl)
-                .addHeader("x-header-1", "value1")
-                .addHeader("x-header-2", Arrays.asList("value1", "value2"))
-                .setMethod(RequestMethod.GET)
-                .build();
+        HttpRequest httpRequest = new HttpRequestImpl();
+        httpRequest.setUrl(mockUrl);
+        httpRequest.addHeader("x-header-1", "value1");
+        httpRequest.addHeader("x-header-2", Arrays.asList("value1", "value2"));
+        httpRequest.setMethod(RequestMethod.GET);
 
         HttpConnection connection = new HttpConnectionImpl();
         HttpResponse httpResponse = connection.submitRequest(httpRequest);

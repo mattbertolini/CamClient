@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,89 +32,70 @@ package com.mattbertolini.camclient.net.urlconnection;
 
 import com.mattbertolini.camclient.CamCredentials;
 import com.mattbertolini.camclient.net.AbstractCamConnection;
-import com.mattbertolini.camclient.net.CamConnection;
-import com.mattbertolini.camclient.net.CamRequestAdapter;
-import com.mattbertolini.camclient.net.CamResponseAdapter;
-import com.mattbertolini.camclient.request.CamRequest;
-import com.mattbertolini.camclient.response.CamResponse;
+import com.mattbertolini.camclient.net.Parameter;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpConnection;
+import com.mattbertolini.camclient.net.support.urlconnection.HttpPayload;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpRequest;
+import com.mattbertolini.camclient.net.support.urlconnection.HttpRequestImpl;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpResponse;
+import com.mattbertolini.camclient.net.support.urlconnection.RequestMethod;
+import com.mattbertolini.camclient.net.support.urlconnection.UrlEncodedFormPayload;
+import com.mattbertolini.camclient.request.CamRequest;
+import com.mattbertolini.camclient.request.RequestParameter;
+import com.mattbertolini.camclient.response.CamResponse;
 
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Map;
 
 /**
  * @author Matt Bertolini
  */
-public class HttpConnectionCamConnection extends AbstractCamConnection implements CamConnection {
-    private URL url;
-    private CamCredentials credentials;
-    private HttpConnection httpConnection;
-    private CamRequestAdapter<HttpRequest> requestAdapter;
-    private CamResponseAdapter<HttpResponse> responseAdapter;
+public class HttpConnectionCamConnection extends AbstractCamConnection<HttpRequest, HttpResponse> {
+    private HttpConnection connection;
 
-    public HttpConnectionCamConnection() {
-        //
-    }
-
-    public HttpConnectionCamConnection(HttpConnection httpConnection, URL url, CamCredentials credentials,
-                                       CamRequestAdapter<HttpRequest> requestAdapter,
-                                       CamResponseAdapter<HttpResponse> responseAdapter) {
-        this.httpConnection = httpConnection;
-        this.url = url;
-        this.credentials = credentials;
-        this.requestAdapter = requestAdapter;
-        this.responseAdapter = responseAdapter;
+    public HttpConnectionCamConnection(URI uri, CamCredentials credentials, HttpConnection connection) {
+        super(uri, credentials);
+        this.connection = connection;
     }
 
     @Override
-    public CamResponse submitRequest(CamRequest request) {
-        if(this.httpConnection == null) {
-            throw new IllegalStateException("Http connection is null.");
+    public HttpRequest buildRequest(CamRequest camRequest) {
+        if(camRequest == null) {
+            throw new IllegalArgumentException();
         }
-        if(this.url == null) {
-            throw new IllegalStateException("URL is null.");
+
+        HttpRequest request = new HttpRequestImpl();
+        request.setMethod(RequestMethod.POST);
+
+        UrlEncodedFormPayload postData = new UrlEncodedFormPayload();
+        postData.addParameter(RequestParameter.OPERATION.getName(), camRequest.getOperation().getName());
+        Map<Parameter, String> parameters = camRequest.getParameters();
+        for(Map.Entry<Parameter, String> entry : parameters.entrySet()) {
+            postData.addParameter(entry.getKey().getName(), entry.getValue());
         }
-        if(this.credentials == null) {
-            throw new IllegalStateException("Credentials object is null.");
-        }
-        if(this.requestAdapter == null) {
-            throw new IllegalStateException("Request adapter is null.");
-        }
-        if(this.responseAdapter == null) {
-            throw new IllegalStateException("Response adapter is null.");
-        }
-        CamResponse camResponse = null;
+        postData.addParameter(RequestParameter.ADMIN_USERNAME.getName(), this.getCredentials().getUsername());
+        postData.addParameter(RequestParameter.ADMIN_PASSWORD.getName(), this.getCredentials().getPassword());
+        request.setPayload(postData);
+        request.setHeader(USER_AGENT, this.getUserAgent());
+        return request;
+    }
+
+    @Override
+    public CamResponse buildResponse(HttpResponse httpResponse) {
+        HttpPayload payload = httpResponse.getPayload();
+        InputStream inputStream = payload.getInputStream();
+        return this.parseResponse(inputStream, "");
+    }
+
+    @Override
+    public HttpResponse execute(HttpRequest httpRequest) {
         try {
-            HttpRequest httpRequest = this.requestAdapter.buildRequest(this.url, this.credentials, request);
-            //TODO: Add user agent
-            String userAgentString = this.getUserAgent();
-            HttpResponse httpResponse = this.httpConnection.submitRequest(httpRequest);
-            camResponse = this.responseAdapter.buildResponse(httpResponse);
+            return this.connection.submitRequest(httpRequest);
         } catch (IOException e) {
-            //
+            // TODO: Finish
+            throw new RuntimeException(e);
         }
-        return camResponse;
-    }
-
-    public void setHttpConnection(HttpConnection connection) {
-        this.httpConnection = connection;
-    }
-
-    public void setUrl(URL url) {
-        this.url = url;
-    }
-
-    public void setCredentials(CamCredentials credentials) {
-        this.credentials = credentials;
-    }
-
-    public void setRequestAdapter(CamRequestAdapter<HttpRequest> requestAdapter) {
-        this.requestAdapter = requestAdapter;
-    }
-
-    public void setResponseAdapter(CamResponseAdapter<HttpResponse> responseAdapter) {
-        this.responseAdapter = responseAdapter;
     }
 }

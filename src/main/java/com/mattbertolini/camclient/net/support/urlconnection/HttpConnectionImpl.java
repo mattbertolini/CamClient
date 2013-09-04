@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,8 +85,8 @@ public class HttpConnectionImpl implements HttpConnection {
             if((RequestMethod.POST == method || RequestMethod.PUT == method) && requestPayload != null) {
                 conn.setDoOutput(true);
                 // We override any content type that has already been set with the content type in the payload object.
-                String contentTypeStr = this.buildContentTypeHeader(requestPayload.getContentType(), requestPayload.getCharacterEncoding());
-                conn.setRequestProperty(CONTENT_TYPE, contentTypeStr);
+                ContentType contentType = requestPayload.getContentType();
+                conn.setRequestProperty(CONTENT_TYPE, contentType.toString());
                 OutputStream outputStream = conn.getOutputStream();
                 requestPayload.writeTo(outputStream);
                 outputStream.close();
@@ -102,9 +102,8 @@ public class HttpConnectionImpl implements HttpConnection {
                 responseStream = conn.getInputStream();
             }
             String contentTypeHeader = conn.getHeaderField(CONTENT_TYPE);
-            String responseCharacterEncoding = this.getCharacterEncoding(contentTypeHeader);
-            String responseContentType = this.getContentType(contentTypeHeader);
-            HttpPayload responsePayload = new InputStreamPayload(responseStream, responseContentType, responseCharacterEncoding);
+            ContentType responseContentType = ContentType.fromHeader(contentTypeHeader);
+            HttpPayload responsePayload = new InputStreamPayload(responseStream, responseContentType);
             String responseMessage = conn.getResponseMessage();
             MultivaluedMap<String, String> responseHeaders = new MultivaluedHashMap<String, String>(conn.getHeaderFields());
             response = new HttpResponseImpl(responseCode, responseMessage, responsePayload, responseHeaders);
@@ -143,54 +142,5 @@ public class HttpConnectionImpl implements HttpConnection {
             retVal.append(str);
         }
         return retVal.toString();
-    }
-
-    /**
-     * Extracts the content type from the <code>Content-Type</code> header.
-     *
-     * @param contentTypeHeader The string contents of the <code>Content-Type</code> header.
-     * @return A string containing the content type.
-     */
-    private String getContentType(String contentTypeHeader) {
-        if(contentTypeHeader.contains(";")) {
-            return contentTypeHeader.substring(0, contentTypeHeader.indexOf(";"));
-        } else {
-            return contentTypeHeader;
-        }
-    }
-
-    /**
-     * Extracts the character encoding from the <code>Content-Type</code> header if it is present.
-     *
-     * @param contentTypeHeader The string contents of the <code>Content-Type</code> header.
-     * @return A string containing the character set or null if no character encoding is specified.
-     */
-    private String getCharacterEncoding(String contentTypeHeader) {
-        if(!contentTypeHeader.contains(";")) {
-            return null;
-        }
-        String charset = null;
-        String[] split = contentTypeHeader.replace(" ", "").split(";");
-        for(String s : split) {
-            if(s.toLowerCase(Locale.ROOT).startsWith("charset=")) {
-                charset = s.split("=", 2)[1];
-            }
-        }
-        return charset;
-    }
-
-    /**
-     * Builds an appropriate string for the <code>Content-Type</code> header based on the given content type and
-     * character encoding.
-     *
-     * @param contentType The content type. This field is required.
-     * @param characterEncoding The character encoding or character set. This field is optional.
-     * @return A string representing the final content type.
-     */
-    private String buildContentTypeHeader(String contentType, String characterEncoding) {
-        if(characterEncoding != null) {
-            return contentType + "; charset=" + characterEncoding;
-        }
-        return contentType;
     }
 }

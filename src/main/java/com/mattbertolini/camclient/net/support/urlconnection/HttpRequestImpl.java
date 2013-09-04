@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,16 +31,15 @@
 package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.net.Proxy;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Matt Bertolini
  */
 public final class HttpRequestImpl implements HttpRequest {
+    private Url url;
+    private Proxy proxy;
     private HttpPayload payload;
     private RequestMethod method;
     private MultivaluedMap<String, String> headers;
@@ -51,7 +50,12 @@ public final class HttpRequestImpl implements HttpRequest {
 
     @Override
     public HttpPayload getPayload() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.payload;
+    }
+
+    @Override
+    public void setPayload(HttpPayload payload) {
+        this.payload = payload;
     }
 
     @Override
@@ -111,11 +115,21 @@ public final class HttpRequestImpl implements HttpRequest {
 
     @Override
     public Url getUrl() {
-        return null;
+        return this.url;
+    }
+
+    @Override
+    public void setUrl(Url url) {
+        this.url = url;
     }
 
     @Override
     public Proxy getProxy() {
-        return null;
+        return this.proxy;
+    }
+
+    @Override
+    public void setProxy(Proxy proxy) {
+        this.proxy = proxy;
     }
 }

@@ -40,6 +40,7 @@ import java.util.Map;
  */
 public interface HttpRequest {
     HttpPayload getPayload();
+    void setPayload(HttpPayload payload);
     void addHeader(String name, String value);
     void addHeader(String name, List<String> values);
     void addHeader(String name, String... values);
@@ -52,5 +53,7 @@ public interface HttpRequest {
     RequestMethod getMethod();
     void setMethod(RequestMethod method);
     Url getUrl();
+    void setUrl(Url url);
     Proxy getProxy();
+    void setProxy(Proxy proxy);
 }

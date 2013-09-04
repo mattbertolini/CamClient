@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,16 +31,11 @@
 package com.mattbertolini.camclient;
 
 import com.mattbertolini.camclient.net.CamConnection;
-import com.mattbertolini.camclient.net.CamRequestAdapter;
-import com.mattbertolini.camclient.net.CamResponseAdapter;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpConnection;
 import com.mattbertolini.camclient.net.support.urlconnection.HttpConnectionImpl;
-import com.mattbertolini.camclient.net.support.urlconnection.HttpRequest;
-import com.mattbertolini.camclient.net.support.urlconnection.HttpResponse;
 import com.mattbertolini.camclient.net.urlconnection.HttpConnectionCamConnection;
-import com.mattbertolini.camclient.net.urlconnection.HttpConnectionCamRequestAdapter;
-import com.mattbertolini.camclient.net.urlconnection.HttpConnectionCamResponseAdapter;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,7 +44,7 @@ import java.util.concurrent.Executors;
  * @author Matt Bertolini
  */
 public class CamClientFactory {
-    public static CamClient newCamClient(URL camUrl, String username, String password) {
+    public static CamClient newCamClient(URI camUrl, String username, String password) {
         if(camUrl == null) {
             throw new IllegalArgumentException("URL cannot be null.");
         }
@@ -61,13 +56,11 @@ public class CamClientFactory {
         }
         CamCredentials credentials = new BasicCamCredentials(username, password);
         HttpConnection httpConnection = new HttpConnectionImpl();
-        CamRequestAdapter<HttpRequest> requestAdapter = new HttpConnectionCamRequestAdapter();
-        CamResponseAdapter<HttpResponse> responseAdapter = new HttpConnectionCamResponseAdapter();
-        CamConnection camConnection = new HttpConnectionCamConnection(httpConnection, camUrl, credentials, requestAdapter, responseAdapter);
+        CamConnection camConnection = new HttpConnectionCamConnection(camUrl, credentials, httpConnection);
         return new CamClientImpl(camConnection);
     }
 
-    public static CamAsyncClient newCamAsyncClient(URL camUrl, String username, String password) {
+    public static CamAsyncClient newCamAsyncClient(URI camUrl, String username, String password) {
         //
         ExecutorService executorService = Executors.newCachedThreadPool();
         return new CamAsyncClientImpl();
