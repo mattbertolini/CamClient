@@ -9,12 +9,12 @@ import java.util.regex.Pattern;
  */
 public final class ContentType {
     public static final ContentType APPLICATION_FORM_URLENCODED = ContentType.create("application/x-www-form-urlencoded");
-    private static final String PATTERN = "([a-zA-Z-]+\\/[a-zA-Z0-9.+-]+)(?:; *charset=([a-zA-Z0-9-_]*))?";
 
     /**
      * Default charset as defined by the HTTP protocol.
      */
     private static final String DEFAULT_CHARSET = "ISO-8859-1";
+    private static final String PATTERN = "([a-zA-Z-]+\\/[a-zA-Z0-9.+-]+)(?:; *charset=([a-zA-Z0-9-_]*))?";
 
     private final String type;
     private final String charset;
@@ -67,5 +67,25 @@ public final class ContentType {
             sb.append(";charset=").append(this.charset);
         }
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ContentType that = (ContentType) o;
+
+        if (charset != null ? !charset.equals(that.charset) : that.charset != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type != null ? type.hashCode() : 0;
+        result = 31 * result + (charset != null ? charset.hashCode() : 0);
+        return result;
     }
 }
