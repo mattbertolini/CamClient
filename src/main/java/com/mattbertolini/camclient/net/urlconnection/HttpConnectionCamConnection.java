@@ -86,7 +86,7 @@ public class HttpConnectionCamConnection extends AbstractCamConnection<HttpReque
     public CamResponse buildResponse(HttpResponse httpResponse) {
         HttpPayload payload = httpResponse.getPayload();
         InputStream inputStream = payload.getInputStream();
-        return this.parseResponse(inputStream, "");
+        return this.parseResponse(inputStream, payload.getContentType().getCharsetOrDefault());
     }
 
     @Override
