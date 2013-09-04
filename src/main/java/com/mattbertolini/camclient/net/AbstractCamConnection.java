@@ -54,7 +54,17 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
         return this.buildResponse(response);
     }
 
+    /**
+     * This method will close the given input stream.
+     *
+     * @param responseBody
+     * @param encoding
+     * @return
+     */
     protected CamResponse parseResponse(InputStream responseBody, String encoding) {
+        if(responseBody == null) {
+            throw new IllegalArgumentException("Response body stream is null.");
+        }
         Scanner scanner = new Scanner(responseBody, encoding);
         StringBuilder sb = new StringBuilder();
         while(scanner.hasNextLine()) {
