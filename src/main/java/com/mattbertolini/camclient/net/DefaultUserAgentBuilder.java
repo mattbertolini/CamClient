@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-public class DefaultUserAgentBuilder {
+public class DefaultUserAgentBuilder implements UserAgentBuilder {
     private static final String PROPERTIES_FILE_PATH = "/version-info.properties";
     public static final String NAME = "com.mattbertolini.camclient.name";
     public static final String VERSION = "com.mattbertolini.camclient.version";
@@ -45,6 +45,7 @@ public class DefaultUserAgentBuilder {
     private static final String OS_VERSION = "os.version";
     private static final String OS_ARCHITECTURE = "os.arch";
 
+    @Override
     public String buildUserAgentString() {
         String libraryName = null;
         String libraryVersion = null;
