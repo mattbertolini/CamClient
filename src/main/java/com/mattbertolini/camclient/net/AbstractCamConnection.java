@@ -63,12 +63,12 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
 
     private final URI uri;
     private final CamCredentials credentials;
-    private UserAgentBuilder userAgentBuilder;
+    private DefaultUserAgentBuilder userAgentBuilder;
 
     public AbstractCamConnection(URI uri, CamCredentials credentials) {
         this.uri = uri;
         this.credentials = credentials;
-        this.userAgentBuilder = new UserAgentBuilder();
+        this.userAgentBuilder = new DefaultUserAgentBuilder();
     }
 
     /**

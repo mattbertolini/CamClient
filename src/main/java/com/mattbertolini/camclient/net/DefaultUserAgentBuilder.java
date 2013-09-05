@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-public class UserAgentBuilder {
+public class DefaultUserAgentBuilder {
     private static final String PROPERTIES_FILE_PATH = "/version-info.properties";
     public static final String NAME = "com.mattbertolini.camclient.name";
     public static final String VERSION = "com.mattbertolini.camclient.version";
