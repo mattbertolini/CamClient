@@ -63,10 +63,12 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
 
     private final URI uri;
     private final CamCredentials credentials;
+    private UserAgentBuilder userAgentBuilder;
 
     public AbstractCamConnection(URI uri, CamCredentials credentials) {
         this.uri = uri;
         this.credentials = credentials;
+        this.userAgentBuilder = new UserAgentBuilder();
     }
 
     /**
@@ -91,9 +93,7 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
     public abstract Response submitRequest(Request request);
 
     public String getUserAgent() {
-        // TODO: Finish
-        UserAgentBuilder userAgentBuilder = new UserAgentBuilder();
-        return userAgentBuilder.buildUserAgentString();
+        return this.userAgentBuilder.buildUserAgentString();
     }
 
     @Override
