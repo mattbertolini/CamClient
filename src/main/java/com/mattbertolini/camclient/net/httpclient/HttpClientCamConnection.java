@@ -43,6 +43,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -50,6 +51,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -90,13 +92,15 @@ public class HttpClientCamConnection extends AbstractCamConnection<HttpPost, Htt
     @Override
     public CamResponse buildResponse(HttpResponse httpResponse) {
         HttpEntity entity = httpResponse.getEntity();
+        ContentType contentType = ContentType.get(entity);
+        Charset charset = contentType.getCharset();
         InputStream content = null;
         try {
             content = entity.getContent();
         } catch (IOException e) {
             // TODO
         }
-        return this.parseResponse(content, "");
+        return this.parseResponse(content, charset.toString());
     }
 
     @Override
