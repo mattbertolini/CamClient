@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd" xmlns:m="http://ant.apache.org/ivy/maven">
     <info organisation="com.mattbertolini" module="camclient"/>
     <configurations>
         <conf name="httpclient"/>
         <conf name="test"/>
+        <conf name="wiremock"/>
         <conf name="build"/>
     </configurations>
     <dependencies>
-        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.1.3" conf="httpclient->default"/>
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.2.3" conf="httpclient->default"/>
         <!-- Test Dependencies -->
         <dependency org="junit" name="junit" rev="4.11" conf="test->default"/>
         <dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test->default"/>
+        <dependency org="com.google.guava" name="guava" rev="14.0.1" conf="test->default"/>
+        <dependency org="com.github.tomakehurst" name="wiremock" rev="1.33" conf="wiremock->default" m:classifier="standalone"/>
         <dependency org="nl.jqno.equalsverifier" name="equalsverifier" rev="1.1.2" conf="test->default"/>
         <!-- Build Dependencies -->
         <dependency org="emma" name="emma" rev="2.1.5320" conf="build->default"/>

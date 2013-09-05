@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Matthew Bertolini
+ * Copyright (c) 2013, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,9 @@ package com.mattbertolini.camclient.net.support.urlconnection;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.Proxy;
+import java.net.URI;
 import java.net.URL;
 
 /**
@@ -45,6 +47,14 @@ public class Url {
 
     public Url(URL url) {
         this.url = url;
+    }
+
+    public Url(URI uri) {
+        try {
+            this.url = uri.toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public HttpURLConnection openConnection() throws IOException {

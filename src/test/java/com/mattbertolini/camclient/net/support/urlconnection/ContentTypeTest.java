@@ -64,6 +64,11 @@ public class ContentTypeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testFromHeaderNullInput() {
+        ContentType.fromHeader(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testFromHeaderInvalidInput() {
         ContentType.fromHeader("not valid input.");
     }

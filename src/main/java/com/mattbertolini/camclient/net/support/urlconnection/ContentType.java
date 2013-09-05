@@ -33,6 +33,9 @@ public final class ContentType {
     }
 
     public static ContentType fromHeader(final CharSequence contentTypeHeader) {
+        if(contentTypeHeader == null) {
+            throw new IllegalArgumentException("Input is null.");
+        }
         Pattern pattern = Pattern.compile(PATTERN);
         Matcher matcher = pattern.matcher(contentTypeHeader);
         if(!matcher.matches()) {
