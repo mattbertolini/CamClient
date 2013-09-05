@@ -30,6 +30,7 @@
 
 package com.mattbertolini.camclient.net.support.urlconnection;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -71,5 +72,22 @@ public class ContentTypeTest {
     @Test(expected = IllegalArgumentException.class)
     public void testFromHeaderInvalidInput() {
         ContentType.fromHeader("not valid input.");
+    }
+
+    @Test
+    public void testWithCharset() {
+        ContentType contentType = ContentType.create("application/json");
+        assertEquals("application/json", contentType.getType());
+        assertNull(contentType.getCharset());
+        assertEquals("ISO-8859-1", contentType.getCharsetOrDefault());
+        contentType = contentType.withCharset("UTF-8");
+        assertEquals("application/json", contentType.getType());
+        assertEquals("UTF-8", contentType.getCharset());
+        assertEquals("UTF-8", contentType.getCharsetOrDefault());
+    }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        EqualsVerifier.forClass(ContentType.class).verify();
     }
 }
