@@ -48,6 +48,14 @@ public class ContentTypeTest {
     }
 
     @Test
+    public void testFromHeaderWildcard() {
+        ContentType wildcard = ContentType.fromHeader("*/*");
+        assertEquals("*/*", wildcard.getType());
+        assertNull(wildcard.getCharset());
+        assertEquals("ISO-8859-1", wildcard.getCharsetOrDefault());
+    }
+
+    @Test
     public void testFromHeaderWithCharset() {
         ContentType json = ContentType.fromHeader("application/json; charset=UTF-8");
         assertEquals("application/json", json.getType());

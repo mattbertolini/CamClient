@@ -14,7 +14,7 @@ public final class ContentType {
      * Default charset as defined by the HTTP protocol.
      */
     private static final String DEFAULT_CHARSET = "ISO-8859-1";
-    private static final String PATTERN = "([a-zA-Z-]+/[a-zA-Z0-9.+-]+)(?:; *charset=([a-zA-Z0-9-_]*))?";
+    private static final String PATTERN = "([a-zA-Z\\-\\*]+/[a-zA-Z0-9.+\\-\\*]+)(?:; *charset=([a-zA-Z0-9-_]*))?";
 
     private final String type;
     private final String charset;
