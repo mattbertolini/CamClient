@@ -69,8 +69,25 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
         this.credentials = credentials;
     }
 
+    /**
+     * Translate the given CamRequest into the defined request type.
+     * @param camRequest The CamRequest object to translate.
+     * @return The request type to use in the connection.
+     */
     public abstract Request buildRequest(CamRequest camRequest);
+
+    /**
+     * Translate the response from the connection into a CamResponse.
+     * @param httpResponse The defined response type to translate.
+     * @return The CamResponse object.
+     */
     public abstract CamResponse buildResponse(Response httpResponse);
+
+    /**
+     * Execute the request with the underlying HTTP connection.
+     * @param request The HTTP request to execute
+     * @return The HTTP response.
+     */
     public abstract Response submitRequest(Request request);
 
     public String getUserAgent() {
@@ -89,9 +106,9 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
     /**
      * This method will close the given input stream.
      *
-     * @param responseBody
-     * @param encoding
-     * @return
+     * @param responseBody The input stream containing the response body.
+     * @param encoding The input stream's corresponding character encoding.
+     * @return A CamResponse object populated from the response body.
      */
     protected CamResponse parseResponse(InputStream responseBody, String encoding) {
         if(responseBody == null) {
