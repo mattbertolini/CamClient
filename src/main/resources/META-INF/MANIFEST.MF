@@ -4,4 +4,3 @@ Specification-Vendor: Company
 Implementation-Title: CamClient
 Implementation-Version: 0.0.0
 Implementation-Vendor: Company
-Build-Date: 20101002

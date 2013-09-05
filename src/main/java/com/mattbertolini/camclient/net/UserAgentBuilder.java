@@ -32,12 +32,14 @@ package com.mattbertolini.camclient.net;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
+import java.io.InputStreamReader;
+import java.util.Properties;
 
 public class UserAgentBuilder {
-    private static final String MANIFEST_PATH = "/META-INF/MANIFEST.MF";
-    private static final String BUILD_DATE = "Build-Date";
+    private static final String PROPERTIES_FILE_PATH = "/version-info.properties";
+    public static final String NAME = "com.mattbertolini.camclient.name";
+    public static final String VERSION = "com.mattbertolini.camclient.version";
+    private static final String BUILD_DATE = "com.mattbertolini.camclient.build-date";
     private static final String JAVA_VERSION = "java.version";
     private static final String OS_NAME = "os.name";
     private static final String OS_VERSION = "os.version";
@@ -53,23 +55,23 @@ public class UserAgentBuilder {
         String osArchitecture;
 
         InputStream is = null;
+        Properties properties = new Properties();
         try {
-            is = this.getClass().getResourceAsStream(MANIFEST_PATH);
+            is = this.getClass().getResourceAsStream(PROPERTIES_FILE_PATH);
             if(is != null) {
-                Manifest manifest = new Manifest(is);
-                Attributes attributes = manifest.getMainAttributes();
-                libraryName = attributes.getValue(Attributes.Name.IMPLEMENTATION_TITLE);
-                libraryVersion = attributes.getValue(Attributes.Name.IMPLEMENTATION_VERSION);
-                libraryBuildDate = attributes.getValue(BUILD_DATE);
+                properties.load(new InputStreamReader(is, "UTF-8"));
+                libraryName = properties.getProperty(NAME);
+                libraryVersion = properties.getProperty(VERSION);
+                libraryBuildDate = properties.getProperty(BUILD_DATE);
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
             // Do nothing
         } finally {
             try {
                 if(is != null) {
                     is.close();
                 }
-            } catch(IOException e) {
+            } catch (IOException e) {
                 // Do nothing
             }
         }
