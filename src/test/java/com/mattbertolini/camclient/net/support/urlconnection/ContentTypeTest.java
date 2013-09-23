@@ -41,47 +41,52 @@ import static org.junit.Assert.assertNull;
  */
 public class ContentTypeTest {
     @Test
-    public void testFromHeaderNoCharset() {
-        ContentType html = ContentType.fromHeader("text/html");
-        assertEquals("text/html", html.getType());
+    public void testValueOfNoCharset() {
+        ContentType html = ContentType.valueOf("text/html");
+        assertEquals("text", html.getType());
+        assertEquals("html", html.getSubtype());
         assertNull(html.getCharset());
         assertEquals("ISO-8859-1", html.getCharsetOrDefault());
     }
 
     @Test
-    public void testFromHeaderWildcard() {
-        ContentType wildcard = ContentType.fromHeader("*/*");
-        assertEquals("*/*", wildcard.getType());
+    public void testValueOfWildcard() {
+        ContentType wildcard = ContentType.valueOf("*/*");
+        assertEquals("*", wildcard.getType());
+        assertEquals("*", wildcard.getSubtype());
         assertNull(wildcard.getCharset());
         assertEquals("ISO-8859-1", wildcard.getCharsetOrDefault());
     }
 
     @Test
-    public void testFromHeaderWithCharset() {
-        ContentType json = ContentType.fromHeader("application/json; charset=UTF-8");
-        assertEquals("application/json", json.getType());
+    public void testValueOfWithCharset() {
+        ContentType json = ContentType.valueOf("application/json; charset=UTF-8");
+        assertEquals("application", json.getType());
+        assertEquals("json", json.getSubtype());
         assertEquals("UTF-8", json.getCharset());
         assertEquals("UTF-8", json.getCharsetOrDefault());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFromHeaderNullInput() {
-        ContentType.fromHeader(null);
+        ContentType.valueOf(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFromHeaderInvalidInput() {
-        ContentType.fromHeader("not valid input.");
+        ContentType.valueOf("not valid input.");
     }
 
     @Test
     public void testWithCharset() {
-        ContentType contentType = ContentType.create("application/json");
-        assertEquals("application/json", contentType.getType());
+        ContentType contentType = ContentType.create("application", "json");
+        assertEquals("application", contentType.getType());
+        assertEquals("json", contentType.getSubtype());
         assertNull(contentType.getCharset());
         assertEquals("ISO-8859-1", contentType.getCharsetOrDefault());
         contentType = contentType.withCharset("UTF-8");
-        assertEquals("application/json", contentType.getType());
+        assertEquals("application", contentType.getType());
+        assertEquals("json", contentType.getSubtype());
         assertEquals("UTF-8", contentType.getCharset());
         assertEquals("UTF-8", contentType.getCharsetOrDefault());
     }

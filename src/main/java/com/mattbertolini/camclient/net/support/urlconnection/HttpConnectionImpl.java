@@ -102,7 +102,7 @@ public class HttpConnectionImpl implements HttpConnection {
                 responseStream = conn.getInputStream();
             }
             String contentTypeHeader = conn.getHeaderField(CONTENT_TYPE);
-            ContentType responseContentType = ContentType.fromHeader(contentTypeHeader);
+            ContentType responseContentType = ContentType.valueOf(contentTypeHeader);
             HttpPayload responsePayload = new InputStreamPayload(responseStream, responseContentType);
             String responseMessage = conn.getResponseMessage();
             MultivaluedMap<String, String> responseHeaders = new MultivaluedHashMap<String, String>(conn.getHeaderFields());
