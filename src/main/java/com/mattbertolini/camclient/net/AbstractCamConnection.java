@@ -93,7 +93,7 @@ public abstract class AbstractCamConnection<Request, Response> implements CamCon
     public abstract Response submitRequest(Request request);
 
     public String getUserAgent() {
-        return this.userAgentProvider.buildUserAgentString();
+        return this.userAgentProvider.getUserAgentString();
     }
 
     @Override

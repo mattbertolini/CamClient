@@ -35,6 +35,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+/**
+ * Default user agent provider reads the version and build information from a properties file and combines it with
+ * other system information.
+ *
+ * @author Matt Bertolini
+ */
 public class DefaultUserAgentProvider implements UserAgentProvider {
     private static final String PROPERTIES_FILE_PATH = "/version-info.properties";
     public static final String NAME = "com.mattbertolini.camclient.name";
@@ -46,7 +52,7 @@ public class DefaultUserAgentProvider implements UserAgentProvider {
     private static final String OS_ARCHITECTURE = "os.arch";
 
     @Override
-    public String buildUserAgentString() {
+    public String getUserAgentString() {
         String libraryName = null;
         String libraryVersion = null;
         String libraryBuildDate = null;

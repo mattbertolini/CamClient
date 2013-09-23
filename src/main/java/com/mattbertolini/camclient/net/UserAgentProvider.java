@@ -34,5 +34,5 @@ package com.mattbertolini.camclient.net;
  * @author Matt Bertolini
  */
 public interface UserAgentProvider {
-    String buildUserAgentString();
+    String getUserAgentString();
 }
