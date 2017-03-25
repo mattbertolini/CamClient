@@ -30,7 +30,6 @@
 
 package com.mattbertolini.camclient.net.urlconnection.support;
 
-import com.mattbertolini.camclient.net.urlconnection.support.ContentType;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
