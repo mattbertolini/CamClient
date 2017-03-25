@@ -28,7 +28,41 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.mattbertolini.camclient.net.urlconnection.support;
+
 /**
- * Client API for an Java HttpURLConnection. Abstracts the HttpURLConnection class away to make it easier to use and test.
+ * @author Matt Bertolini
  */
-package com.mattbertolini.camclient.net.support.urlconnection;
+public final class HttpResponseImpl implements HttpResponse {
+    private final int code;
+    private final String message;
+    private final HttpPayload payload;
+    private final MultivaluedMap<String, String> headers;
+
+    public HttpResponseImpl(int code, String message, HttpPayload payload, MultivaluedMap<String, String> headers) {
+        this.code = code;
+        this.message = message;
+        this.payload = payload;
+        this.headers = headers;
+    }
+
+    @Override
+    public HttpPayload getPayload() {
+        return this.payload;
+    }
+
+    @Override
+    public MultivaluedMap<String, String> getHeaders() {
+        return this.headers;
+    }
+
+    @Override
+    public int getStatusCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getStatusMessage() {
+        return this.message;
+    }
+}

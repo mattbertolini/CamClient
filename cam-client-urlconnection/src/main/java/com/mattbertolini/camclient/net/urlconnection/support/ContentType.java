@@ -1,4 +1,4 @@
-package com.mattbertolini.camclient.net.support.urlconnection;
+package com.mattbertolini.camclient.net.urlconnection.support;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

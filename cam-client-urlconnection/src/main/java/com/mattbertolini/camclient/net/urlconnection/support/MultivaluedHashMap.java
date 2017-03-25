@@ -28,7 +28,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.mattbertolini.camclient.net.support.urlconnection;
+package com.mattbertolini.camclient.net.urlconnection.support;
 
 import java.util.Collection;
 import java.util.HashMap;

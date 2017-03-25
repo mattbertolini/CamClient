@@ -28,21 +28,66 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.mattbertolini.camclient.net.support.urlconnection;
+package com.mattbertolini.camclient.net.urlconnection.support;
 
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.URI;
+import java.net.URL;
 
 /**
- * @param <K>
- * @param <V>
+ * A wrapper around the java URL object that allows for easier mocking.
+ *
  * @author Matt Bertolini
  */
-public interface MultivaluedMap<K, V> extends Map<K, List<V>> {
-    void add(K key, V value);
-    void addAll(K key, List<V> values);
-    void addAll(K key, V... values);
-    void addFirst(K key, V value);
-    V getFirst(K key);
-    void putSingle(K key, V value);
+public class Url {
+    private final URL url;
+
+    public Url(URL url) {
+        this.url = url;
+    }
+
+    public Url(URI uri) {
+        try {
+            this.url = uri.toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public HttpURLConnection openConnection() throws IOException {
+        return (HttpURLConnection) this.url.openConnection();
+    }
+
+    public HttpURLConnection openConnection(Proxy proxy) throws IOException {
+        return (HttpURLConnection) this.url.openConnection(proxy);
+    }
+
+    public String getProtocol() {
+        return this.url.getProtocol();
+    }
+
+    @Override
+    public String toString() {
+        return this.url.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Url)) return false;
+
+        Url url1 = (Url) o;
+
+        if (url != null ? !url.equals(url1.url) : url1.url != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return url != null ? url.hashCode() : 0;
+    }
 }

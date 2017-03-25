@@ -28,17 +28,40 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.mattbertolini.camclient.net.support.urlconnection;
+package com.mattbertolini.camclient.net.urlconnection.support;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Scanner;
 
 /**
  * @author Matt Bertolini
  */
-public interface HttpPayload {
-    ContentType getContentType();
-    InputStream getInputStream();
-    void writeTo(OutputStream outputStream) throws IOException;
+public class InputStreamPayload implements HttpPayload {
+    private InputStream payload;
+    private ContentType contentType;
+
+    public InputStreamPayload(InputStream payload, ContentType contentType) {
+        this.payload = payload;
+        this.contentType = contentType;
+    }
+
+    @Override
+    public ContentType getContentType() {
+        return this.contentType;
+    }
+
+    @Override
+    public InputStream getInputStream() {
+        return this.payload;
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        Scanner scanner = new Scanner(this.payload, this.getContentType().getCharsetOrDefault());
+        while(scanner.hasNextByte()) {
+            outputStream.write(scanner.nextByte());
+        }
+    }
 }

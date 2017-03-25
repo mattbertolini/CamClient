@@ -28,13 +28,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.mattbertolini.camclient.net.support.urlconnection;
-
-import java.io.IOException;
-
 /**
- * @author Matt Bertolini
+ * Client API for an Java HttpURLConnection. Abstracts the HttpURLConnection class away to make it easier to use and test.
  */
-public interface HttpConnection {
-    HttpResponse executeRequest(HttpRequest request) throws IOException;
-}
+package com.mattbertolini.camclient.net.urlconnection.support;

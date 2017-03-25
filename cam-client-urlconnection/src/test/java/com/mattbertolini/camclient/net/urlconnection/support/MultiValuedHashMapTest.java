@@ -1,5 +1,7 @@
-package com.mattbertolini.camclient.net.support.urlconnection;
+package com.mattbertolini.camclient.net.urlconnection.support;
 
+import com.mattbertolini.camclient.net.urlconnection.support.MultivaluedHashMap;
+import com.mattbertolini.camclient.net.urlconnection.support.MultivaluedMap;
 import org.junit.Test;
 
 import java.util.Arrays;

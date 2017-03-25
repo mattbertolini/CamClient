@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Matthew Bertolini
+ * Copyright (c) 2012, Matthew Bertolini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,40 +28,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.mattbertolini.camclient.net.support.urlconnection;
+package com.mattbertolini.camclient.net.urlconnection.support;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Scanner;
+import java.net.Proxy;
+import java.util.List;
 
 /**
  * @author Matt Bertolini
  */
-public class InputStreamPayload implements HttpPayload {
-    private InputStream payload;
-    private ContentType contentType;
-
-    public InputStreamPayload(InputStream payload, ContentType contentType) {
-        this.payload = payload;
-        this.contentType = contentType;
-    }
-
-    @Override
-    public ContentType getContentType() {
-        return this.contentType;
-    }
-
-    @Override
-    public InputStream getInputStream() {
-        return this.payload;
-    }
-
-    @Override
-    public void writeTo(OutputStream outputStream) throws IOException {
-        Scanner scanner = new Scanner(this.payload, this.getContentType().getCharsetOrDefault());
-        while(scanner.hasNextByte()) {
-            outputStream.write(scanner.nextByte());
-        }
-    }
+public interface HttpRequest {
+    HttpPayload getPayload();
+    void setPayload(HttpPayload payload);
+    void addHeader(String name, String value);
+    void addHeader(String name, List<String> values);
+    void addHeader(String name, String... values);
+    boolean containsHeader(String name);
+    String getHeader(String name);
+    MultivaluedMap<String, String> getHeaders();
+    void setHeader(String name, String value);
+    void setHeader(String name, List<String> values);
+    void setHeader(String name, String... values);
+    Method getMethod();
+    void setMethod(Method method);
+    Url getUrl();
+    void setUrl(Url url);
+    Proxy getProxy();
+    void setProxy(Proxy proxy);
 }
