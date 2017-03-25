@@ -4,7 +4,7 @@ Written by Matt Bertolini
 
 ## About CamClient
 
-**NOTE:** This isn't really maintained anymore. I occassionally poke at the repo 
+**NOTE:** This isn't really maintained anymore. I occasionally poke at the repo 
 for fun. No artifacts are published.
 
 CamClient is a pure Java implementation of the Cisco Clean Access Manager API. 
