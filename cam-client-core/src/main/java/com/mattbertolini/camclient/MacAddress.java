@@ -32,6 +32,7 @@ package com.mattbertolini.camclient;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 /**
  * Class representing a MAC-48/EUI-48 MAC address.
@@ -61,7 +62,7 @@ public final class MacAddress {
             return this.spacing;
         }
     }
-    private static final String EUI_48_PATTERN = "^(?i)(?:[0-9a-f]{2}[-:]?){5}[0-9a-f]{2}|(?:[0-9a-f]{4}\\.?){2}[0-9a-f]{4}$";
+    private static final Pattern EUI_48_PATTERN = Pattern.compile("^(?i)(?:[0-9a-f]{2}[-:]?){5}[0-9a-f]{2}|(?:[0-9a-f]{4}\\.?){2}[0-9a-f]{4}$");
     private static final int BYTE_ARRAY_LENGTH = 6;
     private static final long MIN_MAC_LONG_VALUE = 0L;
     private static final long MAX_MAC_LONG_VALUE = 281474976710655L;
@@ -115,10 +116,10 @@ public final class MacAddress {
         if(address == null) {
             throw new IllegalArgumentException("MAC address cannot be null.");
         }
-        final String addressStr = address.toString();
-        if(!addressStr.matches(EUI_48_PATTERN)) {
+        if(!EUI_48_PATTERN.matcher(address).matches()) {
             throw new IllegalArgumentException("Input string is not a valid MAC address.");
         }
+        final String addressStr = address.toString();
         final String cleanMac = addressStr.replaceAll("(?i)[^0-9a-f]", "");
         byte[] macBytes = new byte[BYTE_ARRAY_LENGTH];
         for (int i = 0; i < macBytes.length; i++) {
@@ -153,7 +154,7 @@ public final class MacAddress {
         if(address == null) {
             throw new IllegalArgumentException("Input string cannot be null.");
         }
-        return address.matches(EUI_48_PATTERN);
+        return EUI_48_PATTERN.matcher(address).matches();
     }
 
     @Override
